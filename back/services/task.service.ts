@@ -1,4 +1,5 @@
-import { Task } from 'back/models/task.interface';
+import { Task } from '../models/task.interface';
+
 import { taskModel } from '../models/db.schema';
 
 export default class TaskService {

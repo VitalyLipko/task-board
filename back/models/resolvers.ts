@@ -1,5 +1,6 @@
-import TaskService from '../services/task.service';
 import { IResolvers } from 'graphql-tools';
+
+import TaskService from '../services/task.service';
 
 const taskService = new TaskService();
 export const resolvers: IResolvers = {

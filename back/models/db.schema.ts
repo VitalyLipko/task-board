@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+
 import { Task } from './task.interface';
 
 const { Schema } = mongoose;
