@@ -9,6 +9,15 @@ export const typeDefs = gql`
     created: Date!
   }
 
+  type User {
+    id: ID!
+    username: String!
+    password: String!
+    email: String!
+    firstName: String!
+    lastName: String!
+  }
+
   type Query {
     tasks: [Task!]!
     task(id: ID!): Task
@@ -18,6 +27,7 @@ export const typeDefs = gql`
     createTask(task: CreateTaskInput!): Task!
     updateTask(task: UpdateTaskInput!): Task
     deleteTask(id: ID!): Boolean
+    login(username: String!, password: String!): String
   }
 
   input CreateTaskInput {
