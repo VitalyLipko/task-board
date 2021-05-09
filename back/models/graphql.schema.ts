@@ -21,6 +21,7 @@ export const typeDefs = gql`
   type Query {
     tasks: [Task!]!
     task(id: ID!): Task
+    user(username: String): User
   }
 
   type Mutation {
@@ -28,6 +29,7 @@ export const typeDefs = gql`
     updateTask(task: UpdateTaskInput!): Task
     deleteTask(id: ID!): Boolean
     login(username: String!, password: String!): String
+    logout(username: String): Boolean
   }
 
   input CreateTaskInput {

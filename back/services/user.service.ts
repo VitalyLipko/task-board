@@ -3,7 +3,13 @@ import { userModel } from '../models/db.schema';
 
 export default class UserService {
   async getUser(username: string) {
-    return await userModel.findOne({ username }).lean();
+    const user = await userModel.findOne({ username }).lean();
+
+    if (user) {
+      user.id = user._id;
+    }
+
+    return user;
   }
 
   async createUser(user: Partial<User>): Promise<User> {
