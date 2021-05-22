@@ -13,6 +13,9 @@ export default async (app: Express): Promise<ApolloServer> => {
     resolvers,
     context: ({ req }) => authServer.getAuthUser(req),
   });
+
+  await server.start();
+
   server.applyMiddleware({ app });
 
   return server;

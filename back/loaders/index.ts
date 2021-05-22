@@ -2,6 +2,7 @@ import { ApolloServer } from 'apollo-server-express';
 import { Express } from 'express';
 
 import config from '../config';
+import init from '../config/init';
 
 import mongooseLoader from './mongoose';
 import apolloServerLoader from './apollo-server';
@@ -17,10 +18,14 @@ export default async (app: Express): Promise<ApolloServer> => {
 
   mongoConnection.on('error', (err) => console.error('connection error:', err));
   mongoConnection.once('open', () =>
-    console.log(`database: ${config.port} connected`),
+    console.log(`Database: ${config.port} connected`),
   );
 
+  await init();
+
   const apolloConnection = await apolloServerLoader(app);
+
+  console.log('Apollo server started');
 
   return apolloConnection;
 };
