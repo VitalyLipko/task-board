@@ -1,0 +1,9 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../dist/back",
+    "sourceMap": false,
+    "types": []
+  },
+  "files": ["app.ts"]
+}

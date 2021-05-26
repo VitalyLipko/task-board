@@ -5,7 +5,9 @@
     "ng": "ng",
     "start:front": "ng serve",
     "build": "ng build",
-    "start:back": "nodemon back/app.ts"
+    "start:back:dev": "nodemon back/app.ts",
+    "start:back:prod": "node dist/back/app.js",
+    "build:back": "cross-env TS_NODE_PROJECT=\"back/tsconfig.webpack.json\" webpack --config back/webpack.config.ts --stats-error-details"
   },
   "private": true,
   "dependencies": {
@@ -39,9 +41,18 @@
     "@types/node": "^12.11.1",
     "@types/redis": "^2.8.28",
     "@types/uuid": "^8.3.0",
+    "@types/webpack": "^5.28.0",
+    "@types/webpack-node-externals": "^2.5.1",
+    "clean-webpack-plugin": "^4.0.0-alpha.0",
+    "cross-env": "^7.0.3",
     "nodemon": "^2.0.7",
+    "ts-loader": "^9.1.2",
     "ts-node": "^9.1.1",
-    "typescript": "~4.1.5"
+    "tsconfig-paths": "^3.9.0",
+    "typescript": "~4.1.5",
+    "webpack": "^5.36.2",
+    "webpack-cli": "^4.7.0",
+    "webpack-node-externals": "^3.0.0"
   },
   "type": "module"
 }
