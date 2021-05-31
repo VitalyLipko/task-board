@@ -3,10 +3,18 @@ import { gql } from 'apollo-server-express';
 export default gql`
   scalar Date
 
+  type Project {
+    id: ID!
+    name: String!
+    created: Date!
+    tasks: [Task!]!
+  }
+
   type Task {
     id: ID!
     title: String!
     created: Date!
+    parentId: String!
   }
 
   type User {
@@ -19,12 +27,16 @@ export default gql`
   }
 
   type Query {
-    tasks: [Task!]!
+    project(id: ID!): Project
+    projects: [Project!]!
     task(id: ID!): Task
+    tasks: [Task!]!
     user(username: String): User
   }
 
   type Mutation {
+    createProject(project: CreateProjectInput!): Project!
+    updateProject(project: UpdateProjectInput!): Project
     createTask(task: CreateTaskInput!): Task!
     updateTask(task: UpdateTaskInput!): Task
     deleteTask(id: ID!): Boolean
@@ -32,8 +44,18 @@ export default gql`
     logout(username: String): Boolean
   }
 
+  input CreateProjectInput {
+    name: String!
+  }
+
+  input UpdateProjectInput {
+    id: ID!
+    name: String
+  }
+
   input CreateTaskInput {
     title: String!
+    parentId: String!
   }
 
   input UpdateTaskInput {

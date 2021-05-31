@@ -1,6 +1,5 @@
 import { Task } from '../models/task.interface';
-
-import { taskModel } from '../models/db.schema';
+import { taskModel, projectModel } from '../models/db.schema';
 
 export default class TaskService {
   async getTasks(): Promise<Array<Task>> {
@@ -12,7 +11,12 @@ export default class TaskService {
   }
 
   async createTask(task: Task): Promise<Task> {
-    return await taskModel.create(task);
+    const document = await taskModel.create(task);
+    const parent = await projectModel.findById(task.parentId);
+    parent?.tasks.push(document);
+    await parent?.save();
+
+    return document;
   }
 
   async updateTask(task: Task): Promise<Task | null> {
