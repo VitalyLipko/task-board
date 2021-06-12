@@ -15,6 +15,7 @@ export default gql`
     title: String!
     created: Date!
     parentId: String!
+    assignees: [User!]!
   }
 
   type User {
@@ -30,7 +31,7 @@ export default gql`
     project(id: ID!): Project
     projects: [Project!]!
     task(id: ID!): Task
-    tasks: [Task!]!
+    tasks(parentId: ID!): [Task!]!
     user(username: String): User
   }
 
@@ -56,10 +57,12 @@ export default gql`
   input CreateTaskInput {
     title: String!
     parentId: String!
+    assignees: [String!]
   }
 
   input UpdateTaskInput {
     id: ID!
     title: String
+    assignees: [String!]
   }
 `;

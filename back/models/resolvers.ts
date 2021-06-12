@@ -27,10 +27,10 @@ export const resolvers: IResolvers<
         context,
         projectService.getProject(args.id).then((res) => res),
       ),
-    tasks: (_, __, context) =>
+    tasks: (_, args, context) =>
       authService.operationGuard(
         context,
-        taskService.getTasks().then((res) => res),
+        taskService.getTasks(args.parentId).then((res) => res),
       ),
     task: (_, args, context) =>
       authService.operationGuard(
