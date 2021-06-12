@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { promisify } from 'util';
 
 import config from '../config';
+import { ContextPayload } from '../models/context-payload.interface';
 import { User } from '../models/user.interface';
 import { redisClient } from '../loaders/redis';
 
@@ -49,14 +50,12 @@ export default class AuthService {
           }
         },
       );
-      return new Promise<boolean>((resolve) => resolve(true));
+      return true;
     }
-    return new Promise<boolean>((resolve) => resolve(false));
+    return false;
   }
 
-  async getAuthUser(
-    req: express.Request,
-  ): Promise<{ user: User | null; token?: string }> {
+  async getAuthUser(req: express.Request): Promise<ContextPayload> {
     const isIntrospectionQuery =
       req.body.operationName === 'IntrospectionQuery';
     const payload = req.headers.authorization?.split(' ') || [];
@@ -91,11 +90,11 @@ export default class AuthService {
   }
 
   async operationGuard<T>(
-    context: { user: User | null; token?: string },
-    operation: Promise<T>,
+    context: ContextPayload,
+    operation: () => Promise<T>,
   ): Promise<T> {
     if (context.user) {
-      return operation;
+      return operation();
     }
     throw new AuthenticationError('Not authorized');
   }
