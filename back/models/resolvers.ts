@@ -13,6 +13,7 @@ const userService = new UserService();
 
 export const resolvers: IResolvers<unknown, ContextPayload> = {
   Query: {
+    isLoggedIn: (_, __, context) => authService.isLoggedIn(context),
     projects: (_, __, context) =>
       authService.operationGuard(context, () => projectService.getProjects()),
     project: (_, args, context) =>

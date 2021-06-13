@@ -1,8 +1,9 @@
 import jsonwebtoken from 'jsonwebtoken';
 import express from 'express';
-import { AuthenticationError } from 'apollo-server-express';
+import { ApolloError, AuthenticationError } from 'apollo-server-express';
 import { v4 as uuidv4 } from 'uuid';
 import { promisify } from 'util';
+import bcrypt from 'bcrypt';
 
 import config from '../config';
 import { ContextPayload } from '../models/context-payload.interface';
@@ -18,20 +19,21 @@ export default class AuthService {
     const user = await userService.getUser(username);
 
     if (user) {
-      const token = jsonwebtoken.sign(
-        { username: user.username, id: uuidv4() },
-        config.tokenSecret,
-        {
-          expiresIn: config.tokenExpireTime,
-        },
-      );
+      const isPasswordCorrect = await bcrypt.compare(password, user.password);
 
-      if (user.password === password) {
+      if (isPasswordCorrect) {
+        const token = jsonwebtoken.sign(
+          { username: user.username, id: uuidv4() },
+          config.tokenSecret,
+          {
+            expiresIn: config.tokenExpireTime,
+          },
+        );
         return token;
       }
-      return null;
     }
-    return null;
+
+    throw new ApolloError('Invalid username or password');
   }
 
   async logout(username: string, token?: string): Promise<boolean> {
@@ -89,6 +91,10 @@ export default class AuthService {
     return { user, token };
   }
 
+  isLoggedIn(context: ContextPayload): boolean {
+    return !!(context.user && context.token);
+  }
+
   async operationGuard<T>(
     context: ContextPayload,
     operation: () => Promise<T>,
@@ -96,7 +102,7 @@ export default class AuthService {
     if (context.user) {
       return operation();
     }
-    throw new AuthenticationError('Not authorized');
+    throw new AuthenticationError('Not authenticated');
   }
 
   private getRedisKey(payload: { username: string; id: string }): string {

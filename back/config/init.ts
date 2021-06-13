@@ -1,7 +1,7 @@
-import { User } from '../models/user.interface';
+import { CreateUserInput } from '../models/user.interface';
 import UserService from '../services/user.service';
 
-const admin: Partial<User> = {
+const admin: CreateUserInput = {
   username: 'admin',
   password: 'admin',
   email: 'admin@example.ru',
@@ -12,7 +12,7 @@ const userService = new UserService();
 
 export default async (): Promise<void> => {
   return userService
-    .getUser('admin')
+    .getUser(admin.username)
     .then((res) =>
       !!res
         ? new Promise<void>((resolve) => resolve())

@@ -21,13 +21,13 @@ export default gql`
   type User {
     id: ID!
     username: String!
-    password: String!
     email: String!
     firstName: String!
     lastName: String!
   }
 
   type Query {
+    isLoggedIn: Boolean
     project(id: ID!): Project
     projects: [Project!]!
     task(id: ID!): Task
