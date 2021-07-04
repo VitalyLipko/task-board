@@ -6,7 +6,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "todo-app": {
+    "task-board": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -42,12 +42,12 @@
       },
       "root": "",
       "sourceRoot": "src",
-      "prefix": "ta",
+      "prefix": "tb",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/todo-app",
+            "outputPath": "dist/front",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -95,22 +95,22 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "todo-app:build"
+            "browserTarget": "task-board:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "todo-app:build:production"
+              "browserTarget": "task-board:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "todo-app:build"
+            "browserTarget": "task-board:build"
           }
         }
       }
     }
   },
-  "defaultProject": "todo-app"
+  "defaultProject": "task-board"
 }

@@ -1,13 +1,13 @@
 {
-  "name": "todo-app",
+  "name": "task-board",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start:front": "ng serve",
-    "build": "ng build",
     "start:back:dev": "nodemon back/app.ts",
     "start:back:prod": "node dist/back/app.js",
-    "build:back": "cross-env TS_NODE_PROJECT=\"back/tsconfig.webpack.json\" webpack --config back/webpack.config.ts --stats-error-details"
+    "start:front": "ng serve",
+    "build:back": "cross-env TS_NODE_PROJECT=\"back/tsconfig.webpack.json\" webpack --config back/webpack.config.ts --stats-error-details",
+    "build:front:prod": "ng build --prod"
   },
   "private": true,
   "dependencies": {
