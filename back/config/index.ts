@@ -8,7 +8,7 @@ if (envFound.error) {
 
 export default {
   port: process.env.PORT as string,
-  databaseURL: process.env.DATABASE_URI as string,
+  databaseURI: process.env.DATABASE_URI as string,
   tokenSecret: process.env.TOKEN_SECRET as string,
   tokenExpireTime: Number(process.env.TOKEN_EXPIRE_TIME),
 };

@@ -3,7 +3,7 @@ import express from 'express';
 import loaders from './loaders';
 import config from './config';
 
-async function startServer() {
+async function startServer(): Promise<void> {
   const app = express();
   const server = await loaders(app);
 
