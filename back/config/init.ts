@@ -14,7 +14,7 @@ export default async (): Promise<void> => {
   return userService
     .getUser(admin.username)
     .then((res) =>
-      !!res
+      res
         ? new Promise<void>((resolve) => resolve())
         : userService.createUser(admin).then(),
     );

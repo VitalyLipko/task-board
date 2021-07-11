@@ -4,9 +4,9 @@ import { Project } from './project.interface';
 import { Task } from './task.interface';
 import { User } from './user.interface';
 
-type ProjectModel = Project & Document;
+export type ProjectModel = Project & Document;
 type TaskModel = Task & Document;
-type UserModel = User & Document;
+export type UserModel = User & Document;
 
 const { Schema, model } = mongoose;
 
@@ -26,7 +26,7 @@ const taskSchema = new Schema<TaskModel>(
     },
   },
 );
-taskSchema.virtual('id').get(function (_: any, __: any, doc: Document) {
+taskSchema.virtual('id').get(function (_: unknown, __: unknown, doc: Document) {
   return doc._id.toString();
 });
 
@@ -45,9 +45,11 @@ const projectSchema = new Schema<ProjectModel>(
     },
   },
 );
-projectSchema.virtual('id').get(function (_: any, __: any, doc: Document) {
-  return doc._id.toString();
-});
+projectSchema
+  .virtual('id')
+  .get(function (_: unknown, __: unknown, doc: Document) {
+    return doc._id.toString();
+  });
 
 const userSchema = new Schema<UserModel>(
   {
@@ -66,7 +68,7 @@ const userSchema = new Schema<UserModel>(
     },
   },
 );
-userSchema.virtual('id').get(function (_: any, __: any, doc: Document) {
+userSchema.virtual('id').get(function (_: unknown, __: unknown, doc: Document) {
   return doc._id.toString();
 });
 

@@ -12,6 +12,10 @@ import { redisClient } from '../loaders/redis';
 
 import UserService from './user.service';
 
+interface DecodedToken {
+  [key: string]: string;
+}
+
 const userService = new UserService();
 
 export default class AuthService {
@@ -40,7 +44,10 @@ export default class AuthService {
     const user = await userService.getUser(username);
 
     if (user && token) {
-      const decoded = jsonwebtoken.verify(token, config.tokenSecret) as any;
+      const decoded = jsonwebtoken.verify(
+        token,
+        config.tokenSecret,
+      ) as DecodedToken;
 
       redisClient.setex(
         this.getRedisKey(decoded),
@@ -66,7 +73,10 @@ export default class AuthService {
 
     if (!isIntrospectionQuery && payload[0] === 'Bearer' && token) {
       try {
-        const decoded = jsonwebtoken.verify(token, config.tokenSecret) as any;
+        const decoded = jsonwebtoken.verify(
+          token,
+          config.tokenSecret,
+        ) as DecodedToken;
         if (decoded?.username) {
           user = await userService.getUser(decoded.username);
 
@@ -105,7 +115,7 @@ export default class AuthService {
     throw new AuthenticationError('Not authenticated');
   }
 
-  private getRedisKey(payload: { username: string; id: string }): string {
+  private getRedisKey(payload: DecodedToken): string {
     return `${payload.username}:${payload.id}`;
   }
 }

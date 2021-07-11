@@ -19,7 +19,7 @@ export default async (app: Express): Promise<ApolloServer> => {
   connection.on('error', (err) =>
     console.error('MongoDB connection error:', err),
   );
-  connection.once('connected', () => console.log(`MongoDB connected`));
+  connection.once('connected', () => console.log('MongoDB connected'));
 
   await mongooseLoader();
 

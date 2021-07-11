@@ -18,7 +18,6 @@ export default class TaskService {
   }
 
   async createTask(task: CreateTaskInput): Promise<Task> {
-    console.log('createTask');
     const document = new taskModel({
       title: task.title,
       parentId: task.parentId,

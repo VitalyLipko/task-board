@@ -23,7 +23,7 @@ const config: Configuration = {
     filename: 'app.js',
     path: resolve(__dirname, '../dist/back'),
   },
-  externals: [nodeExternals() as any],
+  externals: [nodeExternals() as never],
   externalsPresets: { node: true },
   plugins: [new CleanWebpackPlugin()],
 };
