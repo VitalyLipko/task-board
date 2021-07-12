@@ -1,10 +1,11 @@
+import { LeanDocument } from 'mongoose';
+
+import { taskModel, projectModel, userModel } from '../models/db.schema';
 import {
   CreateTaskInput,
   Task,
   UpdateTaskInput,
 } from '../models/task.interface';
-import { taskModel, projectModel, userModel } from '../models/db.schema';
-import { LeanDocument } from 'mongoose';
 
 export default class TaskService {
   async getTasks(parentId: string): Promise<Array<Task>> {

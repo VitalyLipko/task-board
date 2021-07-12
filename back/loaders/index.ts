@@ -4,8 +4,8 @@ import mongoose from 'mongoose';
 
 import init from '../config/init';
 
-import mongooseLoader from './mongoose';
 import apolloServerLoader from './apollo-server';
+import mongooseLoader from './mongoose';
 import redisLoader from './redis';
 
 const { connection } = mongoose;

@@ -1,4 +1,5 @@
 import { PopulatedDoc } from 'mongoose';
+
 import { User } from './user.interface';
 
 export interface Task {

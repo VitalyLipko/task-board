@@ -1,14 +1,14 @@
-import jsonwebtoken from 'jsonwebtoken';
-import express from 'express';
 import { ApolloError, AuthenticationError } from 'apollo-server-express';
-import { v4 as uuidv4 } from 'uuid';
-import { promisify } from 'util';
 import bcrypt from 'bcrypt';
+import express from 'express';
+import jsonwebtoken from 'jsonwebtoken';
+import { promisify } from 'util';
+import { v4 as uuidv4 } from 'uuid';
 
 import config from '../config';
+import { redisClient } from '../loaders/redis';
 import { ContextPayload } from '../models/context-payload.interface';
 import { User } from '../models/user.interface';
-import { redisClient } from '../loaders/redis';
 
 import UserService from './user.service';
 

@@ -1,8 +1,8 @@
 import bcrypt from 'bcrypt';
-
-import { CreateUserInput, User } from '../models/user.interface';
-import { UserModel, userModel } from '../models/db.schema';
 import { LeanDocument } from 'mongoose';
+
+import { UserModel, userModel } from '../models/db.schema';
+import { CreateUserInput, User } from '../models/user.interface';
 
 export default class UserService {
   async getUser(username: string): Promise<LeanDocument<UserModel> | null> {

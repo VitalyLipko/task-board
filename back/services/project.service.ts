@@ -1,11 +1,11 @@
 import { LeanDocument } from 'mongoose';
 
+import { projectModel, ProjectModel } from '../models/db.schema';
 import {
   CreateProjectInput,
   Project,
   UpdateProjectInput,
 } from '../models/project.interface';
-import { projectModel, ProjectModel } from '../models/db.schema';
 
 export default class ProjectService {
   async createProject(

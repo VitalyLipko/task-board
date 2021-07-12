@@ -13,9 +13,9 @@
         "plugin:@angular-eslint/recommended",
         "plugin:@angular-eslint/template/process-inline-templates",
         "plugin:@typescript-eslint/recommended",
-        "plugin:prettier/recommended",
         "prettier"
       ],
+      "plugins": ["eslint-plugin-import"],
       "rules": {
         "@angular-eslint/directive-selector": [
           "error",
@@ -33,16 +33,21 @@
             "style": "kebab-case"
           }
         ],
+        "import/order": [
+          "error",
+          {
+            "groups": [["builtin", "external"], "parent", "sibling", "index"],
+            "alphabetize": {
+              "order": "asc",
+              "caseInsensitive": true
+            },
+            "newlines-between": "always"
+          }
+        ],
         "quotes": [
           "error",
           "single",
           { "avoidEscape": true, "allowTemplateLiterals": false }
-        ],
-        "prettier/prettier": [
-          "error",
-          {
-            "endOfLine": "auto"
-          }
         ]
       },
       "env": {

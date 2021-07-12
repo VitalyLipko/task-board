@@ -1,7 +1,7 @@
+import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import { resolve } from 'path';
 import { Configuration } from 'webpack';
 import nodeExternals from 'webpack-node-externals';
-import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 
 const config: Configuration = {
   mode: 'production',
