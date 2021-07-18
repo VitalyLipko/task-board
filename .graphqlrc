@@ -1,0 +1,12 @@
+schema: "http://localhost:${PORT}/graphql"
+extensions:
+    codegen:
+        generates:
+            src/app/core/graphql/graphql.ts:
+                plugins:
+                - 'typescript'
+            src/app/core/graphql/schema.json:
+                plugins:
+                - 'introspection'
+                config:
+                    minify: true

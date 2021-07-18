@@ -1,6 +1,6 @@
 {
   "root": true,
-  "ignorePatterns": ["projects/**/*"],
+  "ignorePatterns": ["projects/**/*", "grapqhl.ts", "schema.json"],
   "overrides": [
     {
       "files": ["*.ts"],

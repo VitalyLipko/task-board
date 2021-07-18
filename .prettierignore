@@ -1,3 +1,5 @@
 .prettierrc.json
+schema.json
+graphql.ts
 
 dist
