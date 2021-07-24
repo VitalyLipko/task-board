@@ -1,7 +1,6 @@
-import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import { resolve } from 'path';
 import { Configuration } from 'webpack';
-import nodeExternals from 'webpack-node-externals';
+// import nodeExternals from 'webpack-node-externals';
 
 const config: Configuration = {
   mode: 'production',
@@ -20,12 +19,13 @@ const config: Configuration = {
     extensions: ['.ts'],
   },
   output: {
+    clean: true,
     filename: 'app.js',
     path: resolve(__dirname, '../dist/back'),
   },
-  externals: [nodeExternals() as never],
-  externalsPresets: { node: true },
-  plugins: [new CleanWebpackPlugin()],
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  /* externals: [nodeExternals() as any],
+  externalsPresets: { node: true },*/
 };
 
 export default config;

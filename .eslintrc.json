@@ -47,7 +47,10 @@
         "quotes": [
           "error",
           "single",
-          { "avoidEscape": true, "allowTemplateLiterals": false }
+          {
+            "avoidEscape": true,
+            "allowTemplateLiterals": false
+          }
         ]
       },
       "env": {
