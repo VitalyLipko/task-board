@@ -1,0 +1,55 @@
+<div nz-row nzAlign="middle" nzJustify="center" class="login-container">
+  <nz-card>
+    <span
+      nz-typography
+      nz-row
+      nzJustify="center"
+      class="login-container-card-title"
+    >
+      Task board
+    </span>
+    <form nz-form (ngSubmit)="handleSubmit()" [formGroup]="loginForm">
+      <nz-form-item>
+        <nz-form-control>
+          <nz-input-group nzPrefixIcon="user">
+            <input
+              formControlName="username"
+              type="text"
+              nz-input
+              placeholder="Username"
+              autocomplete="username"
+            />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control>
+          <nz-input-group nzPrefixIcon="lock">
+            <input
+              formControlName="password"
+              type="password"
+              nz-input
+              placeholder="Password"
+              autocomplete="current-password"
+            />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <button
+        type="submit"
+        class="login-container-submit-button"
+        [disabled]="loginForm.invalid"
+      ></button>
+    </form>
+    <button
+      nz-button
+      nzType="primary"
+      nzBlock
+      (click)="handleSubmit()"
+      [nzLoading]="loading"
+      [disabled]="loginForm.invalid"
+    >
+      Log in
+    </button>
+  </nz-card>
+</div>

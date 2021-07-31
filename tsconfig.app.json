@@ -2,8 +2,9 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "./out-tsc/app"
+    "outDir": "./out-tsc/app",
+    "typeRoots": ["src/@types"]
   },
-  "files": ["src/main.ts", "src/polyfills.ts"],
+  "files": ["src/main.ts", "src/polyfills.ts", "src/@types/graphql.d.ts"],
   "include": ["src/**/*.d.ts"]
 }

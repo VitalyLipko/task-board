@@ -2,24 +2,24 @@ import { ApolloError, AuthenticationError } from 'apollo-server-express';
 import bcrypt from 'bcrypt';
 import express from 'express';
 import jsonwebtoken from 'jsonwebtoken';
-import { promisify } from 'util';
 import { v4 as uuidv4 } from 'uuid';
 
 import config from '../config';
-import { redisClient } from '../loaders/redis';
 import { ContextPayload } from '../models/context-payload.interface';
 import { User } from '../models/user.interface';
 
+import RedisService from './redis.service';
 import UserService from './user.service';
 
-interface DecodedToken {
-  [key: string]: string;
-}
-
 const userService = new UserService();
+const redisService = new RedisService();
 
 export default class AuthService {
-  async login(username: string, password: string): Promise<string | null> {
+  async login(
+    username: string,
+    password: string,
+    res: express.Response,
+  ): Promise<string | null> {
     const user = await userService.getUser(username);
 
     if (user) {
@@ -33,6 +33,7 @@ export default class AuthService {
             expiresIn: config.tokenExpireTime,
           },
         );
+        res.cookie('JWT', token, { httpOnly: true });
         return token;
       }
     }
@@ -41,60 +42,56 @@ export default class AuthService {
   }
 
   async logout(username: string, token?: string): Promise<boolean> {
+    if (!token) {
+      return false;
+    }
+
     const user = await userService.getUser(username);
 
-    if (user && token) {
-      const decoded = jsonwebtoken.verify(
-        token,
-        config.tokenSecret,
-      ) as DecodedToken;
-
-      redisClient.setex(
-        this.getRedisKey(decoded),
-        config.tokenExpireTime,
-        token,
-        (err) => {
-          if (err) {
-            console.error(err);
-          }
-        },
-      );
-      return true;
+    if (user) {
+      const decoded = jsonwebtoken.verify(token, config.tokenSecret) as Record<
+        string,
+        string
+      >;
+      redisService.saveRevokedToken(decoded, token);
     }
-    return false;
+
+    return !!user;
   }
 
-  async getAuthUser(req: express.Request): Promise<ContextPayload> {
-    const isIntrospectionQuery =
-      req.body.operationName === 'IntrospectionQuery';
-    const payload = req.headers.authorization?.split(' ') || [];
-    const token = payload[1];
-    let user: User | null = null;
+  async createContext(
+    req: express.Request,
+  ): Promise<{ user?: User; token?: string }> {
+    let user: User | undefined;
+    let token: string | undefined;
 
-    if (!isIntrospectionQuery && payload[0] === 'Bearer' && token) {
-      try {
-        const decoded = jsonwebtoken.verify(
-          token,
-          config.tokenSecret,
-        ) as DecodedToken;
-        if (decoded?.username) {
-          user = await userService.getUser(decoded.username);
+    if (req.body.operationName !== 'IntrospectionQuery') {
+      const payload = req.headers.authorization?.split(' ') || [];
+      token = payload[0] === 'Bearer' ? payload[1] : req.cookies['JWT'];
 
-          if (user) {
-            const redisGetPromise = promisify(redisClient.get).bind(
-              redisClient,
-            );
-            const revokedToken = await redisGetPromise(
-              this.getRedisKey(decoded),
-            );
+      if (token) {
+        try {
+          const decoded = jsonwebtoken.verify(
+            token,
+            config.tokenSecret,
+          ) as Record<string, string>;
 
-            if (revokedToken) {
-              return { user: null };
+          if (decoded?.username) {
+            const result = await userService.getUser(decoded.username);
+
+            if (result) {
+              const isTokenRevoked = await redisService.isTokenRevoked(decoded);
+
+              if (isTokenRevoked) {
+                return { user: result };
+              }
+
+              user = result;
             }
           }
+        } catch (err) {
+          console.error(err);
         }
-      } catch (err) {
-        console.error(err);
       }
     }
 
@@ -109,13 +106,9 @@ export default class AuthService {
     context: ContextPayload,
     operation: () => Promise<T>,
   ): Promise<T> {
-    if (context.user) {
+    if (this.isLoggedIn(context)) {
       return operation();
     }
     throw new AuthenticationError('Not authenticated');
-  }
-
-  private getRedisKey(payload: DecodedToken): string {
-    return `${payload.username}:${payload.id}`;
   }
 }

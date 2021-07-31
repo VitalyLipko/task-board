@@ -13,6 +13,7 @@ import { HttpLink } from 'apollo-angular/http';
         cache: new InMemoryCache(),
         link: httpLink.create({
           uri: 'http://localhost:8000/graphql',
+          withCredentials: true,
         }),
       }),
       deps: [HttpLink],

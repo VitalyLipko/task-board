@@ -41,7 +41,7 @@
       "prefix": "tb",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-builders/custom-webpack:browser",
           "options": {
             "outputPath": "dist/front",
             "index": "src/index.html",
@@ -51,7 +51,11 @@
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": ["src/styles.scss"],
             "scripts": [],
-            "allowedCommonJsDependencies": ["zen-observable"]
+            "allowedCommonJsDependencies": ["zen-observable"],
+            "customWebpackConfig": {
+              "path": "./webpack.front.config.сjs",
+              "replaceDuplicatePlugins": true
+            }
           },
           "configurations": {
             "production": {
@@ -91,7 +95,7 @@
           "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
             "browserTarget": "task-board:build"
           },

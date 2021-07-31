@@ -6,9 +6,7 @@ import { CreateUserInput, User } from '../models/user.interface';
 
 export default class UserService {
   async getUser(username: string): Promise<LeanDocument<UserModel> | null> {
-    const user = await userModel.findOne({ username }).lean();
-
-    return user;
+    return userModel.findOne({ username }).lean();
   }
 
   async createUser(user: CreateUserInput): Promise<User> {

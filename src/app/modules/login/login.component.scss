@@ -1,0 +1,14 @@
+.login-container {
+  height: 100%;
+
+  &-card-title {
+    margin-bottom: 24px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: 500;
+  }
+
+  &-submit-button {
+    display: none;
+  }
+}
