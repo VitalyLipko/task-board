@@ -1,0 +1,7 @@
+@import 'variables';
+
+.projects-list-container {
+  tb-project-card:not(:last-of-type) {
+    margin: 0 $indent-sm $indent-sm 0;
+  }
+}

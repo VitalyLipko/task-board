@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router } from '@angular/router';
 import { Apollo } from 'apollo-angular';
@@ -23,7 +22,7 @@ export class AuthGuard implements CanActivate {
         map(({ data }) => {
           if (route.data.loginPage) {
             if (data.isLoggedIn) {
-              this.router.navigate([]);
+              this.router.navigate(['projects']);
               return false;
             }
             return true;

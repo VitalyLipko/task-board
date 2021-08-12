@@ -1,0 +1,16 @@
+<nz-layout class="layout-container">
+  <nz-header>
+    <nz-page-header [nzTitle]="(layoutService.title$ | async) || ''">
+      <nz-page-header-extra
+        *ngIf="layoutService.pageHeaderExtra$ | async as pageHeaderExtra"
+      >
+        <ng-container *ngTemplateOutlet="pageHeaderExtra"></ng-container>
+      </nz-page-header-extra>
+    </nz-page-header>
+  </nz-header>
+  <nz-layout>
+    <nz-content>
+      <ng-content></ng-content>
+    </nz-content>
+  </nz-layout>
+</nz-layout>

@@ -1,0 +1,22 @@
+@import 'variables';
+
+.layout-container {
+  height: 100%;
+
+  & > .ant-layout-header {
+    height: auto;
+    width: 100%;
+    position: fixed;
+    box-shadow: 1px -2px 6px;
+    z-index: 1;
+    background: white;
+  }
+
+  nz-content {
+    padding: $indent-xl;
+  }
+
+  nz-layout {
+    margin-top: 72px;
+  }
+}

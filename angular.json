@@ -11,7 +11,8 @@
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss",
-          "skipTests": true
+          "skipTests": true,
+          "changeDetection": "OnPush"
         },
         "@schematics/angular:class": {
           "skipTests": true
@@ -49,12 +50,15 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "assets": ["src/favicon.ico", "src/assets"],
-            "styles": ["src/styles.scss"],
+            "styles": ["src/styles.scss", "src/theme/_variables.scss"],
             "scripts": [],
             "allowedCommonJsDependencies": ["zen-observable"],
             "customWebpackConfig": {
               "path": "./webpack.front.config.сjs",
               "replaceDuplicatePlugins": true
+            },
+            "stylePreprocessorOptions": {
+              "includePaths": ["src/theme"]
             }
           },
           "configurations": {

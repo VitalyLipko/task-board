@@ -1,0 +1,15 @@
+<nz-card nzHoverable [nzCover]="coverTemplate" class="project-card">
+  <nz-card-meta
+    [nzTitle]="tbProject.name"
+    nzDescription="This is the description"
+  ></nz-card-meta>
+</nz-card>
+
+<ng-template #coverTemplate>
+  <img
+    src="https://picsum.photos/200/170"
+    width="200"
+    height="170"
+    alt="Project image"
+  />
+</ng-template>

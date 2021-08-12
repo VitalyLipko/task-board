@@ -1,0 +1,14 @@
+@use "sass:math";
+
+$width: 200px;
+$aspect-ratio: math.div(4, 3);
+
+.project-card {
+  width: $width;
+  height: $width * $aspect-ratio;
+
+  &-image {
+    width: 100px;
+    height: 100px * $aspect-ratio;
+  }
+}

@@ -1,0 +1,23 @@
+<div
+  nz-row
+  [nzJustify]="projects && projects.length > 0 ? 'start' : 'center'"
+  class="projects-list-container"
+>
+  <ng-container *ngIf="projects; else spinTemplate">
+    <ng-container *ngIf="projects.length; else emptyTemplate">
+      <tb-project-card
+        *ngFor="let project of projects; trackBy: trackByFn"
+        [tbProject]="project"
+      ></tb-project-card>
+    </ng-container>
+    <ng-template #emptyTemplate>
+      <nz-empty nzNotFoundContent="No projects"></nz-empty>
+    </ng-template>
+  </ng-container>
+  <ng-template #spinTemplate>
+    <nz-spin nzSimple nzSize="large"></nz-spin>
+  </ng-template>
+</div>
+<ng-template #createButtonTemplate>
+  <button nz-button nzType="primary" (click)="onCreate()">New project</button>
+</ng-template>
