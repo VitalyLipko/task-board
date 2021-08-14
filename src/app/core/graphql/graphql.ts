@@ -10,15 +10,7 @@ export type Scalars = {
   Int: number;
   Float: number;
   Date: any;
-  /** The `Upload` scalar type represents a file upload. */
-  Upload: any;
 };
-
-
-export enum CacheControlScope {
-  Public = 'PUBLIC',
-  Private = 'PRIVATE'
-}
 
 export type CreateProjectInput = {
   name: Scalars['String'];
@@ -135,7 +127,6 @@ export type UpdateTaskInput = {
   title?: Maybe<Scalars['String']>;
   assignees?: Maybe<Array<Scalars['String']>>;
 };
-
 
 export type User = {
   __typename?: 'User';
