@@ -1,4 +1,4 @@
-import { IResolvers } from 'graphql-tools';
+import { IResolvers } from '@graphql-tools/utils';
 
 import AuthService from '../services/auth.service';
 import ProjectService from '../services/project.service';
