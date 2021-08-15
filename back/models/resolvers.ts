@@ -60,6 +60,7 @@ export const resolvers: IResolvers<unknown, ContextPayload> = {
         authService.logout(
           args.username || context.user?.username,
           context.token,
+          context.res,
         ),
       ),
   },

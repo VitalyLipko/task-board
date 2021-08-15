@@ -1,13 +1,21 @@
+import jsonwebtoken from 'jsonwebtoken';
 import { promisify } from 'util';
 
 import config from '../config';
 import redisClient from '../loaders/redis';
+import { DecodedToken } from '../models/decoded-token.interface';
 
 export default class RedisService {
-  saveRevokedToken(decodedToken: Record<string, string>, token: string): void {
+  saveRevokedToken(token: string): void {
+    const decoded = jsonwebtoken.verify(
+      token,
+      config.tokenSecret,
+    ) as DecodedToken;
+    const expiration = decoded.exp - decoded.iat;
+
     redisClient.setex(
-      RedisService.getRedisKey(decodedToken),
-      config.tokenExpireTime,
+      RedisService.getRedisKey(decoded),
+      expiration,
       token,
       (err) => {
         if (err) {
@@ -17,16 +25,20 @@ export default class RedisService {
     );
   }
 
-  async isTokenRevoked(decodedToken: Record<string, string>): Promise<boolean> {
+  async isTokenRevoked(
+    payload: Pick<DecodedToken, 'username' | 'id'>,
+  ): Promise<boolean> {
     const redisGetPromise = promisify(redisClient.get).bind(redisClient);
     const revokedToken = await redisGetPromise(
-      RedisService.getRedisKey(decodedToken),
+      RedisService.getRedisKey(payload),
     );
 
     return !!revokedToken;
   }
 
-  private static getRedisKey(payload: Record<string, string>): string {
+  private static getRedisKey(
+    payload: Pick<DecodedToken, 'username' | 'id'>,
+  ): string {
     return `${payload.username}:${payload.id}`;
   }
 }

@@ -10,9 +10,8 @@ import { Apollo } from 'apollo-angular';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { errorHandler } from 'src/app/core/operators';
 
-import Login from './login.mutation.graphql';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'tb-login',
@@ -21,7 +20,7 @@ import Login from './login.mutation.graphql';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent implements OnDestroy {
-  loginForm = new FormGroup({
+  form = new FormGroup({
     username: new FormControl(null, Validators.required),
     password: new FormControl(null, Validators.required),
   });
@@ -34,6 +33,7 @@ export class LoginComponent implements OnDestroy {
     private router: Router,
     private messageService: NzMessageService,
     private cdr: ChangeDetectorRef,
+    private authService: AuthService,
   ) {}
 
   ngOnDestroy(): void {
@@ -43,16 +43,15 @@ export class LoginComponent implements OnDestroy {
 
   handleSubmit(): void {
     this.loading = true;
-    this.apollo
-      .mutate({ mutation: Login, variables: this.loginForm.value })
-      .pipe(errorHandler(), takeUntil(this.unsubscribe))
-      .subscribe(
-        () => this.router.navigate(['projects']),
-        (err) => {
+    this.authService
+      .login(this.form.value)
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe({
+        error: (err) => {
           this.loading = false;
           this.messageService.error(err.message);
           this.cdr.markForCheck();
         },
-      );
+      });
   }
 }

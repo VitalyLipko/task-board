@@ -1,4 +1,8 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
+import { AuthService } from '../../core/services/auth.service';
 
 import { LayoutService } from './layout.service';
 
@@ -8,6 +12,20 @@ import { LayoutService } from './layout.service';
   styleUrls: ['./layout.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LayoutComponent {
-  constructor(public layoutService: LayoutService) {}
+export class LayoutComponent implements OnDestroy {
+  private unsubscribe = new Subject<void>();
+
+  constructor(
+    public layoutService: LayoutService,
+    private authService: AuthService,
+  ) {}
+
+  ngOnDestroy(): void {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
+  }
+
+  logout(): void {
+    this.authService.logout().pipe(takeUntil(this.unsubscribe)).subscribe();
+  }
 }

@@ -1,12 +1,23 @@
 <nz-layout class="layout-container">
-  <nz-header>
-    <nz-page-header [nzTitle]="(layoutService.title$ | async) || ''">
+  <nz-header nz-row nzAlign="middle">
+    <nz-page-header
+      nz-col
+      nzFlex="1"
+      [nzTitle]="(layoutService.title$ | async) || ''"
+    >
       <nz-page-header-extra
         *ngIf="layoutService.pageHeaderExtra$ | async as pageHeaderExtra"
       >
         <ng-container *ngTemplateOutlet="pageHeaderExtra"></ng-container>
       </nz-page-header-extra>
     </nz-page-header>
+    <nz-avatar
+      nzIcon="user"
+      nz-dropdown
+      nzPlacement="bottomRight"
+      nzTrigger="click"
+      [nzDropdownMenu]="menu"
+    ></nz-avatar>
   </nz-header>
   <nz-layout>
     <nz-content>
@@ -14,3 +25,8 @@
     </nz-content>
   </nz-layout>
 </nz-layout>
+<nz-dropdown-menu #menu="nzDropdownMenu">
+  <ul nz-menu>
+    <li nz-menu-item (click)="logout()">Log out</li>
+  </ul>
+</nz-dropdown-menu>

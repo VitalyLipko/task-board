@@ -5,6 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { GraphQLModule } from './graphql/graphql.module';
 import { WithCredentialsInterceptor } from './interceptors/with-credentials.interceptor';
+import { AuthService } from './services/auth.service';
 
 @NgModule({
   declarations: [],
@@ -16,6 +17,7 @@ import { WithCredentialsInterceptor } from './interceptors/with-credentials.inte
       useClass: WithCredentialsInterceptor,
       multi: true,
     },
+    AuthService,
   ],
 })
 export class CoreModule {

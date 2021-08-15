@@ -8,7 +8,7 @@
     >
       Task board
     </span>
-    <form nz-form (ngSubmit)="handleSubmit()" [formGroup]="loginForm">
+    <form nz-form (ngSubmit)="handleSubmit()" [formGroup]="form">
       <nz-form-item>
         <nz-form-control>
           <nz-input-group nzPrefixIcon="user">
@@ -38,7 +38,7 @@
       <button
         type="submit"
         class="submit-button"
-        [disabled]="loginForm.invalid"
+        [disabled]="form.invalid"
       ></button>
     </form>
     <button
@@ -47,7 +47,7 @@
       nzBlock
       (click)="handleSubmit()"
       [nzLoading]="loading"
-      [disabled]="loginForm.invalid"
+      [disabled]="form.invalid"
     >
       Log in
     </button>

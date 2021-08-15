@@ -16,7 +16,7 @@ export class AuthGuard implements CanActivate {
     return this.apollo
       .query<{ isLoggedIn: boolean }>({
         query: IsLoggedIn,
-        fetchPolicy: 'network-only',
+        fetchPolicy: 'no-cache',
       })
       .pipe(
         map(({ data }) => {

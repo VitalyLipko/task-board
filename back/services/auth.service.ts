@@ -1,4 +1,5 @@
 import { ApolloError, AuthenticationError } from 'apollo-server-express';
+import { DecodedToken } from 'back/models/decoded-token.interface';
 import bcrypt from 'bcrypt';
 import express from 'express';
 import jsonwebtoken from 'jsonwebtoken';
@@ -13,6 +14,8 @@ import UserService from './user.service';
 
 const userService = new UserService();
 const redisService = new RedisService();
+
+const JWT_COOKIE_NAME = 'JWT';
 
 export default class AuthService {
   async login(
@@ -33,7 +36,7 @@ export default class AuthService {
             expiresIn: config.tokenExpireTime,
           },
         );
-        res.cookie('JWT', token, { httpOnly: true });
+        res.cookie(JWT_COOKIE_NAME, token, { httpOnly: true });
         return token;
       }
     }
@@ -41,19 +44,19 @@ export default class AuthService {
     throw new ApolloError('Invalid username or password');
   }
 
-  async logout(username: string, token?: string): Promise<boolean> {
+  async logout(
+    username: string,
+    token: string | undefined,
+    res: express.Response,
+  ): Promise<boolean> {
     if (!token) {
       return false;
     }
 
     const user = await userService.getUser(username);
-
     if (user) {
-      const decoded = jsonwebtoken.verify(token, config.tokenSecret) as Record<
-        string,
-        string
-      >;
-      redisService.saveRevokedToken(decoded, token);
+      redisService.saveRevokedToken(token);
+      res.clearCookie(JWT_COOKIE_NAME);
     }
 
     return !!user;
@@ -74,13 +77,16 @@ export default class AuthService {
           const decoded = jsonwebtoken.verify(
             token,
             config.tokenSecret,
-          ) as Record<string, string>;
+          ) as DecodedToken;
 
           if (decoded?.username) {
             const result = await userService.getUser(decoded.username);
 
             if (result) {
-              const isTokenRevoked = await redisService.isTokenRevoked(decoded);
+              const isTokenRevoked = await redisService.isTokenRevoked({
+                username: decoded.username,
+                id: decoded.id,
+              });
 
               if (isTokenRevoked) {
                 return { user: result };
