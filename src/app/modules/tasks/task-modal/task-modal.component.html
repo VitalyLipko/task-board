@@ -1,0 +1,13 @@
+<form nz-form nzLayout="vertical" (ngSubmit)="onSubmit()" [formGroup]="form">
+  <nz-form-item>
+    <nz-form-label nzNoColon nzFor="task-title" nzRequired>Title</nz-form-label>
+    <nz-form-control>
+      <input formControlName="title" type="text" nz-input id="task-title" />
+    </nz-form-control>
+  </nz-form-item>
+  <button
+    class="submit-button"
+    type="submit"
+    [disabled]="form.invalid"
+  ></button>
+</form>

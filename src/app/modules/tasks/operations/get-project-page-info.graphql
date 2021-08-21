@@ -1,0 +1,10 @@
+query GetProjectPageInfo($id: ID!) {
+  project(id: $id) {
+    id
+    name
+    tasks {
+      id
+      title
+    }
+  }
+}

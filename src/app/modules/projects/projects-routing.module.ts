@@ -13,6 +13,11 @@ const routes: Routes = [
         path: '',
         component: ProjectsListComponent,
       },
+      {
+        path: ':projectId',
+        loadChildren: () =>
+          import('../tasks/tasks.module').then((m) => m.TasksModule),
+      },
     ],
   },
 ];

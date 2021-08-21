@@ -1,0 +1,9 @@
+@import 'variables';
+
+.tb-tasks {
+  flex-direction: column;
+
+  &-mode-switch {
+    margin: 0 0 $indent-sm auto;
+  }
+}

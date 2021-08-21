@@ -1,0 +1,29 @@
+<div nz-row class="tb-tasks">
+  <span nz-col class="tb-tasks-mode-switch">
+    <nz-switch
+      nzCheckedChildren="Board"
+      nzUnCheckedChildren="List"
+      [nzDisabled]="!tasks?.length"
+      [ngModel]="isBoard"
+      (ngModelChange)="modeChange($event)"
+    ></nz-switch>
+  </span>
+  <ng-container *ngIf="tasks; else spinTemplate">
+    <nz-card *ngIf="tasks.length; else emptyTemplate">
+      <ng-container *ngIf="isBoard; else listTemplate">Board</ng-container>
+      <ng-template #listTemplate>
+        <tb-tasks-list [tbTasks]="tasks"></tb-tasks-list>
+      </ng-template>
+    </nz-card>
+    <ng-template #emptyTemplate>
+      <nz-empty nzNotFoundContent="No tasks"></nz-empty>
+    </ng-template>
+  </ng-container>
+  <ng-template #spinTemplate>
+    <nz-spin nzSimple nzSize="large"></nz-spin>
+  </ng-template>
+</div>
+
+<ng-template #createButtonTemplate>
+  <button nz-button nzType="primary" (click)="onCreate()">New task</button>
+</ng-template>

@@ -36,7 +36,7 @@ export default class ProjectService {
   }
 
   async getProject(id: string): Promise<LeanDocument<Project> | null> {
-    const project = await projectModel.findById(id);
+    const project = await projectModel.findById(id).populate('tasks');
     return project?.toJSON() || null;
   }
 }
