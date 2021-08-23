@@ -1,20 +1,27 @@
-<div nz-row class="tb-tasks">
-  <span nz-col class="tb-tasks-mode-switch">
-    <nz-switch
-      nzCheckedChildren="Board"
-      nzUnCheckedChildren="List"
-      [nzDisabled]="!tasks?.length"
-      [ngModel]="isBoard"
-      (ngModelChange)="modeChange($event)"
-    ></nz-switch>
-  </span>
+<div
+  nz-row
+  [nzJustify]="tasks && tasks.length > 0 ? 'start' : 'center'"
+  [nzAlign]="tasks && tasks.length > 0 ? null : 'middle'"
+  class="tb-tasks"
+>
   <ng-container *ngIf="tasks; else spinTemplate">
-    <nz-card *ngIf="tasks.length; else emptyTemplate">
-      <ng-container *ngIf="isBoard; else listTemplate">Board</ng-container>
-      <ng-template #listTemplate>
-        <tb-tasks-list [tbTasks]="tasks"></tb-tasks-list>
-      </ng-template>
-    </nz-card>
+    <ng-container *ngIf="tasks.length; else emptyTemplate">
+      <span nz-col class="tb-tasks-mode-switch">
+        <nz-switch
+          nzCheckedChildren="Board"
+          nzUnCheckedChildren="List"
+          [nzDisabled]="!tasks.length"
+          [ngModel]="isBoard"
+          (ngModelChange)="modeChange($event)"
+        ></nz-switch>
+      </span>
+      <nz-card>
+        <ng-container *ngIf="isBoard; else listTemplate">Board</ng-container>
+        <ng-template #listTemplate>
+          <tb-tasks-list [tbTasks]="tasks"></tb-tasks-list>
+        </ng-template>
+      </nz-card>
+    </ng-container>
     <ng-template #emptyTemplate>
       <nz-empty nzNotFoundContent="No tasks"></nz-empty>
     </ng-template>

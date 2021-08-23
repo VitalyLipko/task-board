@@ -1,0 +1,11 @@
+@import 'variables';
+
+.tb-task {
+  nz-card {
+    margin-right: $indent-md;
+  }
+
+  nz-list {
+    width: 200px;
+  }
+}

@@ -1,8 +1,11 @@
 <nz-list>
   <nz-list-item *ngFor="let task of tbTasks; trackBy: trackByFn">
     <nz-list-item-meta
-      [nzTitle]="task.title"
+      [nzTitle]="titleTemplate"
       [nzDescription]="'description'"
     ></nz-list-item-meta>
+    <ng-template #titleTemplate>
+      <a [routerLink]="task.id">{{ task.title }}</a>
+    </ng-template>
   </nz-list-item>
 </nz-list>

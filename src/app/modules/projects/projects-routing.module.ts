@@ -15,8 +15,17 @@ const routes: Routes = [
       },
       {
         path: ':projectId',
-        loadChildren: () =>
-          import('../tasks/tasks.module').then((m) => m.TasksModule),
+        children: [
+          {
+            path: 'tasks',
+            loadChildren: () =>
+              import('../tasks/tasks.module').then((m) => m.TasksModule),
+          },
+          {
+            path: '**',
+            redirectTo: 'tasks',
+          },
+        ],
       },
     ],
   },

@@ -11,7 +11,7 @@ export class LayoutService {
   pageHeaderExtra$ = this._pageHeaderExtra.asObservable();
   title$ = this._title.asObservable();
 
-  set pageHeaderExtra(value: TemplateRef<void>) {
+  set pageHeaderExtra(value: TemplateRef<void> | null) {
     this._pageHeaderExtra.next(value);
   }
 

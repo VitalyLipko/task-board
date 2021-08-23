@@ -1,0 +1,9 @@
+query GetTask($id: ID!) {
+  task(id: $id) {
+    id
+    title
+    assignees {
+      id
+    }
+  }
+}
