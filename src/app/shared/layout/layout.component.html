@@ -3,7 +3,9 @@
     <nz-page-header
       nz-col
       nzFlex="1"
+      nzBackIcon
       [nzTitle]="(layoutService.title$ | async) || ''"
+      (nzBack)="onBack()"
     >
       <nz-page-header-extra
         *ngIf="layoutService.pageHeaderExtra$ | async as pageHeaderExtra"
@@ -21,6 +23,18 @@
   </nz-header>
   <nz-layout>
     <nz-content>
+      <nz-breadcrumb
+        *ngIf="breadcrumbService.breadcrumb$ | async as breadcrumb"
+      >
+        <nz-breadcrumb-item *ngFor="let item of breadcrumb; last as isLast">
+          <ng-container *ngIf="isLast; else linkTemplate">
+            {{ item.label }}
+          </ng-container>
+          <ng-template #linkTemplate>
+            <a [routerLink]="item.url">{{ item.label }}</a>
+          </ng-template>
+        </nz-breadcrumb-item>
+      </nz-breadcrumb>
       <ng-content></ng-content>
     </nz-content>
   </nz-layout>

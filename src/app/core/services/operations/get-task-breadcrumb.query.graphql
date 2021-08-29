@@ -1,0 +1,6 @@
+query GetTaskBreadcrumb($id: ID!) {
+  task(id: $id) {
+    id
+    title
+  }
+}

@@ -6,6 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { GraphQLModule } from './graphql/graphql.module';
 import { WithCredentialsInterceptor } from './interceptors/with-credentials.interceptor';
 import { AuthService } from './services/auth.service';
+import { BreadcrumbService } from './services/breadcrumb.service';
 
 @NgModule({
   declarations: [],
@@ -18,6 +19,7 @@ import { AuthService } from './services/auth.service';
       multi: true,
     },
     AuthService,
+    BreadcrumbService,
   ],
 })
 export class CoreModule {

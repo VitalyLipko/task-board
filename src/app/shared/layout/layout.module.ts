@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { UserOutline } from '@ant-design/icons-angular/icons';
+import { RouterModule } from '@angular/router';
+import { UserOutline, ArrowLeftOutline } from '@ant-design/icons-angular/icons';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzGridModule } from 'ng-zorro-antd/grid';
@@ -23,8 +25,10 @@ import { LayoutService } from './layout.service';
     NzPageHeaderModule,
     NzButtonModule,
     NzAvatarModule,
-    NzIconModule.forChild([UserOutline]),
+    NzIconModule.forChild([UserOutline, ArrowLeftOutline]),
     NzDropDownModule,
+    NzBreadCrumbModule,
+    RouterModule,
   ],
   exports: [LayoutComponent],
   providers: [LayoutService],

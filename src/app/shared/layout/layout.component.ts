@@ -1,8 +1,10 @@
+import { Location } from '@angular/common';
 import { Component, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { AuthService } from '../../core/services/auth.service';
+import { BreadcrumbService } from '../../core/services/breadcrumb.service';
 
 import { LayoutService } from './layout.service';
 
@@ -18,6 +20,8 @@ export class LayoutComponent implements OnDestroy {
   constructor(
     public layoutService: LayoutService,
     private authService: AuthService,
+    private location: Location,
+    public breadcrumbService: BreadcrumbService,
   ) {}
 
   ngOnDestroy(): void {
@@ -27,5 +31,9 @@ export class LayoutComponent implements OnDestroy {
 
   logout(): void {
     this.authService.logout().pipe(takeUntil(this.unsubscribe)).subscribe();
+  }
+
+  onBack(): void {
+    this.location.back();
   }
 }

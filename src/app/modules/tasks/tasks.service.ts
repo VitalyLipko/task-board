@@ -33,6 +33,7 @@ export class TasksService {
       .watchQuery<{ project: Project }>({
         query: GetProjectPageInfo,
         variables: { id },
+        fetchPolicy: 'network-only',
       })
       .valueChanges.pipe(
         errorHandler(),
@@ -45,7 +46,6 @@ export class TasksService {
       .watchQuery<{ task: Task }>({
         query: GetTask,
         variables: { id },
-        fetchPolicy: 'network-only',
       })
       .valueChanges.pipe(
         errorHandler(),
@@ -55,12 +55,12 @@ export class TasksService {
 
   getTaskDrawerData(id: string): Observable<Task> {
     return this.apollo
-      .watchQuery<{ task: Task }>({
+      .query<{ task: Task }>({
         query: GetTaskDrawerData,
         variables: { id },
         fetchPolicy: 'network-only',
       })
-      .valueChanges.pipe(
+      .pipe(
         errorHandler(),
         map(({ data }) => data.task),
       );

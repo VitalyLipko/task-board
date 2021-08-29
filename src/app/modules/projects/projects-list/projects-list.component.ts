@@ -6,6 +6,7 @@ import {
   AfterViewInit,
   OnInit,
   ChangeDetectorRef,
+  OnDestroy,
 } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { NzMessageService } from 'ng-zorro-antd/message';
@@ -22,7 +23,7 @@ import { ProjectService } from '../project.service';
   styleUrls: ['./projects-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProjectsListComponent implements AfterViewInit, OnInit {
+export class ProjectsListComponent implements AfterViewInit, OnInit, OnDestroy {
   projects: Array<Project> | undefined;
 
   private unsubscribe = new Subject<void>();
@@ -54,6 +55,11 @@ export class ProjectsListComponent implements AfterViewInit, OnInit {
   ngAfterViewInit(): void {
     this.layoutService.pageHeaderExtra = this.createButtonTemplate;
     this.layoutService.title = 'Projects';
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 
   trackByFn(_: number, item: Project): string {

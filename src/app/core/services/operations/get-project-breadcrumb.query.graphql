@@ -1,0 +1,6 @@
+query GetProjectBreadcrumb($id: ID!) {
+  project(id: $id) {
+    id
+    name
+  }
+}
