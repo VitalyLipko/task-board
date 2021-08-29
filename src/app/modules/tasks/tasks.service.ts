@@ -13,11 +13,11 @@ import {
 } from '../../core/graphql/graphql';
 import { errorHandler } from '../../core/operators';
 
-import CreateTask from './operations/create-task.mutation.graphql';
-import GetProjectPageInfo from './operations/get-project-page-info.graphql';
-import GetTaskDrawerData from './operations/get-task-drawer-data.query.graphql';
-import GetTask from './operations/get-task.query.graphql';
-import UpdateTask from './operations/update-task.mutation.graphql';
+import CreateTask from './graphql/create-task.mutation.graphql';
+import GetProjectPageInfo from './graphql/get-project-page-info.graphql';
+import GetTaskDrawerData from './graphql/get-task-drawer-data.query.graphql';
+import GetTask from './graphql/get-task.query.graphql';
+import UpdateTask from './graphql/update-task.mutation.graphql';
 import { TaskDrawerComponent } from './task-drawer/task-drawer.component';
 
 @Injectable()

@@ -15,7 +15,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { Project } from '../../../core/graphql/graphql';
 import { LayoutService } from '../../../shared/layout/layout.service';
-import { ProjectService } from '../project.service';
+import { ProjectsService } from '../projects.service';
 
 @Component({
   selector: 'tb-projects-list',
@@ -34,13 +34,13 @@ export class ProjectsListComponent implements AfterViewInit, OnInit, OnDestroy {
   constructor(
     private apollo: Apollo,
     private layoutService: LayoutService,
-    private projectService: ProjectService,
+    private projectsService: ProjectsService,
     private cdr: ChangeDetectorRef,
     private messageService: NzMessageService,
   ) {}
 
   ngOnInit(): void {
-    this.projectService
+    this.projectsService
       .getProjects()
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(
@@ -67,6 +67,6 @@ export class ProjectsListComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   onCreate(): void {
-    this.projectService.create().pipe(takeUntil(this.unsubscribe)).subscribe();
+    this.projectsService.create().pipe(takeUntil(this.unsubscribe)).subscribe();
   }
 }

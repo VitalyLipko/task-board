@@ -15,10 +15,10 @@ import { LayoutModule } from '../../shared/layout/layout.module';
 
 import { ProjectCardComponent } from './project-card/project-card.component';
 import { ProjectModalComponent } from './project-modal/project-modal.component';
-import { ProjectService } from './project.service';
 import { ProjectsListComponent } from './projects-list/projects-list.component';
 import { ProjectsRoutingModule } from './projects-routing.module';
 import { ProjectsComponent } from './projects.component';
+import { ProjectsService } from './projects.service';
 
 @NgModule({
   declarations: [
@@ -42,6 +42,6 @@ import { ProjectsComponent } from './projects.component';
     NzInputModule,
     NzFormModule,
   ],
-  providers: [ProjectService],
+  providers: [ProjectsService],
 })
 export class ProjectsModule {}

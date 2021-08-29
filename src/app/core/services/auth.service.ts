@@ -7,8 +7,8 @@ import { map } from 'rxjs/operators';
 import { MutationLoginArgs } from '../graphql/graphql';
 import { errorHandler } from '../operators';
 
-import Login from './operations/login.mutation.graphql';
-import Logout from './operations/logout.mutation.graphql';
+import Login from './graphql/login.mutation.graphql';
+import Logout from './graphql/logout.mutation.graphql';
 
 @Injectable()
 export class AuthService {

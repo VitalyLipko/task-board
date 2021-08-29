@@ -7,8 +7,8 @@ import { filter, map, switchMap } from 'rxjs/operators';
 import { Project, Task } from '../graphql/graphql';
 import { Breadcrumb } from '../interfaces/breadcrumb.interface';
 
-import GetProjectBreadcrumb from './operations/get-project-breadcrumb.query.graphql';
-import GetTaskBreadcrumb from './operations/get-task-breadcrumb.query.graphql';
+import GetProjectBreadcrumb from './graphql/get-project-breadcrumb.query.graphql';
+import GetTaskBreadcrumb from './graphql/get-task-breadcrumb.query.graphql';
 
 @Injectable()
 export class BreadcrumbService {

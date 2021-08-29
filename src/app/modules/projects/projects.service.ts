@@ -8,12 +8,12 @@ import { filter, map, switchMap } from 'rxjs/operators';
 import { CreateProjectInput, Project } from '../../core/graphql/graphql';
 import { errorHandler } from '../../core/operators';
 
-import CreateProject from './operations/create-project.graphql';
-import GetProjects from './operations/get-projects.query.graphql';
+import CreateProject from './graphql/create-project.graphql';
+import GetProjects from './graphql/get-projects.query.graphql';
 import { ProjectModalComponent } from './project-modal/project-modal.component';
 
 @Injectable()
-export class ProjectService {
+export class ProjectsService {
   constructor(
     private apollo: Apollo,
     private modalService: NzModalService,
