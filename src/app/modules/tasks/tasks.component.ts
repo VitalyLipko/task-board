@@ -14,6 +14,7 @@ import { switchMap, takeUntil } from 'rxjs/operators';
 
 import { Task } from '../../core/graphql/graphql';
 import { LayoutService } from '../../shared/layout/layout.service';
+import { ProjectsService } from '../projects/projects.service';
 
 import { TasksService } from './tasks.service';
 
@@ -39,6 +40,7 @@ export class TasksComponent implements OnInit, OnDestroy {
     private layoutService: LayoutService,
     private messageService: NzMessageService,
     private cdr: ChangeDetectorRef,
+    private projectsService: ProjectsService,
   ) {}
 
   ngOnInit(): void {
@@ -67,7 +69,7 @@ export class TasksComponent implements OnInit, OnDestroy {
     this.unsubscribe.complete();
   }
 
-  onCreate(): void {
+  handleCreateTask(): void {
     this.tasksService
       .create(this.parentId)
       .pipe(takeUntil(this.unsubscribe))
@@ -76,5 +78,12 @@ export class TasksComponent implements OnInit, OnDestroy {
 
   modeChange(event: boolean): void {
     this.isBoard = event;
+  }
+
+  handleEditProject(): void {
+    this.projectsService
+      .edit(this.parentId)
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe({ error: (err) => this.messageService.error(err.message) });
   }
 }

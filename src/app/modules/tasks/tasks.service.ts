@@ -33,7 +33,6 @@ export class TasksService {
       .watchQuery<{ project: Project }>({
         query: GetProjectPageInfo,
         variables: { id },
-        fetchPolicy: 'network-only',
       })
       .valueChanges.pipe(
         errorHandler(),

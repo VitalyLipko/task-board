@@ -32,5 +32,10 @@
 </div>
 
 <ng-template #createButtonTemplate>
-  <button nz-button nzType="primary" (click)="onCreate()">New task</button>
+  <button nz-button nzType="primary" (click)="handleCreateTask()">
+    New task
+  </button>
+  <button nz-button nzType="primary" (click)="handleEditProject()">
+    Edit project
+  </button>
 </ng-template>
