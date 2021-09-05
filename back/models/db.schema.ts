@@ -10,7 +10,7 @@ export type UserModel = User & Document;
 
 const { Schema, model } = mongoose;
 
-const taskSchema = new Schema<TaskModel>(
+const taskSchema = new Schema(
   {
     title: { type: String, required: true },
     created: { type: Date, default: Date.now },
@@ -30,7 +30,7 @@ taskSchema.virtual('id').get(function (_: unknown, __: unknown, doc: Document) {
   return doc._id.toString();
 });
 
-const projectSchema = new Schema<ProjectModel>(
+const projectSchema = new Schema(
   {
     name: { type: String, required: true },
     created: { type: Date, default: Date.now },
@@ -51,7 +51,7 @@ projectSchema
     return doc._id.toString();
   });
 
-const userSchema = new Schema<UserModel>(
+const userSchema = new Schema(
   {
     username: { type: String, required: true },
     password: { type: String, required: true },

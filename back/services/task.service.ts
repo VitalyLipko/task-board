@@ -70,7 +70,7 @@ export default class TaskService {
     }
 
     const curTask = await prevTask.save();
-    await curTask.populate('assignees').execPopulate();
+    await curTask.populate('assignees');
 
     return curTask.toJSON();
   }
