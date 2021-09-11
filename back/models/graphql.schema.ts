@@ -24,6 +24,8 @@ export default gql`
     email: String!
     firstName: String!
     lastName: String!
+    fullName: String!
+    trashed: Boolean!
   }
 
   type Query {
@@ -32,7 +34,8 @@ export default gql`
     projects: [Project!]!
     task(id: ID!): Task
     tasks(parentId: ID!): [Task!]!
-    user(username: String): User
+    user(id: ID): User
+    users: [User!]!
   }
 
   type Mutation {
@@ -42,7 +45,10 @@ export default gql`
     updateTask(task: UpdateTaskInput!): Task
     deleteTask(id: ID!): Boolean
     login(username: String!, password: String!): String
-    logout(username: String): Boolean
+    logout(id: ID): Boolean
+    createUser(user: CreateUserInput): User!
+    updateUser(user: UpdateUserInput): User!
+    deleteUser(id: ID!): Boolean
   }
 
   input CreateProjectInput {
@@ -64,5 +70,20 @@ export default gql`
     id: ID!
     title: String
     assignees: [String!]
+  }
+
+  input CreateUserInput {
+    username: String!
+    password: String!
+    email: String!
+    firstName: String!
+    lastName: String!
+  }
+
+  input UpdateUserInput {
+    id: ID!
+    email: String
+    firstName: String
+    lastName: String
   }
 `;

@@ -12,7 +12,7 @@ const userService = new UserService();
 
 export default async (): Promise<void> => {
   return userService
-    .getUser(admin.username)
+    .getUserByName(admin.username)
     .then((res) =>
       res
         ? new Promise<void>((resolve) => resolve())

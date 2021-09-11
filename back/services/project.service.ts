@@ -1,4 +1,4 @@
-import { LeanDocument } from 'mongoose';
+import { LeanDocument, PopulateOptions } from 'mongoose';
 
 import { projectModel, ProjectModel } from '../models/db.schema';
 import {
@@ -6,6 +6,15 @@ import {
   Project,
   UpdateProjectInput,
 } from '../models/project.interface';
+
+const projectPopulateOptions: PopulateOptions = {
+  path: 'tasks',
+  populate: {
+    path: 'assignees',
+    options: { sort: { firstName: 'asc' } },
+  },
+  options: { sort: { title: 'asc' } },
+};
 
 export default class ProjectService {
   async createProject(
@@ -24,19 +33,23 @@ export default class ProjectService {
     if (document && project.name) {
       document.name = project.name;
       const res = await document.save();
-      return res?.toJSON();
+      return res.toJSON();
     }
 
     return null;
   }
 
   async getProjects(): Promise<Array<LeanDocument<Project>>> {
-    const projects = await projectModel.find({}).populate('tasks');
+    const projects = await projectModel
+      .find({}, null, { sort: { name: 'asc' } })
+      .populate(projectPopulateOptions);
     return projects.map((project) => project.toJSON());
   }
 
   async getProject(id: string): Promise<LeanDocument<Project> | null> {
-    const project = await projectModel.findById(id).populate('tasks');
-    return project?.toJSON() || null;
+    const project = await projectModel
+      .findById(id)
+      .populate(projectPopulateOptions);
+    return project ? project.toJSON() : null;
   }
 }

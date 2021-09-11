@@ -26,7 +26,7 @@ export default class RedisService {
   }
 
   async isTokenRevoked(
-    payload: Pick<DecodedToken, 'username' | 'id'>,
+    payload: Pick<DecodedToken, 'userId' | 'id'>,
   ): Promise<boolean> {
     const redisGetPromise = promisify(redisClient.get).bind(redisClient);
     const revokedToken = await redisGetPromise(
@@ -37,8 +37,8 @@ export default class RedisService {
   }
 
   private static getRedisKey(
-    payload: Pick<DecodedToken, 'username' | 'id'>,
+    payload: Pick<DecodedToken, 'userId' | 'id'>,
   ): string {
-    return `${payload.username}:${payload.id}`;
+    return `${payload.userId}:${payload.id}`;
   }
 }

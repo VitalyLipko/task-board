@@ -1,4 +1,4 @@
-import { LeanDocument } from 'mongoose';
+import { LeanDocument, PopulateOptions } from 'mongoose';
 
 import { taskModel, projectModel, userModel } from '../models/db.schema';
 import {
@@ -7,15 +7,22 @@ import {
   UpdateTaskInput,
 } from '../models/task.interface';
 
+const taskPopulateOptions: PopulateOptions = {
+  path: 'assignees',
+  options: { sort: { firstName: 'asc' } },
+};
+
 export default class TaskService {
   async getTasks(parentId: string): Promise<Array<Task>> {
-    const tasks = await taskModel.find({ parentId }).populate('assignees');
+    const tasks = await taskModel
+      .find({ parentId })
+      .populate(taskPopulateOptions);
     return tasks.map((task) => task.toJSON());
   }
 
   async getTask(id: string): Promise<Task | null> {
-    const task = await taskModel.findById(id).populate('assignees');
-    return task?.toJSON() || null;
+    const task = await taskModel.findById(id).populate(taskPopulateOptions);
+    return task ? task.toJSON() : null;
   }
 
   async createTask(task: CreateTaskInput): Promise<Task> {
@@ -38,8 +45,11 @@ export default class TaskService {
     await document.save();
 
     const parent = await projectModel.findById(task.parentId);
-    parent?.tasks.push(document);
-    await parent?.save();
+
+    if (parent) {
+      parent.tasks.push(document);
+      await parent.save();
+    }
 
     return document;
   }
@@ -70,7 +80,7 @@ export default class TaskService {
     }
 
     const curTask = await prevTask.save();
-    await curTask.populate('assignees');
+    await curTask.populate(taskPopulateOptions);
 
     return curTask.toJSON();
   }

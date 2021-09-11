@@ -29,8 +29,10 @@ export const resolvers: IResolvers<unknown, ContextPayload> = {
       authService.operationGuard(context, () => taskService.getTask(args.id)),
     user: (_, args, context) =>
       authService.operationGuard(context, () =>
-        userService.getUser(args.username || context.user?.username),
+        userService.getUser(args.id || context.user?.id),
       ),
+    users: (_, args, context) =>
+      authService.operationGuard(context, () => userService.getUsers()),
   },
   Mutation: {
     createProject: (_, args, context) =>
@@ -58,10 +60,22 @@ export const resolvers: IResolvers<unknown, ContextPayload> = {
     logout: (_, args, context) =>
       authService.operationGuard(context, () =>
         authService.logout(
-          args.username || context.user?.username,
+          args.id || context.user?.id,
           context.token,
           context.res,
         ),
+      ),
+    createUser: (_, args, context) =>
+      authService.operationGuard(context, () =>
+        userService.createUser(args.user),
+      ),
+    updateUser: (_, args, context) =>
+      authService.operationGuard(context, () =>
+        userService.updateUser(args.user),
+      ),
+    deleteUser: (_, args, context) =>
+      authService.operationGuard(context, () =>
+        userService.deleteUser(args.id),
       ),
   },
 };

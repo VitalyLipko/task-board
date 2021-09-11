@@ -13,11 +13,11 @@ export interface Task {
 export interface CreateTaskInput {
   title: Task['title'];
   parentId: Task['parentId'];
-  assignees?: Array<Task['id']>;
+  assignees?: Array<User['id']>;
 }
 
 export interface UpdateTaskInput {
   id: Task['id'];
   title?: Task['title'];
-  assignees?: Array<Task['id']>;
+  assignees?: Array<User['id']>;
 }

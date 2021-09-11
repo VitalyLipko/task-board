@@ -23,14 +23,14 @@ export default class AuthService {
     password: string,
     res: express.Response,
   ): Promise<string | null> {
-    const user = await userService.getUser(username);
+    const user = await userService.getUserByName(username);
 
     if (user) {
       const isPasswordCorrect = await bcrypt.compare(password, user.password);
 
       if (isPasswordCorrect) {
         const token = jsonwebtoken.sign(
-          { username: user.username, id: uuidv4() },
+          { userId: user.id, id: uuidv4() },
           config.tokenSecret,
           {
             expiresIn: config.tokenExpireTime,
@@ -45,7 +45,7 @@ export default class AuthService {
   }
 
   async logout(
-    username: string,
+    id: string,
     token: string | undefined,
     res: express.Response,
   ): Promise<boolean> {
@@ -53,7 +53,7 @@ export default class AuthService {
       return false;
     }
 
-    const user = await userService.getUser(username);
+    const user = await userService.getUser(id);
     if (user) {
       redisService.saveRevokedToken(token);
       res.clearCookie(JWT_COOKIE_NAME);
@@ -70,7 +70,8 @@ export default class AuthService {
 
     if (req.body.operationName !== 'IntrospectionQuery') {
       const payload = req.headers.authorization?.split(' ') || [];
-      token = payload[0] === 'Bearer' ? payload[1] : req.cookies['JWT'];
+      token =
+        payload[0] === 'Bearer' ? payload[1] : req.cookies[JWT_COOKIE_NAME];
 
       if (token) {
         try {
@@ -79,12 +80,12 @@ export default class AuthService {
             config.tokenSecret,
           ) as DecodedToken;
 
-          if (decoded?.username) {
-            const result = await userService.getUser(decoded.username);
+          if (decoded?.userId) {
+            const result = await userService.getUser(decoded.userId);
 
             if (result) {
               const isTokenRevoked = await redisService.isTokenRevoked({
-                username: decoded.username,
+                userId: decoded.userId,
                 id: decoded.id,
               });
 
