@@ -1,7 +1,7 @@
 import { Injectable, TemplateRef } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class LayoutService {
   private readonly _pageHeaderExtra =
     new BehaviorSubject<TemplateRef<void> | null>(null);

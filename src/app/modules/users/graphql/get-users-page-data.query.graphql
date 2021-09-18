@@ -1,0 +1,11 @@
+query GetUsersPageData {
+  users {
+    id
+    username
+    fullName
+    email
+  }
+  user {
+    id
+  }
+}

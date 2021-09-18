@@ -13,7 +13,7 @@ import { Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
 
 import { Task } from '../../core/graphql/graphql';
-import { LayoutService } from '../../shared/layout/layout.service';
+import { LayoutService } from '../../core/layout/layout.service';
 import { ProjectsService } from '../projects/projects.service';
 
 import { TasksService } from './tasks.service';

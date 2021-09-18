@@ -1,4 +1,4 @@
-@import 'variables';
+@use 'variables' as *;
 
 .layout-container {
   height: 100%;
@@ -32,5 +32,9 @@
 
   nz-layout {
     margin-top: 72px;
+  }
+
+  a {
+    display: inline;
   }
 }

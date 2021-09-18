@@ -14,7 +14,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { Project } from '../../../core/graphql/graphql';
-import { LayoutService } from '../../../shared/layout/layout.service';
+import { LayoutService } from '../../../core/layout/layout.service';
 import { ProjectsService } from '../projects.service';
 
 @Component({

@@ -1,0 +1,7 @@
+.tb-users-name {
+  display: inline-block;
+
+  & > span:first-of-type {
+    display: block;
+  }
+}

@@ -1,0 +1,29 @@
+<nz-table
+  #usersTable
+  nzShowPagination="false"
+  [nzData]="users"
+  [nzScroll]="{ x: '1100px' }"
+  [nzLoading]="!users.length"
+>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th nzWidth="100px" nzRight nzAlign="right">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of usersTable.data; trackBy: trackByFn">
+      <td>
+        <div class="tb-users-name">
+          <span nz-typography>
+            <strong>{{ user.fullName }}</strong>
+          </span>
+          <span nz-typography nzType="secondary">{{ user.username }}</span>
+        </div>
+      </td>
+      <td>{{ user.email }}</td>
+      <td nzRight nzAlign="right"></td>
+    </tr>
+  </tbody>
+</nz-table>

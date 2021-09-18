@@ -1,17 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { ApplicationComponent } from './application.component';
 import { AuthGuard } from './core/guards/auth.guard';
 
 const routes: Routes = [
-  {
-    path: 'projects',
-    canActivate: [AuthGuard],
-    loadChildren: () =>
-      import('./modules/projects/projects.module').then(
-        (m) => m.ProjectsModule,
-      ),
-  },
   {
     path: 'login',
     canActivate: [AuthGuard],
@@ -20,6 +13,29 @@ const routes: Routes = [
     data: {
       loginPage: true,
     },
+  },
+  {
+    path: '',
+    component: ApplicationComponent,
+    canActivate: [AuthGuard],
+    children: [
+      {
+        path: 'projects',
+        loadChildren: () =>
+          import('./modules/projects/projects.module').then(
+            (m) => m.ProjectsModule,
+          ),
+      },
+      {
+        path: 'users',
+        loadChildren: () =>
+          import('./modules/users/users.module').then((m) => m.UsersModule),
+      },
+      {
+        path: '**',
+        redirectTo: 'projects',
+      },
+    ],
   },
   {
     path: '**',

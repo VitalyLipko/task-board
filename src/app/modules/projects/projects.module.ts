@@ -11,8 +11,6 @@ import { NzMessageModule } from 'ng-zorro-antd/message';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 
-import { LayoutModule } from '../../shared/layout/layout.module';
-
 import { ProjectCardComponent } from './project-card/project-card.component';
 import { ProjectModalComponent } from './project-modal/project-modal.component';
 import { ProjectsListComponent } from './projects-list/projects-list.component';
@@ -30,7 +28,6 @@ import { ProjectsService } from './projects.service';
   imports: [
     CommonModule,
     ProjectsRoutingModule,
-    LayoutModule,
     NzSpinModule,
     NzCardModule,
     NzEmptyModule,

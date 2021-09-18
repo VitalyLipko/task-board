@@ -31,7 +31,11 @@ export class BreadcrumbService {
           breadcrumb = [
             {
               url: '/',
-              label: 'Projects',
+              label: (event as NavigationEnd).urlAfterRedirects.startsWith(
+                '/projects',
+              )
+                ? 'Projects'
+                : 'Users',
             },
           ];
           const segments = (event as NavigationEnd).urlAfterRedirects.split(
@@ -74,7 +78,10 @@ export class BreadcrumbService {
         variables: { id },
       })
       .valueChanges.pipe(
-        map(({ data }) => ({ url: data.project.id, label: data.project.name })),
+        map(({ data }) => ({
+          url: `projects/${data.project.id}`,
+          label: data.project.name,
+        })),
       );
   }
 

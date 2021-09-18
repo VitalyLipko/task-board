@@ -3,8 +3,8 @@ import { Component, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { AuthService } from '../../core/services/auth.service';
-import { BreadcrumbService } from '../../core/services/breadcrumb.service';
+import { AuthService } from '../services/auth.service';
+import { BreadcrumbService } from '../services/breadcrumb.service';
 
 import { LayoutService } from './layout.service';
 
@@ -15,6 +15,8 @@ import { LayoutService } from './layout.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LayoutComponent implements OnDestroy {
+  siderCollapsed = false;
+
   private unsubscribe = new Subject<void>();
 
   constructor(

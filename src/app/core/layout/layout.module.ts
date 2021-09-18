@@ -1,7 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { UserOutline, ArrowLeftOutline } from '@ant-design/icons-angular/icons';
+import {
+  UserOutline,
+  ArrowLeftOutline,
+  AppstoreOutline,
+} from '@ant-design/icons-angular/icons';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -13,7 +17,6 @@ import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 
 import { LayoutComponent } from './layout.component';
-import { LayoutService } from './layout.service';
 
 @NgModule({
   declarations: [LayoutComponent],
@@ -25,12 +28,11 @@ import { LayoutService } from './layout.service';
     NzPageHeaderModule,
     NzButtonModule,
     NzAvatarModule,
-    NzIconModule.forChild([UserOutline, ArrowLeftOutline]),
+    NzIconModule.forChild([UserOutline, ArrowLeftOutline, AppstoreOutline]),
     NzDropDownModule,
     NzBreadCrumbModule,
     RouterModule,
   ],
   exports: [LayoutComponent],
-  providers: [LayoutService],
 })
 export class LayoutModule {}

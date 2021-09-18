@@ -5,13 +5,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { GraphQLModule } from './graphql/graphql.module';
 import { WithCredentialsInterceptor } from './interceptors/with-credentials.interceptor';
+import { LayoutModule } from './layout/layout.module';
 import { AuthService } from './services/auth.service';
 import { BreadcrumbService } from './services/breadcrumb.service';
 
 @NgModule({
   declarations: [],
   imports: [CommonModule, GraphQLModule, BrowserAnimationsModule],
-  exports: [GraphQLModule],
+  exports: [GraphQLModule, LayoutModule],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
