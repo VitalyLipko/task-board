@@ -1,0 +1,83 @@
+<ng-container *ngIf="form; else spinTemplate">
+  <form
+    nz-form
+    nzLayout="vertical"
+    (ngSubmit)="onSubmit()"
+    [formGroup]="form"
+    autocomplete="off"
+  >
+    <nz-form-item *ngIf="form.get('username')">
+      <nz-form-label nzNoColon nzFor="user-name" nzRequired>
+        Username
+      </nz-form-label>
+      <nz-form-control>
+        <input formControlName="username" type="text" nz-input id="user-name" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label nzNoColon nzFor="first-name" nzRequired>
+        First name
+      </nz-form-label>
+      <nz-form-control>
+        <input
+          formControlName="firstName"
+          type="text"
+          nz-input
+          id="first-name"
+        />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label nzNoColon nzFor="last-name" nzRequired>
+        Last name
+      </nz-form-label>
+      <nz-form-control>
+        <input formControlName="lastName" type="text" nz-input id="last-name" />
+      </nz-form-control>
+    </nz-form-item>
+    <ng-container *ngIf="form.get('password')">
+      <nz-form-item>
+        <nz-form-label nzNoColon nzFor="password" nzRequired>
+          Password
+        </nz-form-label>
+        <nz-form-control>
+          <input
+            formControlName="password"
+            type="password"
+            autocomplete="new-password"
+            nz-input
+            id="password"
+          />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzNoColon nzFor="confirm-password" nzRequired>
+          Confirm password
+        </nz-form-label>
+        <nz-form-control [nzErrorTip]="confirmPasswordTemplate">
+          <input
+            formControlName="confirmPassword"
+            type="password"
+            nz-input
+            id="confirm-password"
+          />
+          <ng-template #confirmPasswordTemplate let-control>
+            <ng-container *ngIf="control.hasError('confirmPassword')">
+              Passwords don't match
+            </ng-container>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+    </ng-container>
+    <nz-form-item>
+      <nz-form-label nzNoColon nzFor="email" nzRequired>Email</nz-form-label>
+      <nz-form-control>
+        <input formControlName="email" type="email" nz-input id="email" />
+      </nz-form-control>
+    </nz-form-item>
+    <button class="submit-button" type="submit" [disabled]="disabled"></button>
+  </form>
+</ng-container>
+<ng-template #spinTemplate>
+  <nz-spin nzSimple></nz-spin>
+</ng-template>

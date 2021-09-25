@@ -1,3 +1,4 @@
+import { ApolloError } from 'apollo-server-express';
 import bcrypt from 'bcrypt';
 import { LeanDocument } from 'mongoose';
 
@@ -55,9 +56,15 @@ export default class UserService {
     return null;
   }
 
-  async deleteUser(id: string): Promise<boolean> {
-    const user = await userModel.findOne({ id, trashed: false });
+  async deleteUser(
+    id: string,
+    currentUserId: string | undefined,
+  ): Promise<boolean> {
+    if (id === currentUserId) {
+      throw new ApolloError('Can not delete current user');
+    }
 
+    const user = await userModel.findOne({ _id: id, trashed: false });
     if (user) {
       user.trashed = true;
       await user.save();

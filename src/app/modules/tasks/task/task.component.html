@@ -1,22 +1,7 @@
 <div *ngIf="task; else spinTemplate" nz-row class="tb-task">
   <nz-card nz-col nzFlex="1" [nzExtra]="extraTemplate"></nz-card>
   <ng-template #extraTemplate>
-    <button
-      nz-button
-      nzType="text"
-      nzSize="small"
-      nz-dropdown
-      nzTrigger="click"
-      nzPlacement="bottomRight"
-      [nzDropdownMenu]="menu"
-    >
-      <i nz-icon nzType="more" nzTheme="outline"></i>
-    </button>
-    <nz-dropdown-menu #menu="nzDropdownMenu">
-      <ul nz-menu>
-        <li nz-menu-item (click)="handleEdit()">Edit</li>
-      </ul>
-    </nz-dropdown-menu>
+    <tb-dropdown-actions [tbActions]="dropdownActions"></tb-dropdown-actions>
   </ng-template>
   <nz-list>
     <nz-list-item-meta nzTitle="Assignees"></nz-list-item-meta>

@@ -1,0 +1,25 @@
+<button
+  nz-button
+  nzType="text"
+  nzSize="small"
+  nz-dropdown
+  nzTrigger="click"
+  nzPlacement="bottomRight"
+  [nzDropdownMenu]="menu"
+>
+  <i nz-icon nzType="more" nzTheme="outline"></i>
+</button>
+<nz-dropdown-menu #menu="nzDropdownMenu">
+  <ul nz-menu>
+    <ng-container *ngFor="let action of tbActions">
+      <li
+        *ngIf="(action.hide && !action.hide(tbContext)) || !action.hide"
+        nz-menu-item
+        [nzDanger]="action.danger"
+        (click)="action.action(tbContext)"
+      >
+        {{ action.label }}
+      </li>
+    </ng-container>
+  </ul>
+</nz-dropdown-menu>

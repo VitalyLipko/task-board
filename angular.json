@@ -52,7 +52,7 @@
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": ["src/styles.scss", "src/theme/_variables.scss"],
             "scripts": [],
-            "allowedCommonJsDependencies": ["zen-observable"],
+            "allowedCommonJsDependencies": ["zen-observable", "lodash"],
             "customWebpackConfig": {
               "path": "./webpack.front.config.сjs",
               "replaceDuplicatePlugins": true

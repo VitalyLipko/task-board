@@ -1,0 +1,9 @@
+query GetUserModalData($id: ID!) {
+  user(id: $id) {
+    id
+    firstName
+    lastName
+    fullName
+    email
+  }
+}

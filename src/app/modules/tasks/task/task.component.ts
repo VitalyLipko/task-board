@@ -12,6 +12,7 @@ import { switchMap, takeUntil } from 'rxjs/operators';
 
 import { Task } from '../../../core/graphql/graphql';
 import { LayoutService } from '../../../core/layout/layout.service';
+import { DropdownAction } from '../../../shared/dropdown-actions/dropdown-action.interface';
 import { TasksService } from '../tasks.service';
 
 @Component({
@@ -22,6 +23,13 @@ import { TasksService } from '../tasks.service';
 })
 export class TaskComponent implements OnInit, OnDestroy {
   task!: Task;
+  dropdownActions: Array<DropdownAction> = [
+    {
+      name: 'edit',
+      label: 'Edit',
+      action: this.handleEdit.bind(this),
+    },
+  ];
 
   private unsubscribe = new Subject<void>();
 

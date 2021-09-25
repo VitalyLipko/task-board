@@ -23,7 +23,16 @@
         </div>
       </td>
       <td>{{ user.email }}</td>
-      <td nzRight nzAlign="right"></td>
+      <td nzRight nzAlign="right">
+        <tb-dropdown-actions
+          *ngIf="user"
+          [tbContext]="user"
+          [tbActions]="dropdownActions"
+        ></tb-dropdown-actions>
+      </td>
     </tr>
   </tbody>
 </nz-table>
+<ng-template #createButtonTemplate>
+  <button nz-button nzType="primary" (click)="handleCreate()">New user</button>
+</ng-template>

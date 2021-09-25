@@ -1,6 +1,11 @@
 {
   "root": true,
-  "ignorePatterns": ["projects/**/*", "grapqhl.ts", "schema.json"],
+  "ignorePatterns": [
+    "projects/**/*",
+    "grapqhl.ts",
+    "schema.json",
+    "apollo-helper.ts"
+  ],
   "overrides": [
     {
       "files": ["*.ts"],
@@ -44,6 +49,7 @@
             "newlines-between": "always"
           }
         ],
+        "no-restricted-imports": ["error", "rxjs/Rx", "lodash"],
         "quotes": [
           "error",
           "single",

@@ -1,5 +1,6 @@
 .prettierrc.json
 schema.json
 graphql.ts
+apollo-helpers.ts
 
 dist

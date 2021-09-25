@@ -10,3 +10,6 @@ extensions:
                 - 'introspection'
                 config:
                     minify: true
+            src/app/core/graphql/apollo-helpers.ts:
+                plugins:
+                - typescript-apollo-client-helpers

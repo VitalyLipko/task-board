@@ -75,7 +75,7 @@ export const resolvers: IResolvers<unknown, ContextPayload> = {
       ),
     deleteUser: (_, args, context) =>
       authService.operationGuard(context, () =>
-        userService.deleteUser(args.id),
+        userService.deleteUser(args.id, context.user?.id),
       ),
   },
 };
