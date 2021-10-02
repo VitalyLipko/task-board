@@ -6,6 +6,7 @@ import {
   ChangeDetectorRef,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import isEqual from 'lodash/isEqual';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
@@ -30,8 +31,10 @@ export class TaskComponent implements OnInit, OnDestroy {
       action: this.handleEdit.bind(this),
     },
   ];
+  assignees!: Array<string>;
 
   private unsubscribe = new Subject<void>();
+  private initialAssignees!: Array<string>;
 
   constructor(
     private route: ActivatedRoute,
@@ -54,6 +57,8 @@ export class TaskComponent implements OnInit, OnDestroy {
       .subscribe(
         (task) => {
           this.task = task;
+          this.assignees = this.task.assignees.map(({ id }) => id);
+          this.initialAssignees = [...this.assignees];
           this.layoutService.title = this.task.title;
           this.cdr.markForCheck();
         },
@@ -71,5 +76,17 @@ export class TaskComponent implements OnInit, OnDestroy {
       .edit(this.task.id)
       .pipe(takeUntil(this.unsubscribe))
       .subscribe({ error: (err) => this.messageService.error(err.message) });
+  }
+
+  handleAssigneesChange(value: boolean): void {
+    if (
+      !value &&
+      !isEqual(this.assignees.sort(), this.initialAssignees.sort())
+    ) {
+      this.tasksService
+        .updateAssignees(this.task.id, this.assignees)
+        .pipe(takeUntil(this.unsubscribe))
+        .subscribe();
+    }
   }
 }

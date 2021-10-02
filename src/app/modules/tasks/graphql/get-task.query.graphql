@@ -4,6 +4,7 @@ query GetTask($id: ID!) {
     title
     assignees {
       id
+      fullName
     }
   }
 }

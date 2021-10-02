@@ -1,0 +1,57 @@
+<ng-container *ngIf="tbInline; else selectTemplate">
+  <div class="tb-assignees-select-inline">
+    <ng-container *ngFor="let option of options; trackBy: trackByFn">
+      <ng-container
+        *ngTemplateOutlet="optionTemplate; context: { $implicit: option }"
+      ></ng-container>
+    </ng-container>
+  </div>
+</ng-container>
+<ng-template #selectTemplate>
+  <nz-select
+    nzMode="multiple"
+    [nzOptionHeightPx]="54"
+    [nzLoading]="loading"
+    [nzShowArrow]="true"
+    [nzOpen]="loading"
+    [ngModel]="value"
+    (ngModelChange)="handleValueChange($event)"
+    (nzOpenChange)="handleOpenChange($event)"
+  >
+    <nz-option
+      *ngFor="let option of options; trackBy: trackByFn"
+      nzCustomContent
+      [nzLabel]="option.label"
+      [nzValue]="option.value"
+    >
+      <ng-container
+        *ngTemplateOutlet="optionTemplate; context: { $implicit: option }"
+      ></ng-container>
+    </nz-option>
+  </nz-select>
+</ng-template>
+<ng-template #optionTemplate let-option>
+  <div
+    nz-row
+    nzAlign="middle"
+    [ngClass]="{
+      'tb-assignees-select-inline-option': tbInline,
+      'tb-assignees-select-inline-option-selected':
+        tbInline && hasSelected(option.value)
+    }"
+    (click)="handleClick(option.value)"
+  >
+    <div nz-col nzFlex="44px" class="tb-assignees-select-option-avatar">
+      <tb-avatar [tbSize]="44" [tbFullName]="option.label"></tb-avatar>
+    </div>
+    <div nz-col nzFlex="1" class="tb-assignees-select-option-info">
+      <span nz-typography nz-row nzEllipsis>{{ option.label }}</span>
+      <span nz-typography nzType="secondary" nz-row nzEllipsis>
+        {{ option.description }}
+      </span>
+    </div>
+    <div *ngIf="tbInline && hasSelected(option.value)" nz-col nzFlex="24px">
+      <i nz-icon nzType="check"></i>
+    </div>
+  </div>
+</ng-template>

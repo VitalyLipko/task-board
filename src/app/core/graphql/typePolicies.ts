@@ -8,4 +8,11 @@ export const typePolicies: TypedTypePolicies = {
       },
     },
   },
+  Task: {
+    fields: {
+      assignees: {
+        merge: false,
+      },
+    },
+  },
 };

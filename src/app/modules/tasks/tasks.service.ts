@@ -73,40 +73,48 @@ export class TasksService {
       nzWidth: 500,
     };
 
-    return this.drawerService.create(options).afterClose.pipe(
-      filter((res) => !!res),
-      switchMap((task) =>
-        this.apollo.mutate<{ createTask: Task }, { task: CreateTaskInput }>({
-          mutation: CreateTask,
-          variables: { task: { ...task, parentId } },
-          update(cache, { data }) {
-            const newTask = data?.createTask;
-            const existingProjectInfo = cache.readQuery<{
-              project: Project;
-            }>({
-              query: GetProjectPageInfo,
-              variables: { id: parentId },
-            });
-
-            if (newTask && existingProjectInfo) {
-              const tasks = [
-                ...existingProjectInfo.project.tasks,
-                newTask,
-              ].sort((a, b) => a.title.localeCompare(b.title));
-              cache.writeQuery<{ project: Project }>({
+    return this.drawerService
+      .create<TaskDrawerComponent, unknown, CreateTaskInput>(options)
+      .afterClose.pipe(
+        filter((res) => !!res),
+        switchMap((task) =>
+          this.apollo.mutate<{ createTask: Task }, { task: CreateTaskInput }>({
+            mutation: CreateTask,
+            variables: {
+              task: {
+                title: task.title,
+                parentId,
+                ...(task.assignees?.length && { assignees: task.assignees }),
+              },
+            },
+            update(cache, { data }) {
+              const newTask = data?.createTask;
+              const existingProjectInfo = cache.readQuery<{
+                project: Project;
+              }>({
                 query: GetProjectPageInfo,
                 variables: { id: parentId },
-                data: { project: { ...existingProjectInfo.project, tasks } },
               });
-            }
-          },
+
+              if (newTask && existingProjectInfo) {
+                const tasks = [
+                  ...existingProjectInfo.project.tasks,
+                  newTask,
+                ].sort((a, b) => a.title.localeCompare(b.title));
+                cache.writeQuery<{ project: Project }>({
+                  query: GetProjectPageInfo,
+                  variables: { id: parentId },
+                  data: { project: { ...existingProjectInfo.project, tasks } },
+                });
+              }
+            },
+          }),
+        ),
+        errorHandler(),
+        map(() => {
+          this.messageService.success('Task created');
         }),
-      ),
-      errorHandler(),
-      map(() => {
-        this.messageService.success('Task created');
-      }),
-    );
+      );
   }
 
   edit(id: string): Observable<void> {
@@ -131,5 +139,12 @@ export class TasksService {
         this.messageService.success('Task updated');
       }),
     );
+  }
+
+  updateAssignees(id: string, assignees: Array<string>) {
+    return this.apollo.mutate<{ updateTask: Task }, { task: UpdateTaskInput }>({
+      mutation: UpdateTask,
+      variables: { task: { id, assignees } },
+    });
   }
 }

@@ -1,0 +1,45 @@
+@use 'variables' as *;
+
+$option-height: 54px;
+
+.tb-assignees-select {
+  &-inline {
+    width: 234px;
+    max-height: $option-height * 5;
+    overflow: hidden auto;
+
+    &-option {
+      padding: 5px $indent-xs;
+      cursor: pointer;
+
+      &:hover:not(&-selected) {
+        background-color: #f5f5f5;
+      }
+
+      &-selected {
+        background-color: #e6f7ff;
+
+        i {
+          margin-left: $indent-xxs;
+          color: #1890ff;
+        }
+      }
+    }
+  }
+
+  &-option {
+    &-avatar {
+      margin-right: $indent-xxs;
+    }
+
+    &-info {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+
+      span {
+        width: 100%;
+      }
+    }
+  }
+}

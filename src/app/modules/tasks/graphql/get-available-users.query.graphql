@@ -1,0 +1,7 @@
+query GetAvailableUsers {
+  users {
+    id
+    username
+    fullName
+  }
+}
