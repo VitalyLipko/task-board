@@ -8,6 +8,8 @@ export interface Task {
   title: string;
   parentId: string;
   assignees: Array<PopulatedDoc<User>>;
+  creator: User;
+  isOpen: boolean;
 }
 
 export interface CreateTaskInput {

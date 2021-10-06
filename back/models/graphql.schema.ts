@@ -16,6 +16,8 @@ export default gql`
     created: Date!
     parentId: String!
     assignees: [User!]!
+    creator: User!
+    isOpen: Boolean!
   }
 
   type User {

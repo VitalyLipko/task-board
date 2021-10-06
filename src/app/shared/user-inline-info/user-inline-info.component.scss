@@ -1,0 +1,11 @@
+@use 'variables' as *;
+
+.tb-user-additional-info-name {
+  margin-left: $indent-xs;
+  min-width: 0;
+  max-width: 180px;
+
+  span {
+    width: 100%;
+  }
+}

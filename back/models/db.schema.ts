@@ -13,9 +13,10 @@ const { Schema, model } = mongoose;
 const taskSchema = new Schema(
   {
     title: { type: String, required: true },
-    created: { type: Date, default: Date.now },
     parentId: { type: Schema.Types.ObjectId, required: true },
     assignees: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    creator: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    isOpen: { type: Boolean, default: true, required: true },
   },
   {
     toObject: {
@@ -24,6 +25,7 @@ const taskSchema = new Schema(
     toJSON: {
       virtuals: true,
     },
+    timestamps: { createdAt: 'created', updatedAt: 'updated' },
   },
 );
 taskSchema.virtual('id').get(function (_: unknown, __: unknown, doc: Document) {
@@ -33,7 +35,6 @@ taskSchema.virtual('id').get(function (_: unknown, __: unknown, doc: Document) {
 const projectSchema = new Schema(
   {
     name: { type: String, required: true },
-    created: { type: Date, default: Date.now },
     tasks: [{ type: Schema.Types.ObjectId, ref: 'Task' }],
   },
   {
@@ -43,6 +44,7 @@ const projectSchema = new Schema(
     toJSON: {
       virtuals: true,
     },
+    timestamps: { createdAt: 'created', updatedAt: 'updated' },
   },
 );
 projectSchema

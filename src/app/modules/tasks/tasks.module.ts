@@ -16,10 +16,12 @@ import { NzMessageModule } from 'ng-zorro-antd/message';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
+import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 
 import { AvatarModule } from '../../shared/avatar/avatar.module';
 import { DropdownActionsModule } from '../../shared/dropdown-actions/dropdown-actions.module';
+import { UserInlineInfoModule } from '../../shared/user-inline-info/user-inline-info.module';
 
 import { AssigneesSelectComponent } from './assignees-select/assignees-select.component';
 import { AssigneesComponent } from './assignees/assignees.component';
@@ -61,6 +63,8 @@ import { TasksService } from './tasks.service';
     AvatarModule,
     NzDropDownModule,
     NzIconModule.forRoot([CheckOutline]),
+    NzTagModule,
+    UserInlineInfoModule,
   ],
   providers: [TasksService],
 })

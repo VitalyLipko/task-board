@@ -45,7 +45,7 @@ export const resolvers: IResolvers<unknown, ContextPayload> = {
       ),
     createTask: (_, args, context) =>
       authService.operationGuard(context, () =>
-        taskService.createTask(args.task),
+        taskService.createTask(args.task, context.user),
       ),
     updateTask: (_, args, context) =>
       authService.operationGuard(context, () =>

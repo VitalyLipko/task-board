@@ -1,8 +1,17 @@
-@import 'variables';
+@use 'variables' as *;
 
 .tb-task {
   nz-card {
     margin-right: $indent-md;
+  }
+
+  &-info {
+    font-weight: normal;
+  }
+
+  nz-tag {
+    font-size: 16px;
+    line-height: 25px;
   }
 
   nz-list {

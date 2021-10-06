@@ -6,5 +6,12 @@ query GetTask($id: ID!) {
       id
       fullName
     }
+    created
+    creator {
+      id
+      username
+      fullName
+    }
+    isOpen
   }
 }

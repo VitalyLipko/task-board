@@ -6,11 +6,15 @@ import {
   Task,
   UpdateTaskInput,
 } from '../models/task.interface';
+import { User } from '../models/user.interface';
 
-const taskPopulateOptions: PopulateOptions = {
-  path: 'assignees',
-  options: { sort: { firstName: 'asc' } },
-};
+const taskPopulateOptions: Array<PopulateOptions> = [
+  {
+    path: 'assignees',
+    options: { sort: { firstName: 'asc' } },
+  },
+  { path: 'creator' },
+];
 
 export default class TaskService {
   async getTasks(parentId: string): Promise<Array<Task>> {
@@ -25,10 +29,14 @@ export default class TaskService {
     return task ? task.toJSON() : null;
   }
 
-  async createTask(task: CreateTaskInput): Promise<Task> {
+  async createTask(
+    task: CreateTaskInput,
+    contextUser: User | undefined,
+  ): Promise<Task> {
     const document = new taskModel({
       title: task.title,
       parentId: task.parentId,
+      creator: contextUser,
     });
 
     if (task.assignees?.length) {

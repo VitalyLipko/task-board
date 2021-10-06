@@ -142,6 +142,8 @@ export type Task = {
   created: Scalars['Date'];
   parentId: Scalars['String'];
   assignees: Array<User>;
+  creator: User;
+  isOpen: Scalars['Boolean'];
 };
 
 export type UpdateProjectInput = {

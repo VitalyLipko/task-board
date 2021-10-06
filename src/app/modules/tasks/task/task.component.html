@@ -1,7 +1,21 @@
 <div *ngIf="task; else spinTemplate" nz-row class="tb-task">
-  <nz-card nz-col nzFlex="1" [nzExtra]="extraTemplate"></nz-card>
+  <nz-card
+    nz-col
+    nzFlex="1"
+    [nzTitle]="titleTemplate"
+    [nzExtra]="extraTemplate"
+  ></nz-card>
   <ng-template #extraTemplate>
     <tb-dropdown-actions [tbActions]="dropdownActions"></tb-dropdown-actions>
+  </ng-template>
+  <ng-template #titleTemplate>
+    <nz-tag [nzColor]="task.isOpen ? 'green' : 'red'">
+      {{ task.isOpen ? 'Open' : 'Close' }}
+    </nz-tag>
+    <span nz-typography class="tb-task-info">
+      Created {{ task.created | date }} by
+    </span>
+    <tb-user-inline-info [tbUser]="task.creator"></tb-user-inline-info>
   </ng-template>
   <nz-list nzItemLayout="vertical">
     <nz-list-item class="tb-task-assignees">
