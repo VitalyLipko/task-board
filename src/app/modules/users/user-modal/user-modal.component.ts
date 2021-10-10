@@ -89,15 +89,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
 
   onSubmit(): void {
     if (this.user) {
-      const result: Record<string, unknown> = {};
-      Object.entries(this.form.value).forEach(([key, value]) => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        if (value !== this.user[key]) {
-          result[key] = value;
-        }
-      });
-      this.modalRef.close({ ...result, id: this.tbId });
+      this.modalRef.close({ ...this.result, id: this.tbId });
     } else {
       const values = { ...this.form.value };
       delete values.confirmPassword;

@@ -1,0 +1,12 @@
+@use 'variables' as *;
+
+.tb-description-editor-toolbar {
+  padding: $indent-xxs $indent-xs;
+  border-bottom: 1px solid #d9d9d9;
+  border-radius: 2px 2px 0 0;
+
+  button {
+    border: none;
+    box-shadow: unset;
+  }
+}

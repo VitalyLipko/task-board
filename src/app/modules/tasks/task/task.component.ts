@@ -86,7 +86,7 @@ export class TaskComponent implements OnInit, OnDestroy {
       this.tasksService
         .updateAssignees(this.task.id, this.assignees)
         .pipe(takeUntil(this.unsubscribe))
-        .subscribe();
+        .subscribe({ error: (err) => this.messageService.error(err.message) });
     }
   }
 }

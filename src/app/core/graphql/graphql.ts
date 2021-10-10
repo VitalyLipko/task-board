@@ -18,6 +18,7 @@ export type CreateProjectInput = {
 
 export type CreateTaskInput = {
   title: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
   parentId: Scalars['String'];
   assignees?: Maybe<Array<Scalars['String']>>;
 };
@@ -139,6 +140,7 @@ export type Task = {
   __typename?: 'Task';
   id: Scalars['ID'];
   title: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
   created: Scalars['Date'];
   parentId: Scalars['String'];
   assignees: Array<User>;
@@ -154,6 +156,7 @@ export type UpdateProjectInput = {
 export type UpdateTaskInput = {
   id: Scalars['ID'];
   title?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
   assignees?: Maybe<Array<Scalars['String']>>;
 };
 

@@ -2,6 +2,7 @@ query GetTask($id: ID!) {
   task(id: $id) {
     id
     title
+    description
     assignees {
       id
       fullName

@@ -6,6 +6,7 @@ export interface Task {
   id: string;
   created: Date;
   title: string;
+  description: string;
   parentId: string;
   assignees: Array<PopulatedDoc<User>>;
   creator: User;
@@ -14,6 +15,7 @@ export interface Task {
 
 export interface CreateTaskInput {
   title: Task['title'];
+  description: Task['description'];
   parentId: Task['parentId'];
   assignees?: Array<User['id']>;
 }
@@ -21,5 +23,6 @@ export interface CreateTaskInput {
 export interface UpdateTaskInput {
   id: Task['id'];
   title?: Task['title'];
+  description?: Task['description'];
   assignees?: Array<User['id']>;
 }

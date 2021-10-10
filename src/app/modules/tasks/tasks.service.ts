@@ -82,7 +82,7 @@ export class TasksService {
             mutation: CreateTask,
             variables: {
               task: {
-                title: task.title,
+                ...task,
                 parentId,
                 ...(task.assignees?.length && { assignees: task.assignees }),
               },
@@ -141,10 +141,18 @@ export class TasksService {
     );
   }
 
-  updateAssignees(id: string, assignees: Array<string>) {
-    return this.apollo.mutate<{ updateTask: Task }, { task: UpdateTaskInput }>({
-      mutation: UpdateTask,
-      variables: { task: { id, assignees } },
-    });
+  updateAssignees(
+    id: string,
+    assignees: Array<string>,
+  ): Observable<Task | undefined> {
+    return this.apollo
+      .mutate<{ updateTask: Task }, { task: UpdateTaskInput }>({
+        mutation: UpdateTask,
+        variables: { task: { id, assignees } },
+      })
+      .pipe(
+        errorHandler(),
+        map(({ data }) => data?.updateTask),
+      );
   }
 }

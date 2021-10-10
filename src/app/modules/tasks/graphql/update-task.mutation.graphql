@@ -2,6 +2,7 @@ mutation UpdateTask($task: UpdateTaskInput!) {
   updateTask(task: $task) {
     id
     title
+    description
     assignees {
       id
       fullName

@@ -1,7 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CheckOutline } from '@ant-design/icons-angular/icons';
+import {
+  CheckOutline,
+  BoldOutline,
+  ItalicOutline,
+  StrikethroughOutline,
+  MoreOutline,
+} from '@ant-design/icons-angular/icons';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCardModule } from 'ng-zorro-antd/card';
@@ -17,7 +23,9 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { NzTagModule } from 'ng-zorro-antd/tag';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
+import { NgxTiptapModule } from 'ngx-tiptap';
 
 import { AvatarModule } from '../../shared/avatar/avatar.module';
 import { DropdownActionsModule } from '../../shared/dropdown-actions/dropdown-actions.module';
@@ -25,6 +33,8 @@ import { UserInlineInfoModule } from '../../shared/user-inline-info/user-inline-
 
 import { AssigneesSelectComponent } from './assignees-select/assignees-select.component';
 import { AssigneesComponent } from './assignees/assignees.component';
+import { DescriptionEditorToolbarComponent } from './description-editor-toolbar/description-editor-toolbar.component';
+import { DescriptionComponent } from './description/description.component';
 import { TaskDrawerComponent } from './task-drawer/task-drawer.component';
 import { TaskComponent } from './task/task.component';
 import { TasksListComponent } from './tasks-list/tasks-list.component';
@@ -40,6 +50,8 @@ import { TasksService } from './tasks.service';
     TaskDrawerComponent,
     AssigneesSelectComponent,
     AssigneesComponent,
+    DescriptionComponent,
+    DescriptionEditorToolbarComponent,
   ],
   imports: [
     CommonModule,
@@ -62,9 +74,17 @@ import { TasksService } from './tasks.service';
     NzTypographyModule,
     AvatarModule,
     NzDropDownModule,
-    NzIconModule.forRoot([CheckOutline]),
+    NzIconModule.forChild([
+      CheckOutline,
+      BoldOutline,
+      ItalicOutline,
+      StrikethroughOutline,
+      MoreOutline,
+    ]),
     NzTagModule,
     UserInlineInfoModule,
+    NgxTiptapModule,
+    NzToolTipModule,
   ],
   providers: [TasksService],
 })

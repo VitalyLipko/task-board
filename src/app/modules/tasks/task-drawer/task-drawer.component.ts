@@ -7,12 +7,13 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import isEmpty from 'lodash/isEmpty';
 import { NzDrawerRef } from 'ng-zorro-antd/drawer';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { iif, of, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { Task, UpdateTaskInput } from '../../../core/graphql/graphql';
+import { Task } from '../../../core/graphql/graphql';
 import { TasksService } from '../tasks.service';
 
 @Component({
@@ -27,17 +28,34 @@ export class TaskDrawerComponent implements OnInit, OnDestroy {
 
   private unsubscribe = new Subject<void>();
 
-  @Input() tbId: string | undefined;
-
   get disabled(): boolean {
     return this.tbId
-      ? this.task?.title === this.form.get('title')?.value
+      ? this.form?.invalid || isEmpty(this.result)
       : this.form.invalid;
   }
 
+  get result(): Record<string, unknown> | null {
+    if (!this.form) {
+      return null;
+    }
+
+    const result: Record<string, unknown> = {};
+    Object.entries(this.form.value).forEach(([key, value]) => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      if (value !== this.task[key]) {
+        result[key] = value;
+      }
+    });
+
+    return result;
+  }
+
+  @Input() tbId: string | undefined;
+
   constructor(
     private tasksService: TasksService,
-    private drawerRef: NzDrawerRef<TaskDrawerComponent, UpdateTaskInput>,
+    private drawerRef: NzDrawerRef<TaskDrawerComponent>,
     private messageService: NzMessageService,
     private cdr: ChangeDetectorRef,
   ) {}
@@ -65,19 +83,30 @@ export class TaskDrawerComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
-    this.drawerRef.close({
-      ...this.form.value,
-      ...(this.tbId && { id: this.tbId }),
-    });
+    if (this.tbId) {
+      this.drawerRef.close({ ...this.result, id: this.tbId });
+    } else {
+      const values: Record<string, unknown> = {};
+      Object.entries(this.form.value).forEach(([key, value]) => {
+        if (value) {
+          values[key] = value;
+        }
+      });
+      this.drawerRef.close(values);
+    }
   }
 
   private createForm(): void {
     this.form = new FormGroup({
       title: new FormControl(null, Validators.required),
+      description: new FormControl(),
     });
 
     if (this.task) {
-      this.form.setValue({ title: this.task.title });
+      this.form.setValue({
+        title: this.task.title,
+        description: this.task.description,
+      });
     } else {
       this.form.addControl('assignees', new FormControl());
     }

@@ -1,3 +1,4 @@
+import isUndefined from 'lodash/isUndefined';
 import { LeanDocument, PopulateOptions } from 'mongoose';
 
 import { taskModel, projectModel, userModel } from '../models/db.schema';
@@ -39,6 +40,10 @@ export default class TaskService {
       creator: contextUser,
     });
 
+    if (task.description) {
+      document.description = task.description;
+    }
+
     if (task.assignees?.length) {
       const users = await Promise.all(
         task.assignees.map((assignee) => userModel.findById(assignee).lean()),
@@ -79,12 +84,16 @@ export default class TaskService {
           prevTask.assignees.push(user);
         }
       });
-    } else if (task.assignees?.length === 0 && prevTask?.assignees.length) {
+    } else if (task.assignees?.length === 0 && prevTask.assignees.length) {
       prevTask.assignees = [];
     }
 
-    if (task.title) {
+    if (!isUndefined(task.title)) {
       prevTask.title = task.title;
+    }
+
+    if (!isUndefined(task.description)) {
+      prevTask.description = task.description;
     }
 
     const curTask = await prevTask.save();

@@ -4,7 +4,12 @@
     nzFlex="1"
     [nzTitle]="titleTemplate"
     [nzExtra]="extraTemplate"
-  ></nz-card>
+  >
+    <tb-description
+      [tbReadOnly]="true"
+      [ngModel]="task.description"
+    ></tb-description>
+  </nz-card>
   <ng-template #extraTemplate>
     <tb-dropdown-actions [tbActions]="dropdownActions"></tb-dropdown-actions>
   </ng-template>

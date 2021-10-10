@@ -8,6 +8,12 @@
         <input formControlName="title" type="text" nz-input id="task-title" />
       </nz-form-control>
     </nz-form-item>
+    <nz-form-item>
+      <nz-form-label nzNoColon>Description</nz-form-label>
+      <nz-form-control>
+        <tb-description formControlName="description"></tb-description>
+      </nz-form-control>
+    </nz-form-item>
     <nz-form-item *ngIf="form.get('assignees')">
       <nz-form-label nzNoColon nzFor="assignees">Assignees</nz-form-label>
       <nz-form-control>

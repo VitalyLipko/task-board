@@ -29,10 +29,11 @@ export type QueryFieldPolicy = {
 	user?: FieldPolicy<any> | FieldReadFunction<any>,
 	users?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type TaskKeySpecifier = ('id' | 'title' | 'created' | 'parentId' | 'assignees' | 'creator' | 'isOpen' | TaskKeySpecifier)[];
+export type TaskKeySpecifier = ('id' | 'title' | 'description' | 'created' | 'parentId' | 'assignees' | 'creator' | 'isOpen' | TaskKeySpecifier)[];
 export type TaskFieldPolicy = {
 	id?: FieldPolicy<any> | FieldReadFunction<any>,
 	title?: FieldPolicy<any> | FieldReadFunction<any>,
+	description?: FieldPolicy<any> | FieldReadFunction<any>,
 	created?: FieldPolicy<any> | FieldReadFunction<any>,
 	parentId?: FieldPolicy<any> | FieldReadFunction<any>,
 	assignees?: FieldPolicy<any> | FieldReadFunction<any>,

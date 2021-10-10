@@ -13,6 +13,7 @@ export default gql`
   type Task {
     id: ID!
     title: String!
+    description: String
     created: Date!
     parentId: String!
     assignees: [User!]!
@@ -64,6 +65,7 @@ export default gql`
 
   input CreateTaskInput {
     title: String!
+    description: String
     parentId: String!
     assignees: [String!]
   }
@@ -71,6 +73,7 @@ export default gql`
   input UpdateTaskInput {
     id: ID!
     title: String
+    description: String
     assignees: [String!]
   }
 

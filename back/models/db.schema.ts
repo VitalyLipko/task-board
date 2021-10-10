@@ -13,6 +13,7 @@ const { Schema, model } = mongoose;
 const taskSchema = new Schema(
   {
     title: { type: String, required: true },
+    description: String,
     parentId: { type: Schema.Types.ObjectId, required: true },
     assignees: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     creator: { type: Schema.Types.ObjectId, ref: 'User', required: true },

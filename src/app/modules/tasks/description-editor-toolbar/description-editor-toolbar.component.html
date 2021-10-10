@@ -1,0 +1,13 @@
+<div class="tb-description-editor-toolbar">
+  <ng-container *ngFor="let item of actions">
+    <button
+      nz-button
+      [nzType]="item.isActive() ? 'primary' : 'default'"
+      nz-tooltip
+      [nzTooltipTitle]="item.tooltip"
+      (click)="item.action($event)"
+    >
+      <i nz-icon [nzType]="item.icon"></i>
+    </button>
+  </ng-container>
+</div>
