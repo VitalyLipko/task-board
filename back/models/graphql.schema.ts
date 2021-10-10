@@ -1,12 +1,12 @@
 import { gql } from 'apollo-server-express';
 
 export default gql`
-  scalar Date
+  scalar DateTime
 
   type Project {
     id: ID!
     name: String!
-    created: Date!
+    created: DateTime!
     tasks: [Task!]!
   }
 
@@ -14,7 +14,7 @@ export default gql`
     id: ID!
     title: String!
     description: String
-    created: Date!
+    created: DateTime!
     parentId: String!
     assignees: [User!]!
     creator: User!

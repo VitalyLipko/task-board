@@ -1,4 +1,5 @@
 import { IResolvers } from '@graphql-tools/utils';
+import { DateTimeResolver } from 'graphql-scalars';
 
 import AuthService from '../services/auth.service';
 import ProjectService from '../services/project.service';
@@ -13,6 +14,7 @@ const authService = new AuthService();
 const userService = new UserService();
 
 export const resolvers: IResolvers<unknown, ContextPayload> = {
+  DateTime: DateTimeResolver,
   Query: {
     isLoggedIn: (_, __, context) => authService.isLoggedIn(context),
     projects: (_, __, context) =>
