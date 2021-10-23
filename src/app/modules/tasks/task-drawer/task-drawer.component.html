@@ -20,6 +20,12 @@
         <tb-assignees-select formControlName="assignees"></tb-assignees-select>
       </nz-form-control>
     </nz-form-item>
+    <nz-form-item *ngIf="form.get('labels')">
+      <nz-form-label nzNoColon>Labels</nz-form-label>
+      <nz-form-control>
+        <tb-labels-select formControlName="labels"></tb-labels-select>
+      </nz-form-control>
+    </nz-form-item>
     <button
       class="submit-button"
       type="submit"

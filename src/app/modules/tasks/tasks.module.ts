@@ -29,12 +29,14 @@ import { NgxTiptapModule } from 'ngx-tiptap';
 
 import { AvatarModule } from '../../shared/avatar/avatar.module';
 import { DropdownActionsModule } from '../../shared/dropdown-actions/dropdown-actions.module';
+import { LabelModule } from '../../shared/label/label.module';
 import { UserInlineInfoModule } from '../../shared/user-inline-info/user-inline-info.module';
 
 import { AssigneesSelectComponent } from './assignees-select/assignees-select.component';
 import { AssigneesComponent } from './assignees/assignees.component';
 import { DescriptionEditorToolbarComponent } from './description-editor-toolbar/description-editor-toolbar.component';
 import { DescriptionComponent } from './description/description.component';
+import { LabelsSelectComponent } from './labels-select/labels-select.component';
 import { TaskDrawerComponent } from './task-drawer/task-drawer.component';
 import { TaskComponent } from './task/task.component';
 import { TasksListComponent } from './tasks-list/tasks-list.component';
@@ -52,6 +54,7 @@ import { TasksService } from './tasks.service';
     AssigneesComponent,
     DescriptionComponent,
     DescriptionEditorToolbarComponent,
+    LabelsSelectComponent,
   ],
   imports: [
     CommonModule,
@@ -85,6 +88,7 @@ import { TasksService } from './tasks.service';
     UserInlineInfoModule,
     NgxTiptapModule,
     NzToolTipModule,
+    LabelModule,
   ],
   providers: [TasksService],
 })

@@ -55,6 +55,41 @@
         </nz-list-item-action>
       </ul>
     </nz-list-item>
+    <nz-list-item class="tb-task-assignees">
+      <nz-list-item-meta nzTitle="Labels">
+        <nz-list-item-meta-description>
+          <tb-label
+            *ngFor="let label of task.labels"
+            [tbLabel]="label"
+          ></tb-label>
+        </nz-list-item-meta-description>
+      </nz-list-item-meta>
+      <ul nz-list-item-actions>
+        <nz-list-item-action>
+          <button
+            nz-button
+            nzType="text"
+            nzSize="small"
+            nz-dropdown
+            nzTrigger="click"
+            [nzDropdownMenu]="labelsMenu"
+            (nzVisibleChange)="handleLabelsChange($event)"
+          >
+            Edit
+          </button>
+          <nz-dropdown-menu #labelsMenu="nzDropdownMenu">
+            <ul nz-menu>
+              <li>
+                <tb-labels-select
+                  [(ngModel)]="labels"
+                  [tbInline]="true"
+                ></tb-labels-select>
+              </li>
+            </ul>
+          </nz-dropdown-menu>
+        </nz-list-item-action>
+      </ul>
+    </nz-list-item>
   </nz-list>
 </div>
 <ng-template #spinTemplate>

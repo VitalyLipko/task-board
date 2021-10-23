@@ -1,16 +1,18 @@
 import { PopulatedDoc } from 'mongoose';
 
+import { Label } from './label.interface';
 import { User } from './user.interface';
 
 export interface Task {
   id: string;
   created: Date;
   title: string;
-  description: string;
+  description?: string;
   parentId: string;
   assignees: Array<PopulatedDoc<User>>;
   creator: User;
   isOpen: boolean;
+  labels: Array<PopulatedDoc<Label>>;
 }
 
 export interface CreateTaskInput {
@@ -18,6 +20,7 @@ export interface CreateTaskInput {
   description: Task['description'];
   parentId: Task['parentId'];
   assignees?: Array<User['id']>;
+  labels?: Array<Label['id']>;
 }
 
 export interface UpdateTaskInput {
@@ -25,4 +28,5 @@ export interface UpdateTaskInput {
   title?: Task['title'];
   description?: Task['description'];
   assignees?: Array<User['id']>;
+  labels?: Array<Label['id']>;
 }

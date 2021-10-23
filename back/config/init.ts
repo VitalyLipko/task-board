@@ -1,4 +1,6 @@
+import { CreateLabelInput } from '../models/label.interface';
 import { CreateUserInput } from '../models/user.interface';
+import LabelService from '../services/label.service';
 import UserService from '../services/user.service';
 
 const admin: CreateUserInput = {
@@ -8,14 +10,36 @@ const admin: CreateUserInput = {
   firstName: 'Admin',
   lastName: 'Admin',
 };
+const systemLabels: Array<CreateLabelInput> = [
+  {
+    title: 'priority::high',
+    backgroundColor: '#f01b0c',
+    isSystem: true,
+  },
+  {
+    title: 'priority::medium',
+    backgroundColor: '#f0bb0c',
+    isSystem: true,
+  },
+  {
+    title: 'priority::low',
+    backgroundColor: '#0eed59',
+    isSystem: true,
+  },
+];
 const userService = new UserService();
+const labelService = new LabelService();
 
 export default async (): Promise<void> => {
-  return userService
-    .getUserByName(admin.username)
-    .then((res) =>
-      res
-        ? new Promise<void>((resolve) => resolve())
-        : userService.createUser(admin).then(),
+  const adminUser = await userService.getUserByName(admin.username);
+  if (!adminUser) {
+    await userService.createUser(admin);
+  }
+
+  const labels = await labelService.getLabels();
+  if (!labels.length) {
+    await Promise.all(
+      systemLabels.map((label) => labelService.createLabel(label)),
     );
+  }
 };

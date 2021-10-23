@@ -7,5 +7,10 @@ mutation UpdateTask($task: UpdateTaskInput!) {
       id
       fullName
     }
+    labels {
+      id
+      title
+      backgroundColor
+    }
   }
 }

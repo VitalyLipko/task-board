@@ -1,7 +1,9 @@
 import isUndefined from 'lodash/isUndefined';
 import { LeanDocument, PopulateOptions } from 'mongoose';
 
-import { taskModel, projectModel, userModel } from '../models/db.schema';
+import { extractLabel } from '../../shared-utils/extract-label';
+import { taskModel, projectModel } from '../models/db.schema';
+import { Label } from '../models/label.interface';
 import {
   CreateTaskInput,
   Task,
@@ -9,13 +11,19 @@ import {
 } from '../models/task.interface';
 import { User } from '../models/user.interface';
 
+import LabelService from './label.service';
+import UserService from './user.service';
+
 const taskPopulateOptions: Array<PopulateOptions> = [
   {
     path: 'assignees',
     options: { sort: { firstName: 'asc' } },
   },
   { path: 'creator' },
+  { path: 'labels', options: { sort: { title: 'asc' } } },
 ];
+const labelService = new LabelService();
+const userService = new UserService();
 
 export default class TaskService {
   async getTasks(parentId: string): Promise<Array<Task>> {
@@ -46,11 +54,22 @@ export default class TaskService {
 
     if (task.assignees?.length) {
       const users = await Promise.all(
-        task.assignees.map((assignee) => userModel.findById(assignee).lean()),
+        task.assignees.map((assignee) => userService.getUser(assignee)),
       );
       users.forEach((user) => {
         if (user) {
           document.assignees.push(user);
+        }
+      });
+    }
+
+    if (task.labels?.length) {
+      const labels = await Promise.all(
+        task.labels.map((label) => labelService.getLabel(label)),
+      );
+      labels.forEach((label) => {
+        if (label) {
+          document.labels.push(label);
         }
       });
     }
@@ -76,7 +95,7 @@ export default class TaskService {
 
     if (task.assignees?.length) {
       const users = await Promise.all(
-        task.assignees.map((assignee) => userModel.findById(assignee).lean()),
+        task.assignees.map((assignee) => userService.getUser(assignee)),
       );
       prevTask.assignees = [];
       users.forEach((user) => {
@@ -86,6 +105,33 @@ export default class TaskService {
       });
     } else if (task.assignees?.length === 0 && prevTask.assignees.length) {
       prevTask.assignees = [];
+    }
+
+    if (task.labels?.length) {
+      const labels = await Promise.all(
+        task.labels.map((label) => labelService.getLabel(label)),
+      );
+      const newLabels: Array<LeanDocument<Label>> = [];
+      labels.forEach((label) => {
+        if (label) {
+          const { scope, title } = extractLabel(label.title);
+          const alreadyHas = !!newLabels.find((i) => {
+            const { scope: itemScope, title: itemTitle } = extractLabel(
+              i.title,
+            );
+            return scope && itemScope
+              ? scope === itemScope
+              : itemTitle === title;
+          });
+
+          if (!alreadyHas) {
+            newLabels.push(label);
+          }
+        }
+      });
+      prevTask.labels = newLabels;
+    } else if (task.labels?.length === 0 && prevTask.labels.length) {
+      prevTask.labels = [];
     }
 
     if (!isUndefined(task.title)) {

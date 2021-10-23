@@ -1,8 +1,8 @@
 <ng-container *ngIf="tbInline; else selectTemplate">
   <div class="tb-assignees-select-inline">
-    <ng-container *ngFor="let option of options; trackBy: trackByFn">
+    <ng-container *ngFor="let user of users; trackBy: trackByFn">
       <ng-container
-        *ngTemplateOutlet="optionTemplate; context: { $implicit: option }"
+        *ngTemplateOutlet="optionTemplate; context: { $implicit: user }"
       ></ng-container>
     </ng-container>
   </div>
@@ -10,6 +10,7 @@
 <ng-template #selectTemplate>
   <nz-select
     nzMode="multiple"
+    nzPlaceHolder="Select assignees"
     [nzOptionHeightPx]="54"
     [nzLoading]="loading"
     [nzShowArrow]="true"
@@ -19,38 +20,38 @@
     (nzOpenChange)="handleOpenChange($event)"
   >
     <nz-option
-      *ngFor="let option of options; trackBy: trackByFn"
+      *ngFor="let user of users; trackBy: trackByFn"
       nzCustomContent
-      [nzLabel]="option.label"
-      [nzValue]="option.value"
+      [nzLabel]="user.fullName"
+      [nzValue]="user.id"
     >
       <ng-container
-        *ngTemplateOutlet="optionTemplate; context: { $implicit: option }"
+        *ngTemplateOutlet="optionTemplate; context: { $implicit: user }"
       ></ng-container>
     </nz-option>
   </nz-select>
 </ng-template>
-<ng-template #optionTemplate let-option>
+<ng-template #optionTemplate let-user>
   <div
     nz-row
     nzAlign="middle"
     [ngClass]="{
       'tb-assignees-select-inline-option': tbInline,
       'tb-assignees-select-inline-option-selected':
-        tbInline && hasSelected(option.value)
+        tbInline && hasSelected(user.id)
     }"
-    (click)="handleClick(option.value)"
+    (click)="handleClick(user.id)"
   >
     <div nz-col nzFlex="36px" class="tb-assignees-select-option-avatar">
-      <tb-avatar [tbSize]="36" [tbFullName]="option.label"></tb-avatar>
+      <tb-avatar [tbSize]="36" [tbFullName]="user.fullName"></tb-avatar>
     </div>
     <div nz-col nzFlex="1" class="tb-assignees-select-option-info">
-      <span nz-typography nz-row nzEllipsis>{{ option.label }}</span>
+      <span nz-typography nz-row nzEllipsis>{{ user.fullName }}</span>
       <span nz-typography nzType="secondary" nz-row nzEllipsis>
-        {{ option.description }}
+        {{ user.username }}
       </span>
     </div>
-    <div *ngIf="tbInline && hasSelected(option.value)" nz-col nzFlex="24px">
+    <div *ngIf="tbInline && hasSelected(user.id)" nz-col nzFlex="24px">
       <i nz-icon nzType="check"></i>
     </div>
   </div>

@@ -1,0 +1,7 @@
+query GetAvailableLabels {
+  labels {
+    id
+    title
+    backgroundColor
+  }
+}

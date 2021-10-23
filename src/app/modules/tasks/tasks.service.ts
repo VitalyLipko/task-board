@@ -155,4 +155,19 @@ export class TasksService {
         map(({ data }) => data?.updateTask),
       );
   }
+
+  updateLabels(
+    id: string,
+    labels: Array<string>,
+  ): Observable<Task | undefined> {
+    return this.apollo
+      .mutate<{ updateTask: Task }, { task: UpdateTaskInput }>({
+        mutation: UpdateTask,
+        variables: { task: { id, labels } },
+      })
+      .pipe(
+        errorHandler(),
+        map(({ data }) => data?.updateTask),
+      );
+  }
 }

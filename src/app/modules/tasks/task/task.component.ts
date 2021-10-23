@@ -32,9 +32,11 @@ export class TaskComponent implements OnInit, OnDestroy {
     },
   ];
   assignees!: Array<string>;
+  labels!: Array<string>;
 
   private unsubscribe = new Subject<void>();
   private initialAssignees!: Array<string>;
+  private initialLabels!: Array<string>;
 
   constructor(
     private route: ActivatedRoute,
@@ -58,7 +60,9 @@ export class TaskComponent implements OnInit, OnDestroy {
         (task) => {
           this.task = task;
           this.assignees = this.task.assignees.map(({ id }) => id);
+          this.labels = this.task.labels.map(({ id }) => id);
           this.initialAssignees = [...this.assignees];
+          this.initialLabels = [...this.labels];
           this.layoutService.title = this.task.title;
           this.cdr.markForCheck();
         },
@@ -85,6 +89,15 @@ export class TaskComponent implements OnInit, OnDestroy {
     ) {
       this.tasksService
         .updateAssignees(this.task.id, this.assignees)
+        .pipe(takeUntil(this.unsubscribe))
+        .subscribe({ error: (err) => this.messageService.error(err.message) });
+    }
+  }
+
+  handleLabelsChange(value: boolean): void {
+    if (!value && !isEqual(this.labels.sort(), this.initialLabels.sort())) {
+      this.tasksService
+        .updateLabels(this.task.id, this.labels)
         .pipe(takeUntil(this.unsubscribe))
         .subscribe({ error: (err) => this.messageService.error(err.message) });
     }

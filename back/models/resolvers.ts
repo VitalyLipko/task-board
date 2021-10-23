@@ -1,7 +1,8 @@
 import { IResolvers } from '@graphql-tools/utils';
-import { DateTimeResolver } from 'graphql-scalars';
+import { DateTimeResolver, HexColorCodeResolver } from 'graphql-scalars';
 
 import AuthService from '../services/auth.service';
+import LabelService from '../services/label.service';
 import ProjectService from '../services/project.service';
 import TaskService from '../services/task.service';
 import UserService from '../services/user.service';
@@ -12,11 +13,16 @@ const projectService = new ProjectService();
 const taskService = new TaskService();
 const authService = new AuthService();
 const userService = new UserService();
+const labelService = new LabelService();
 
 export const resolvers: IResolvers<unknown, ContextPayload> = {
   DateTime: DateTimeResolver,
+  HexColorCode: HexColorCodeResolver,
+
   Query: {
     isLoggedIn: (_, __, context) => authService.isLoggedIn(context),
+    labels: (_, args, context) =>
+      authService.operationGuard(context, () => labelService.getLabels()),
     projects: (_, __, context) =>
       authService.operationGuard(context, () => projectService.getProjects()),
     project: (_, args, context) =>
@@ -37,6 +43,10 @@ export const resolvers: IResolvers<unknown, ContextPayload> = {
       authService.operationGuard(context, () => userService.getUsers()),
   },
   Mutation: {
+    createLabel: (_, args, context) =>
+      authService.operationGuard(context, () =>
+        labelService.createLabel(args.label),
+      ),
     createProject: (_, args, context) =>
       authService.operationGuard(context, () =>
         projectService.createProject(args.project),

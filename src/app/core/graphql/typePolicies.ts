@@ -13,6 +13,9 @@ export const typePolicies: TypedTypePolicies = {
       assignees: {
         merge: false,
       },
+      labels: {
+        merge: false,
+      },
     },
   },
 };

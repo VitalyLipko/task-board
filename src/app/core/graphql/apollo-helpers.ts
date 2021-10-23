@@ -1,5 +1,12 @@
 import { FieldPolicy, FieldReadFunction, TypePolicies, TypePolicy } from '@apollo/client/cache';
-export type MutationKeySpecifier = ('createProject' | 'updateProject' | 'createTask' | 'updateTask' | 'deleteTask' | 'login' | 'logout' | 'createUser' | 'updateUser' | 'deleteUser' | MutationKeySpecifier)[];
+export type LabelKeySpecifier = ('id' | 'title' | 'backgroundColor' | 'isSystem' | LabelKeySpecifier)[];
+export type LabelFieldPolicy = {
+	id?: FieldPolicy<any> | FieldReadFunction<any>,
+	title?: FieldPolicy<any> | FieldReadFunction<any>,
+	backgroundColor?: FieldPolicy<any> | FieldReadFunction<any>,
+	isSystem?: FieldPolicy<any> | FieldReadFunction<any>
+};
+export type MutationKeySpecifier = ('createProject' | 'updateProject' | 'createTask' | 'updateTask' | 'deleteTask' | 'login' | 'logout' | 'createUser' | 'updateUser' | 'deleteUser' | 'createLabel' | 'updateLabel' | 'deleteLabel' | MutationKeySpecifier)[];
 export type MutationFieldPolicy = {
 	createProject?: FieldPolicy<any> | FieldReadFunction<any>,
 	updateProject?: FieldPolicy<any> | FieldReadFunction<any>,
@@ -10,7 +17,10 @@ export type MutationFieldPolicy = {
 	logout?: FieldPolicy<any> | FieldReadFunction<any>,
 	createUser?: FieldPolicy<any> | FieldReadFunction<any>,
 	updateUser?: FieldPolicy<any> | FieldReadFunction<any>,
-	deleteUser?: FieldPolicy<any> | FieldReadFunction<any>
+	deleteUser?: FieldPolicy<any> | FieldReadFunction<any>,
+	createLabel?: FieldPolicy<any> | FieldReadFunction<any>,
+	updateLabel?: FieldPolicy<any> | FieldReadFunction<any>,
+	deleteLabel?: FieldPolicy<any> | FieldReadFunction<any>
 };
 export type ProjectKeySpecifier = ('id' | 'name' | 'created' | 'tasks' | ProjectKeySpecifier)[];
 export type ProjectFieldPolicy = {
@@ -19,9 +29,11 @@ export type ProjectFieldPolicy = {
 	created?: FieldPolicy<any> | FieldReadFunction<any>,
 	tasks?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type QueryKeySpecifier = ('isLoggedIn' | 'project' | 'projects' | 'task' | 'tasks' | 'user' | 'users' | QueryKeySpecifier)[];
+export type QueryKeySpecifier = ('isLoggedIn' | 'label' | 'labels' | 'project' | 'projects' | 'task' | 'tasks' | 'user' | 'users' | QueryKeySpecifier)[];
 export type QueryFieldPolicy = {
 	isLoggedIn?: FieldPolicy<any> | FieldReadFunction<any>,
+	label?: FieldPolicy<any> | FieldReadFunction<any>,
+	labels?: FieldPolicy<any> | FieldReadFunction<any>,
 	project?: FieldPolicy<any> | FieldReadFunction<any>,
 	projects?: FieldPolicy<any> | FieldReadFunction<any>,
 	task?: FieldPolicy<any> | FieldReadFunction<any>,
@@ -29,7 +41,7 @@ export type QueryFieldPolicy = {
 	user?: FieldPolicy<any> | FieldReadFunction<any>,
 	users?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type TaskKeySpecifier = ('id' | 'title' | 'description' | 'created' | 'parentId' | 'assignees' | 'creator' | 'isOpen' | TaskKeySpecifier)[];
+export type TaskKeySpecifier = ('id' | 'title' | 'description' | 'created' | 'parentId' | 'assignees' | 'creator' | 'isOpen' | 'labels' | TaskKeySpecifier)[];
 export type TaskFieldPolicy = {
 	id?: FieldPolicy<any> | FieldReadFunction<any>,
 	title?: FieldPolicy<any> | FieldReadFunction<any>,
@@ -38,7 +50,8 @@ export type TaskFieldPolicy = {
 	parentId?: FieldPolicy<any> | FieldReadFunction<any>,
 	assignees?: FieldPolicy<any> | FieldReadFunction<any>,
 	creator?: FieldPolicy<any> | FieldReadFunction<any>,
-	isOpen?: FieldPolicy<any> | FieldReadFunction<any>
+	isOpen?: FieldPolicy<any> | FieldReadFunction<any>,
+	labels?: FieldPolicy<any> | FieldReadFunction<any>
 };
 export type UserKeySpecifier = ('id' | 'username' | 'email' | 'firstName' | 'lastName' | 'fullName' | 'trashed' | UserKeySpecifier)[];
 export type UserFieldPolicy = {
@@ -51,6 +64,10 @@ export type UserFieldPolicy = {
 	trashed?: FieldPolicy<any> | FieldReadFunction<any>
 };
 export type StrictTypedTypePolicies = {
+	Label?: Omit<TypePolicy, 'fields' | 'keyFields'> & {
+		keyFields?: false | LabelKeySpecifier | (() => undefined | LabelKeySpecifier),
+		fields?: LabelFieldPolicy,
+	},
 	Mutation?: Omit<TypePolicy, 'fields' | 'keyFields'> & {
 		keyFields?: false | MutationKeySpecifier | (() => undefined | MutationKeySpecifier),
 		fields?: MutationFieldPolicy,

@@ -1,8 +1,8 @@
 @use 'variables' as *;
 
-$option-height: 54px;
+$option-height: 32px;
 
-.tb-assignees-select {
+.tb-labels-select {
   &-inline {
     width: 234px;
     max-height: $option-height * 5;
@@ -18,10 +18,7 @@ $option-height: 54px;
 
       &-selected {
         background-color: #e6f7ff;
-
-        span {
-          font-weight: 500;
-        }
+        font-weight: 500;
 
         i {
           margin-left: $indent-xxs;
@@ -32,14 +29,11 @@ $option-height: 54px;
   }
 
   &-option {
-    &-avatar {
-      margin-right: $indent-xxs;
-    }
-
-    &-info {
-      display: flex;
-      flex-direction: column;
-      min-width: 0;
+    &-color {
+      height: 8px;
+      width: 8px;
+      border-radius: 50%;
+      margin-right: $indent-xs;
     }
   }
 }

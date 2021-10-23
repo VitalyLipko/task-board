@@ -1,38 +1,39 @@
 import {
   Component,
+  OnInit,
   ChangeDetectionStrategy,
   forwardRef,
-  OnDestroy,
-  ChangeDetectorRef,
   Input,
-  OnInit,
+  ChangeDetectorRef,
+  OnDestroy,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Apollo } from 'apollo-angular';
 import { Observable, Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 
-import { User } from '../../../core/graphql/graphql';
-import GetAvailableUsers from '../graphql/get-available-users.query.graphql';
+import { Label } from '../../../core/graphql/graphql';
+import { errorHandler } from '../../../core/operators';
+import GetAvailableLabels from '../graphql/get-available-labels.query.graphql';
 
 @Component({
-  selector: 'tb-assignees-select',
-  templateUrl: './assignees-select.component.html',
-  styleUrls: ['./assignees-select.component.scss'],
+  selector: 'tb-labels-select',
+  templateUrl: './labels-select.component.html',
+  styleUrls: ['./labels-select.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => AssigneesSelectComponent),
+      useExisting: forwardRef(() => LabelsSelectComponent),
       multi: true,
     },
   ],
 })
-export class AssigneesSelectComponent
+export class LabelsSelectComponent
   implements ControlValueAccessor, OnInit, OnDestroy
 {
   value: Array<string> = [];
-  users: Array<User> | undefined;
+  labels: Array<Label> | undefined;
   loading = false;
 
   private onChange!: (value: Array<string>) => void;
@@ -74,14 +75,18 @@ export class AssigneesSelectComponent
 
   handleOpenChange(value: boolean): void {
     if (value) {
-      this.getAvailableUsers()
+      this.getAvailableLabels()
         .pipe(takeUntil(this.unsubscribe))
         .subscribe((res) => {
-          this.users = res;
+          this.labels = res;
           this.loading = false;
           this.cdr.markForCheck();
         });
     }
+  }
+
+  trackByFn(_: number, item: Label): string {
+    return item.id;
   }
 
   hasSelected(value: string): boolean {
@@ -100,13 +105,14 @@ export class AssigneesSelectComponent
     );
   }
 
-  trackByFn(_: number, item: User): string {
-    return item.id;
-  }
-
-  private getAvailableUsers(): Observable<Array<User>> {
+  private getAvailableLabels(): Observable<Array<Label>> {
     return this.apollo
-      .query<{ users: Array<User> }>({ query: GetAvailableUsers })
-      .pipe(map(({ data }) => data.users));
+      .query<{ labels: Array<Label> }>({
+        query: GetAvailableLabels,
+      })
+      .pipe(
+        errorHandler(),
+        map(({ data }) => data.labels),
+      );
   }
 }

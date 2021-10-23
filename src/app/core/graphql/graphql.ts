@@ -11,6 +11,14 @@ export type Scalars = {
   Float: number;
   /** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
   DateTime: any;
+  /** A field whose value is a hex color code: https://en.wikipedia.org/wiki/Web_colors. */
+  HexColorCode: any;
+};
+
+export type CreateLabelInput = {
+  title: Scalars['String'];
+  backgroundColor?: Maybe<Scalars['HexColorCode']>;
+  isSystem?: Maybe<Scalars['Boolean']>;
 };
 
 export type CreateProjectInput = {
@@ -22,6 +30,7 @@ export type CreateTaskInput = {
   description?: Maybe<Scalars['String']>;
   parentId: Scalars['String'];
   assignees?: Maybe<Array<Scalars['String']>>;
+  labels?: Maybe<Array<Scalars['String']>>;
 };
 
 export type CreateUserInput = {
@@ -32,6 +41,15 @@ export type CreateUserInput = {
   lastName: Scalars['String'];
 };
 
+
+
+export type Label = {
+  __typename?: 'Label';
+  id: Scalars['ID'];
+  title: Scalars['String'];
+  backgroundColor?: Maybe<Scalars['HexColorCode']>;
+  isSystem: Scalars['Boolean'];
+};
 
 export type Mutation = {
   __typename?: 'Mutation';
@@ -45,6 +63,9 @@ export type Mutation = {
   createUser: User;
   updateUser: User;
   deleteUser?: Maybe<Scalars['Boolean']>;
+  createLabel: Label;
+  updateLabel?: Maybe<Label>;
+  deleteLabel?: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -98,6 +119,21 @@ export type MutationDeleteUserArgs = {
   id: Scalars['ID'];
 };
 
+
+export type MutationCreateLabelArgs = {
+  label: CreateLabelInput;
+};
+
+
+export type MutationUpdateLabelArgs = {
+  label: UpdateLabelInput;
+};
+
+
+export type MutationDeleteLabelArgs = {
+  id: Scalars['ID'];
+};
+
 export type Project = {
   __typename?: 'Project';
   id: Scalars['ID'];
@@ -109,6 +145,8 @@ export type Project = {
 export type Query = {
   __typename?: 'Query';
   isLoggedIn?: Maybe<Scalars['Boolean']>;
+  label?: Maybe<Label>;
+  labels: Array<Label>;
   project?: Maybe<Project>;
   projects: Array<Project>;
   task?: Maybe<Task>;
@@ -147,6 +185,13 @@ export type Task = {
   assignees: Array<User>;
   creator: User;
   isOpen: Scalars['Boolean'];
+  labels: Array<Label>;
+};
+
+export type UpdateLabelInput = {
+  id: Scalars['ID'];
+  title?: Maybe<Scalars['String']>;
+  backgroundColor?: Maybe<Scalars['HexColorCode']>;
 };
 
 export type UpdateProjectInput = {
@@ -159,6 +204,7 @@ export type UpdateTaskInput = {
   title?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
   assignees?: Maybe<Array<Scalars['String']>>;
+  labels?: Maybe<Array<Scalars['String']>>;
 };
 
 export type UpdateUserInput = {

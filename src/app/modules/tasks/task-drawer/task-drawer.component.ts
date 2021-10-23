@@ -109,6 +109,7 @@ export class TaskDrawerComponent implements OnInit, OnDestroy {
       });
     } else {
       this.form.addControl('assignees', new FormControl());
+      this.form.addControl('labels', new FormControl());
     }
   }
 }

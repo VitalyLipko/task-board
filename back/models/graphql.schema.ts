@@ -2,6 +2,14 @@ import { gql } from 'apollo-server-express';
 
 export default gql`
   scalar DateTime
+  scalar HexColorCode
+
+  type Label {
+    id: ID!
+    title: String!
+    backgroundColor: HexColorCode
+    isSystem: Boolean!
+  }
 
   type Project {
     id: ID!
@@ -19,6 +27,7 @@ export default gql`
     assignees: [User!]!
     creator: User!
     isOpen: Boolean!
+    labels: [Label!]!
   }
 
   type User {
@@ -33,6 +42,8 @@ export default gql`
 
   type Query {
     isLoggedIn: Boolean
+    label: Label
+    labels: [Label!]!
     project(id: ID!): Project
     projects: [Project!]!
     task(id: ID!): Task
@@ -52,6 +63,9 @@ export default gql`
     createUser(user: CreateUserInput): User!
     updateUser(user: UpdateUserInput): User!
     deleteUser(id: ID!): Boolean
+    createLabel(label: CreateLabelInput!): Label!
+    updateLabel(label: UpdateLabelInput!): Label
+    deleteLabel(id: ID!): Boolean
   }
 
   input CreateProjectInput {
@@ -68,6 +82,7 @@ export default gql`
     description: String
     parentId: String!
     assignees: [String!]
+    labels: [String!]
   }
 
   input UpdateTaskInput {
@@ -75,6 +90,7 @@ export default gql`
     title: String
     description: String
     assignees: [String!]
+    labels: [String!]
   }
 
   input CreateUserInput {
@@ -90,5 +106,17 @@ export default gql`
     email: String
     firstName: String
     lastName: String
+  }
+
+  input CreateLabelInput {
+    title: String!
+    backgroundColor: HexColorCode
+    isSystem: Boolean
+  }
+
+  input UpdateLabelInput {
+    id: ID!
+    title: String
+    backgroundColor: HexColorCode
   }
 `;
