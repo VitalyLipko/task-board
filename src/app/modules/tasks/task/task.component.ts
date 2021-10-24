@@ -4,6 +4,7 @@ import {
   ChangeDetectionStrategy,
   OnDestroy,
   ChangeDetectorRef,
+  ViewEncapsulation,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import isEqual from 'lodash/isEqual';
@@ -21,6 +22,7 @@ import { TasksService } from '../tasks.service';
   templateUrl: './task.component.html',
   styleUrls: ['./task.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
 })
 export class TaskComponent implements OnInit, OnDestroy {
   task!: Task;

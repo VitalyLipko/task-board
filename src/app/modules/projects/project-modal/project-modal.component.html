@@ -5,7 +5,13 @@
         Name
       </nz-form-label>
       <nz-form-control>
-        <input formControlName="name" type="text" nz-input id="project-name" />
+        <input
+          formControlName="name"
+          type="text"
+          placeholder="Name"
+          nz-input
+          id="project-name"
+        />
       </nz-form-control>
     </nz-form-item>
     <button class="submit-button" type="submit" [disabled]="disabled"></button>

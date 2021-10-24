@@ -14,7 +14,7 @@
     <tb-dropdown-actions [tbActions]="dropdownActions"></tb-dropdown-actions>
   </ng-template>
   <ng-template #titleTemplate>
-    <nz-tag [nzColor]="task.isOpen ? 'green' : 'red'">
+    <nz-tag class="tb-task-status" [nzColor]="task.isOpen ? 'green' : 'red'">
       {{ task.isOpen ? 'Open' : 'Close' }}
     </nz-tag>
     <span nz-typography class="tb-task-info">

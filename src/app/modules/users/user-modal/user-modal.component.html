@@ -11,7 +11,13 @@
         Username
       </nz-form-label>
       <nz-form-control>
-        <input formControlName="username" type="text" nz-input id="user-name" />
+        <input
+          formControlName="username"
+          type="text"
+          placeholder="Username"
+          nz-input
+          id="user-name"
+        />
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
@@ -22,6 +28,7 @@
         <input
           formControlName="firstName"
           type="text"
+          placeholder="First name"
           nz-input
           id="first-name"
         />
@@ -32,7 +39,13 @@
         Last name
       </nz-form-label>
       <nz-form-control>
-        <input formControlName="lastName" type="text" nz-input id="last-name" />
+        <input
+          formControlName="lastName"
+          type="text"
+          placeholder="Last name"
+          nz-input
+          id="last-name"
+        />
       </nz-form-control>
     </nz-form-item>
     <ng-container *ngIf="form.get('password')">
@@ -44,6 +57,7 @@
           <input
             formControlName="password"
             type="password"
+            placeholder="Password"
             autocomplete="new-password"
             nz-input
             id="password"
@@ -58,6 +72,7 @@
           <input
             formControlName="confirmPassword"
             type="password"
+            placeholder="Confirm password"
             nz-input
             id="confirm-password"
           />
@@ -72,7 +87,13 @@
     <nz-form-item>
       <nz-form-label nzNoColon nzFor="email" nzRequired>Email</nz-form-label>
       <nz-form-control>
-        <input formControlName="email" type="email" nz-input id="email" />
+        <input
+          formControlName="email"
+          type="email"
+          placeholder="Email"
+          nz-input
+          id="email"
+        />
       </nz-form-control>
     </nz-form-item>
     <button class="submit-button" type="submit" [disabled]="disabled"></button>

@@ -3,13 +3,19 @@
 .tb-task {
   nz-card {
     margin-right: $indent-md;
+
+    .ant-card-head {
+      position: sticky;
+      top: -40px;
+      background: white;
+    }
   }
 
   &-info {
     font-weight: normal;
   }
 
-  nz-tag {
+  &-status {
     font-size: 16px;
     line-height: 25px;
   }

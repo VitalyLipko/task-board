@@ -1,55 +1,59 @@
 <div nz-row nzAlign="middle" nzJustify="center" class="login-container">
-  <nz-card>
-    <span
-      nz-typography
-      nz-row
-      nzJustify="center"
-      class="login-container-card-title"
-    >
-      Task board
-    </span>
-    <form nz-form (ngSubmit)="handleSubmit()" [formGroup]="form">
-      <nz-form-item>
-        <nz-form-control>
-          <nz-input-group nzPrefixIcon="user">
-            <input
-              formControlName="username"
-              type="text"
-              nz-input
-              placeholder="Username"
-              autocomplete="username"
-            />
-          </nz-input-group>
-        </nz-form-control>
-      </nz-form-item>
-      <nz-form-item>
-        <nz-form-control>
-          <nz-input-group nzPrefixIcon="lock">
-            <input
-              formControlName="password"
-              type="password"
-              nz-input
-              placeholder="Password"
-              autocomplete="current-password"
-            />
-          </nz-input-group>
-        </nz-form-control>
-      </nz-form-item>
+  <div nz-col nzSpan="14" class="login-container-form">
+    <nz-card>
+      <span
+        nz-typography
+        nz-row
+        nzJustify="center"
+        class="login-container-card-title"
+      >
+        Task board
+      </span>
+      <form nz-form (ngSubmit)="handleSubmit()" [formGroup]="form">
+        <nz-form-item>
+          <nz-form-control>
+            <nz-input-group nzPrefixIcon="user" nzSize="large">
+              <input
+                formControlName="username"
+                type="text"
+                nz-input
+                placeholder="Username"
+                autocomplete="username"
+              />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-control>
+            <nz-input-group nzPrefixIcon="lock" nzSize="large">
+              <input
+                formControlName="password"
+                type="password"
+                nz-input
+                placeholder="Password"
+                autocomplete="current-password"
+              />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        <button
+          type="submit"
+          class="submit-button"
+          [disabled]="form.invalid"
+        ></button>
+      </form>
       <button
-        type="submit"
-        class="submit-button"
+        nz-button
+        nzType="primary"
+        nzBlock
+        nzSize="large"
+        (click)="handleSubmit()"
+        [nzLoading]="loading"
         [disabled]="form.invalid"
-      ></button>
-    </form>
-    <button
-      nz-button
-      nzType="primary"
-      nzBlock
-      (click)="handleSubmit()"
-      [nzLoading]="loading"
-      [disabled]="form.invalid"
-    >
-      Log in
-    </button>
-  </nz-card>
+      >
+        Log in
+      </button>
+    </nz-card>
+  </div>
+  <div nz-col nzSpan="10" class="login-container-sider"></div>
 </div>
