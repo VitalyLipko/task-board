@@ -73,4 +73,12 @@ export default class UserService {
 
     return false;
   }
+
+  async getUsersForAssignees(
+    assigneeIds: Array<string>,
+  ): Promise<Array<LeanDocument<User>>> {
+    return Promise.all(assigneeIds.map((id) => this.getUser(id))).then(
+      (users) => users.filter((user) => !!user) as Array<LeanDocument<User>>,
+    );
+  }
 }
