@@ -1,0 +1,34 @@
+<nz-upload
+  *ngIf="!value; else previewTemplate"
+  nzAccept="image/*"
+  nzType="drag"
+  [nzSize]="8000"
+  [nzBeforeUpload]="handleValueChange.bind(this)"
+>
+  <span class="tb-project-icon-upload-info-icon">
+    <i nz-icon nzType="inbox"></i>
+  </span>
+  <span class="tb-project-icon-upload-info-description">
+    Click or drag file to this area to upload
+  </span>
+</nz-upload>
+<ng-template #previewTemplate>
+  <div class="tb-project-icon-upload-preview-card" nz-row nzJustify="start">
+    <span nz-col nzSpan="3">
+      <img
+        [src]="imageUrl | nzSanitizer: 'url'"
+        height="48"
+        width="48"
+        alt="Project icon"
+      />
+    </span>
+    <div nz-col nzSpan="21" class="tb-project-icon-upload-preview-card-body">
+      <span nz-typography nzEllipsis nz-tooltip [nzTooltipTitle]="value?.name">
+        {{ value?.name }}
+      </span>
+      <button nz-button nzType="text" nzGhost (click)="handleDelete($event)">
+        <i nz-icon nzType="delete"></i>
+      </button>
+    </div>
+  </div>
+</ng-template>

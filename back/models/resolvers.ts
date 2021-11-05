@@ -1,5 +1,6 @@
 import { IResolvers } from '@graphql-tools/utils';
 import { DateTimeResolver, HexColorCodeResolver } from 'graphql-scalars';
+import { GraphQLUpload } from 'graphql-upload';
 
 import AuthService from '../services/auth.service';
 import LabelService from '../services/label.service';
@@ -18,9 +19,11 @@ const labelService = new LabelService();
 export const resolvers: IResolvers<unknown, ContextPayload> = {
   DateTime: DateTimeResolver,
   HexColorCode: HexColorCodeResolver,
+  Upload: GraphQLUpload,
 
   Query: {
-    isLoggedIn: (_, __, context) => authService.isLoggedIn(context),
+    isLoggedIn: (_, __, { user, token }) =>
+      authService.isLoggedIn({ user, token }),
     labels: (_, args, context) =>
       authService.operationGuard(context, () => labelService.getLabels()),
     projects: (_, __, context) =>

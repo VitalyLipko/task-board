@@ -16,6 +16,12 @@ function idToString(_: unknown, __: unknown, doc: Document) {
   return doc._id.toString();
 }
 
+const fileSchema = new Schema({
+  name: { type: String, required: true },
+  url: { type: String, required: true },
+  mimeType: { type: String, required: true },
+});
+
 const taskSchema = new Schema(
   {
     title: { type: String, required: true },
@@ -42,6 +48,7 @@ const projectSchema = new Schema(
   {
     name: { type: String, required: true },
     tasks: [{ type: Schema.Types.ObjectId, ref: 'Task' }],
+    icon: fileSchema,
   },
   {
     toObject: {

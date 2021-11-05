@@ -1,7 +1,12 @@
+import { mkdir } from 'fs';
+import { access } from 'fs/promises';
+
 import { CreateLabelInput } from '../models/label.interface';
 import { CreateUserInput } from '../models/user.interface';
 import LabelService from '../services/label.service';
 import UserService from '../services/user.service';
+
+import config from './index';
 
 const admin: CreateUserInput = {
   username: 'admin',
@@ -42,4 +47,12 @@ export default async (): Promise<void> => {
       systemLabels.map((label) => labelService.createLabel(label)),
     );
   }
+
+  await access(config.appDataPath).catch(() =>
+    mkdir(config.appDataPath, (err) => {
+      if (err) {
+        console.log(err.message);
+      }
+    }),
+  );
 };

@@ -68,7 +68,7 @@ export default class AuthService {
     let user: User | undefined;
     let token: string | undefined;
 
-    if (req.body.operationName !== 'IntrospectionQuery') {
+    if (req.body?.operationName !== 'IntrospectionQuery') {
       const payload = req.headers.authorization?.split(' ') || [];
       token =
         payload[0] === 'Bearer' ? payload[1] : req.cookies[JWT_COOKIE_NAME];
@@ -105,15 +105,15 @@ export default class AuthService {
     return { user, token };
   }
 
-  isLoggedIn(context: ContextPayload): boolean {
-    return !!(context.user && context.token);
+  isLoggedIn(partialContext: Pick<ContextPayload, 'user' | 'token'>): boolean {
+    return !!(partialContext.user && partialContext.token);
   }
 
   async operationGuard<T>(
     context: ContextPayload,
     operation: () => Promise<T>,
   ): Promise<T> {
-    if (this.isLoggedIn(context)) {
+    if (this.isLoggedIn({ user: context.user, token: context.token })) {
       return operation();
     }
     throw new AuthenticationError('Not authenticated');

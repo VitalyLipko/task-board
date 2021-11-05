@@ -1,4 +1,12 @@
 import { FieldPolicy, FieldReadFunction, TypePolicies, TypePolicy } from '@apollo/client/cache';
+export type FileKeySpecifier = ('name' | 'url' | 'mimeType' | 'size' | 'encoding' | FileKeySpecifier)[];
+export type FileFieldPolicy = {
+	name?: FieldPolicy<any> | FieldReadFunction<any>,
+	url?: FieldPolicy<any> | FieldReadFunction<any>,
+	mimeType?: FieldPolicy<any> | FieldReadFunction<any>,
+	size?: FieldPolicy<any> | FieldReadFunction<any>,
+	encoding?: FieldPolicy<any> | FieldReadFunction<any>
+};
 export type LabelKeySpecifier = ('id' | 'title' | 'backgroundColor' | 'isSystem' | LabelKeySpecifier)[];
 export type LabelFieldPolicy = {
 	id?: FieldPolicy<any> | FieldReadFunction<any>,
@@ -22,12 +30,13 @@ export type MutationFieldPolicy = {
 	updateLabel?: FieldPolicy<any> | FieldReadFunction<any>,
 	deleteLabel?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type ProjectKeySpecifier = ('id' | 'name' | 'created' | 'tasks' | ProjectKeySpecifier)[];
+export type ProjectKeySpecifier = ('id' | 'name' | 'created' | 'tasks' | 'icon' | ProjectKeySpecifier)[];
 export type ProjectFieldPolicy = {
 	id?: FieldPolicy<any> | FieldReadFunction<any>,
 	name?: FieldPolicy<any> | FieldReadFunction<any>,
 	created?: FieldPolicy<any> | FieldReadFunction<any>,
-	tasks?: FieldPolicy<any> | FieldReadFunction<any>
+	tasks?: FieldPolicy<any> | FieldReadFunction<any>,
+	icon?: FieldPolicy<any> | FieldReadFunction<any>
 };
 export type QueryKeySpecifier = ('isLoggedIn' | 'label' | 'labels' | 'project' | 'projects' | 'task' | 'tasks' | 'user' | 'users' | QueryKeySpecifier)[];
 export type QueryFieldPolicy = {
@@ -64,6 +73,10 @@ export type UserFieldPolicy = {
 	trashed?: FieldPolicy<any> | FieldReadFunction<any>
 };
 export type StrictTypedTypePolicies = {
+	File?: Omit<TypePolicy, 'fields' | 'keyFields'> & {
+		keyFields?: false | FileKeySpecifier | (() => undefined | FileKeySpecifier),
+		fields?: FileFieldPolicy,
+	},
 	Label?: Omit<TypePolicy, 'fields' | 'keyFields'> & {
 		keyFields?: false | LabelKeySpecifier | (() => undefined | LabelKeySpecifier),
 		fields?: LabelFieldPolicy,

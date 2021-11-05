@@ -3,5 +3,9 @@ mutation CreateProject($project: CreateProjectInput!) {
     id
     name
     created
+    icon {
+      name
+      url
+    }
   }
 }

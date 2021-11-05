@@ -1,3 +1,4 @@
+import isUndefined from 'lodash/isUndefined';
 import { LeanDocument, PopulateOptions } from 'mongoose';
 
 import { projectModel, ProjectModel } from '../models/db.schema';
@@ -6,6 +7,8 @@ import {
   Project,
   UpdateProjectInput,
 } from '../models/project.interface';
+
+import FileStorageService from './file-storage.service';
 
 const projectPopulateOptions: PopulateOptions = {
   path: 'tasks',
@@ -16,11 +19,18 @@ const projectPopulateOptions: PopulateOptions = {
   options: { sort: { title: 'asc' } },
 };
 
+const fileStorageService = new FileStorageService();
+
 export default class ProjectService {
   async createProject(
     project: CreateProjectInput,
   ): Promise<LeanDocument<ProjectModel>> {
-    const res = await projectModel.create(project);
+    const document = new projectModel({ name: project.name });
+    if (project.icon) {
+      document.icon = await fileStorageService.save(project.icon);
+    }
+
+    const res = await document.save();
 
     return res.toJSON();
   }
@@ -30,13 +40,28 @@ export default class ProjectService {
   ): Promise<LeanDocument<ProjectModel> | null> {
     const document = await projectModel.findById(project.id);
 
-    if (document && project.name) {
-      document.name = project.name;
-      const res = await document.save();
-      return res.toJSON();
+    if (!document) {
+      return null;
     }
 
-    return null;
+    if (project.name) {
+      document.name = project.name;
+    }
+
+    if (!isUndefined(project.icon)) {
+      if (project.icon === null && document.icon) {
+        await fileStorageService.delete(document.icon.url);
+        document.icon = project.icon;
+      } else if (project.icon && document.icon) {
+        await fileStorageService.delete(document.icon.url);
+        document.icon = await fileStorageService.save(project.icon);
+      } else {
+        document.icon = await fileStorageService.save(project.icon);
+      }
+    }
+
+    const res = await document.save();
+    return res.toJSON();
   }
 
   async getProjects(): Promise<Array<LeanDocument<Project>>> {

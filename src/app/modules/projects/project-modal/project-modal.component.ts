@@ -7,6 +7,7 @@ import {
   ChangeDetectorRef,
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import isEmpty from 'lodash/isEmpty';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { iif, of, Subject } from 'rxjs';
@@ -29,9 +30,26 @@ export class ProjectModalComponent implements OnInit, OnDestroy {
   @Input() tbId: string | undefined;
 
   get disabled(): boolean {
-    return this.project
-      ? this.project?.name === this.form.get('name')?.value
-      : this.form?.invalid;
+    return this.tbId
+      ? this.form?.invalid || isEmpty(this.result)
+      : this.form.invalid;
+  }
+
+  get result(): Record<string, unknown> | null {
+    if (!this.form) {
+      return null;
+    }
+
+    const result: Record<string, unknown> = {};
+    Object.entries(this.form.value).forEach(([key, value]) => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      if (value !== this.project[key]) {
+        result[key] = value;
+      }
+    });
+
+    return result;
   }
 
   constructor(
@@ -64,19 +82,27 @@ export class ProjectModalComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
-    this.modalRef.close({
-      ...this.form.value,
-      ...(this.tbId && { id: this.tbId }),
-    });
+    if (this.project) {
+      this.modalRef.close({ ...this.result, id: this.tbId });
+    } else {
+      const values: Record<string, unknown> = {};
+      Object.entries(this.form.value).forEach(([key, value]) => {
+        if (value) {
+          values[key] = value;
+        }
+      });
+      this.modalRef.close(values);
+    }
   }
 
   private createForm(): void {
     this.form = new FormGroup({
       name: new FormControl(null, Validators.required),
+      icon: new FormControl(),
     });
 
     if (this.project) {
-      this.form.setValue({ name: this.project.name });
+      this.form.setValue({ name: this.project.name, icon: this.project.icon });
     }
   }
 }

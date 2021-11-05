@@ -1,3 +1,6 @@
+import { FileUpload } from 'graphql-upload';
+
+import { File } from './file.interface';
 import { Task } from './task.interface';
 
 export interface Project {
@@ -5,13 +8,14 @@ export interface Project {
   created: Date;
   name: string;
   tasks: Array<Task>;
+  icon?: File;
 }
 
 export interface CreateProjectInput {
   name: Project['name'];
+  icon?: FileUpload;
 }
 
-export interface UpdateProjectInput {
+export interface UpdateProjectInput extends Partial<CreateProjectInput> {
   id: Project['id'];
-  name?: Project['name'];
 }

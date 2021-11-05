@@ -3,6 +3,15 @@ import { gql } from 'apollo-server-express';
 export default gql`
   scalar DateTime
   scalar HexColorCode
+  scalar Upload
+
+  type File {
+    name: String!
+    url: String!
+    mimeType: String!
+    size: Int!
+    encoding: String!
+  }
 
   type Label {
     id: ID!
@@ -16,6 +25,7 @@ export default gql`
     name: String!
     created: DateTime!
     tasks: [Task!]!
+    icon: File
   }
 
   type Task {
@@ -70,11 +80,13 @@ export default gql`
 
   input CreateProjectInput {
     name: String!
+    icon: Upload
   }
 
   input UpdateProjectInput {
     id: ID!
     name: String
+    icon: Upload
   }
 
   input CreateTaskInput {

@@ -13,6 +13,8 @@ export type Scalars = {
   DateTime: any;
   /** A field whose value is a hex color code: https://en.wikipedia.org/wiki/Web_colors. */
   HexColorCode: any;
+  /** The `Upload` scalar type represents a file upload. */
+  Upload: any;
 };
 
 export type CreateLabelInput = {
@@ -23,6 +25,7 @@ export type CreateLabelInput = {
 
 export type CreateProjectInput = {
   name: Scalars['String'];
+  icon?: Maybe<Scalars['Upload']>;
 };
 
 export type CreateTaskInput = {
@@ -41,6 +44,15 @@ export type CreateUserInput = {
   lastName: Scalars['String'];
 };
 
+
+export type File = {
+  __typename?: 'File';
+  name: Scalars['String'];
+  url: Scalars['String'];
+  mimeType: Scalars['String'];
+  size: Scalars['Int'];
+  encoding: Scalars['String'];
+};
 
 
 export type Label = {
@@ -140,6 +152,7 @@ export type Project = {
   name: Scalars['String'];
   created: Scalars['DateTime'];
   tasks: Array<Task>;
+  icon?: Maybe<File>;
 };
 
 export type Query = {
@@ -197,6 +210,7 @@ export type UpdateLabelInput = {
 export type UpdateProjectInput = {
   id: Scalars['ID'];
   name?: Maybe<Scalars['String']>;
+  icon?: Maybe<Scalars['Upload']>;
 };
 
 export type UpdateTaskInput = {
@@ -213,6 +227,7 @@ export type UpdateUserInput = {
   firstName?: Maybe<Scalars['String']>;
   lastName?: Maybe<Scalars['String']>;
 };
+
 
 export type User = {
   __typename?: 'User';

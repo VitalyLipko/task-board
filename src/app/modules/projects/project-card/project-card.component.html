@@ -9,7 +9,11 @@
 
 <ng-template #coverTemplate>
   <img
-    src="https://picsum.photos/200/170"
+    [src]="
+      tbProject.icon
+        ? (tbProject.icon.url | nzSanitizer: 'url')
+        : 'https://picsum.photos/200/170'
+    "
     width="200"
     height="170"
     alt="Project image"

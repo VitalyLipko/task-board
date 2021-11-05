@@ -12,10 +12,10 @@ import {
 } from '../../core/graphql/graphql';
 import { errorHandler } from '../../core/operators';
 
-import CreateProject from './graphql/create-project.graphql';
+import CreateProject from './graphql/create-project.mutation.graphql';
 import GetProject from './graphql/get-project.query.graphql';
 import GetProjects from './graphql/get-projects.query.graphql';
-import UpdateProject from './graphql/update-project.graphql';
+import UpdateProject from './graphql/update-project.mutation.graphql';
 import { ProjectModalComponent } from './project-modal/project-modal.component';
 
 @Injectable()
@@ -66,9 +66,7 @@ export class ProjectsService {
           disabled: (contentComponentInstance) =>
             !!contentComponentInstance?.form.invalid,
           onClick(contentComponentInstance?: ProjectModalComponent) {
-            contentComponentInstance?.modalRef.close(
-              contentComponentInstance?.form.value,
-            );
+            contentComponentInstance?.onSubmit();
           },
         },
       ],
@@ -82,6 +80,9 @@ export class ProjectsService {
           this.apollo.mutate<{ createProject: Project }>({
             mutation: CreateProject,
             variables: { project },
+            context: {
+              useMultipart: true,
+            },
             update(cache, { data }) {
               const newProject = data?.createProject;
               const existingProjects = cache.readQuery<{
@@ -146,6 +147,9 @@ export class ProjectsService {
           this.apollo.mutate({
             mutation: UpdateProject,
             variables: { project },
+            context: {
+              useMultipart: true,
+            },
           }),
         ),
         errorHandler(),

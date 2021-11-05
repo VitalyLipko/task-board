@@ -1,0 +1,35 @@
+@use 'variables' as *;
+
+.tb-project-icon {
+  &-upload {
+    &-info {
+      &-icon {
+        display: block;
+        color: #1890ff;
+        font-size: 32px;
+      }
+
+      &-description {
+        font-size: 16px;
+      }
+    }
+
+    &-preview-card {
+      padding: $indent-xxs 0 $indent-xxs $indent-xxs;
+      box-shadow: 0 1px 1px hsl(0deg 0% 50% / 0.075),
+        0 3px 3px hsl(0deg 0% 50% / 0.075), 0 5px 5px hsl(0deg 0% 50% / 0.075);
+
+      &-body {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        & > button {
+          flex-shrink: 0;
+          width: 48px;
+          color: red;
+        }
+      }
+    }
+  }
+}

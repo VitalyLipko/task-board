@@ -1,4 +1,5 @@
 import dotenv from 'dotenv';
+import dotenvExpand from 'dotenv-expand';
 
 const envFound = dotenv.config();
 
@@ -6,9 +7,14 @@ if (envFound.error) {
   throw new Error("Couldn't find .env file");
 }
 
+dotenvExpand(envFound);
+
 export default {
+  host: process.env.HOST as string,
   port: process.env.PORT as string,
   databaseURI: process.env.DATABASE_URI as string,
   tokenSecret: process.env.TOKEN_SECRET as string,
   tokenExpireTime: Number(process.env.TOKEN_EXPIRE_TIME),
+  appDataPath: process.env.APP_DATA_PATH as string,
+  fileStoragePath: process.env.FILE_STORAGE_PATH as string,
 };

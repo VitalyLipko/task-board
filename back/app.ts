@@ -10,7 +10,7 @@ async function startServer(): Promise<void> {
   app
     .listen({ port: config.port }, () =>
       console.log(
-        `🚀 Server ready at http://localhost:${config.port}${server.graphqlPath}`,
+        `🚀 Server ready at ${config.host}:${config.port}${server.graphqlPath}`,
       ),
     )
     .on('error', (err) => console.log('Error:', err.message));
