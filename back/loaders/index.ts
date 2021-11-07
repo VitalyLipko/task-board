@@ -1,5 +1,3 @@
-import { ApolloServer } from 'apollo-server-express';
-import { Express } from 'express';
 import mongoose from 'mongoose';
 
 import init from '../config/init';
@@ -10,7 +8,7 @@ import redisClient from './redis';
 
 const { connection } = mongoose;
 
-export default async (app: Express): Promise<ApolloServer> => {
+export default async (): Promise<void> => {
   redisClient.on('error', (err) => console.error(err));
   redisClient.once('ready', () => console.log('Redis server ready'));
 
@@ -26,10 +24,5 @@ export default async (app: Express): Promise<ApolloServer> => {
     .on('SIGTERM', () => connection.close());
 
   await init();
-
-  const apolloConnection = await apolloServerLoader(app);
-
-  console.log('Apollo server started');
-
-  return apolloConnection;
+  await apolloServerLoader();
 };

@@ -1,5 +1,6 @@
 import isUndefined from 'lodash/isUndefined';
 import { LeanDocument, PopulateOptions } from 'mongoose';
+import mongoose from 'mongoose';
 
 import { taskModel, projectModel } from '../models/db.schema';
 import {
@@ -12,6 +13,7 @@ import { User } from '../models/user.interface';
 import LabelService from './label.service';
 import UserService from './user.service';
 
+const { Schema } = mongoose;
 const taskPopulateOptions: Array<PopulateOptions> = [
   {
     path: 'assignees',
@@ -25,15 +27,12 @@ const userService = new UserService();
 
 export default class TaskService {
   async getTasks(parentId: string): Promise<Array<Task>> {
-    const tasks = await taskModel
-      .find({ parentId })
-      .populate(taskPopulateOptions);
-    return tasks.map((task) => task.toJSON());
+    const objectId = new Schema.Types.ObjectId(parentId);
+    return taskModel.find({ parentId: objectId }).populate(taskPopulateOptions);
   }
 
   async getTask(id: string): Promise<Task | null> {
-    const task = await taskModel.findById(id).populate(taskPopulateOptions);
-    return task ? task.toJSON() : null;
+    return taskModel.findById(id).populate(taskPopulateOptions);
   }
 
   async createTask(
@@ -98,9 +97,7 @@ export default class TaskService {
     }
 
     const curTask = await prevTask.save();
-    await curTask.populate(taskPopulateOptions);
-
-    return curTask.toJSON();
+    return curTask.populate(taskPopulateOptions);
   }
 
   async deleteTask(id: string): Promise<boolean> {
@@ -114,7 +111,7 @@ export default class TaskService {
       .findById(task.parentId)
       .populate('tasks', 'id');
     if (project) {
-      project.tasks = project.tasks.filter((task) => task.id !== id);
+      project.tasks = project.tasks.filter((task) => task && task.id !== id);
 
       await project.save();
       await task.remove();

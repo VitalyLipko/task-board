@@ -1,5 +1,6 @@
-import mongoose, { Document } from 'mongoose';
+import mongoose, { Document, Model } from 'mongoose';
 
+import { File } from './file.interface';
 import { Label } from './label.interface';
 import { Project } from './project.interface';
 import { Task } from './task.interface';
@@ -16,13 +17,13 @@ function idToString(_: unknown, __: unknown, doc: Document) {
   return doc._id.toString();
 }
 
-const fileSchema = new Schema({
+const fileSchema = new Schema<File, Model<File>, File>({
   name: { type: String, required: true },
   url: { type: String, required: true },
   mimeType: { type: String, required: true },
 });
 
-const taskSchema = new Schema(
+const taskSchema = new Schema<Task, Model<Task>, Task>(
   {
     title: { type: String, required: true },
     description: String,
@@ -44,7 +45,7 @@ const taskSchema = new Schema(
 );
 taskSchema.virtual('id').get(idToString);
 
-const projectSchema = new Schema(
+const projectSchema = new Schema<Project, Model<Project>, Project>(
   {
     name: { type: String, required: true },
     tasks: [{ type: Schema.Types.ObjectId, ref: 'Task' }],
@@ -62,7 +63,7 @@ const projectSchema = new Schema(
 );
 projectSchema.virtual('id').get(idToString);
 
-const userSchema = new Schema(
+const userSchema = new Schema<User, Model<User>, User>(
   {
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
@@ -87,7 +88,7 @@ userSchema
     return `${doc.get('firstName')} ${doc.get('lastName')}`;
   });
 
-const labelSchema = new Schema(
+const labelSchema = new Schema<Label, Model<Label>, Label>(
   {
     title: { type: String, required: true },
     backgroundColor: String,

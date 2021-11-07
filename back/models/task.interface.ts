@@ -1,4 +1,4 @@
-import { PopulatedDoc } from 'mongoose';
+import { ObjectId, PopulatedDoc } from 'mongoose';
 
 import { Label } from './label.interface';
 import { User } from './user.interface';
@@ -8,9 +8,9 @@ export interface Task {
   created: Date;
   title: string;
   description?: string;
-  parentId: string;
+  parentId: ObjectId;
   assignees: Array<PopulatedDoc<User>>;
-  creator: User;
+  creator: PopulatedDoc<User>;
   isOpen: boolean;
   labels: Array<PopulatedDoc<Label>>;
 }

@@ -30,9 +30,7 @@ export default class ProjectService {
       document.icon = await fileStorageService.save(project.icon);
     }
 
-    const res = await document.save();
-
-    return res.toJSON();
+    return document.save();
   }
 
   async updateProject(
@@ -60,21 +58,16 @@ export default class ProjectService {
       }
     }
 
-    const res = await document.save();
-    return res.toJSON();
+    return document.save();
   }
 
   async getProjects(): Promise<Array<LeanDocument<Project>>> {
-    const projects = await projectModel
+    return projectModel
       .find({}, null, { sort: { name: 'asc' } })
       .populate(projectPopulateOptions);
-    return projects.map((project) => project.toJSON());
   }
 
   async getProject(id: string): Promise<LeanDocument<Project> | null> {
-    const project = await projectModel
-      .findById(id)
-      .populate(projectPopulateOptions);
-    return project ? project.toJSON() : null;
+    return projectModel.findById(id).populate(projectPopulateOptions);
   }
 }

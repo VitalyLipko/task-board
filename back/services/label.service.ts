@@ -14,14 +14,11 @@ export default class LabelService {
   }
 
   async getLabels(): Promise<Array<LeanDocument<Label>>> {
-    const labels = await labelModel.find();
-
-    return labels.map((label) => label.toJSON());
+    return labelModel.find();
   }
 
   async getLabel(id: string): Promise<LeanDocument<Label> | null> {
-    const label = await labelModel.findById(id);
-    return label ? label.toJSON() : null;
+    return labelModel.findById(id);
   }
 
   async getTaskLabels(

@@ -1,8 +1,10 @@
+import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core';
 import { ApolloServer } from 'apollo-server-express';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
-import { Express } from 'express';
+import express from 'express';
 import { graphqlUploadExpress } from 'graphql-upload';
+import { createServer } from 'http';
 import { constants } from 'http2';
 
 import config from '../config';
@@ -10,10 +12,11 @@ import { ContextPayload } from '../models/context-payload.interface';
 import typeDefs from '../models/graphql.schema';
 import { resolvers } from '../models/resolvers';
 import AuthService from '../services/auth.service';
-
 const authService = new AuthService();
 
-export default async (app: Express): Promise<ApolloServer> => {
+export default async (): Promise<void> => {
+  const app = express();
+  const httpServer = createServer(app);
   const server = new ApolloServer({
     typeDefs,
     resolvers,
@@ -21,6 +24,7 @@ export default async (app: Express): Promise<ApolloServer> => {
       const result = await authService.createContext(req);
       return { ...result, res };
     },
+    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
   });
 
   await server.start();
@@ -62,5 +66,13 @@ export default async (app: Express): Promise<ApolloServer> => {
     cors: false,
   });
 
-  return server;
+  await new Promise<void>(() =>
+    httpServer
+      .listen({ port: config.port }, () =>
+        console.log(
+          `🚀 Server ready at ${config.host}:${config.port}${server.graphqlPath}`,
+        ),
+      )
+      .on('error', (err) => console.log('Error:', err.message)),
+  );
 };
