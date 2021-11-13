@@ -6,5 +6,8 @@ query GetProjects {
       name
       url
     }
+    tasks {
+      id
+    }
   }
 }

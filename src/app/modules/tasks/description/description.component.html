@@ -1,5 +1,8 @@
 <ng-container *ngIf="tbReadOnly; else editorTemplate">
-  <div *ngIf="safeValue; else emptyTemplate" [innerHTML]="safeValue"></div>
+  <div
+    *ngIf="value; else emptyTemplate"
+    [innerHTML]="value | nzSanitizer: 'html'"
+  ></div>
   <ng-template #emptyTemplate>
     <nz-empty nzNotFoundContent="No description"></nz-empty>
   </ng-template>

@@ -9,7 +9,6 @@ import {
   ChangeDetectorRef,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Editor } from '@tiptap/core';
 import StarterKit from '@tiptap/starter-kit';
 
@@ -31,7 +30,6 @@ export class DescriptionComponent
   implements ControlValueAccessor, OnInit, OnDestroy
 {
   value: string | null = null;
-  safeValue: SafeHtml | null = null;
   editor: Editor | undefined;
 
   private onChange!: (value: string | null) => void;
@@ -39,10 +37,7 @@ export class DescriptionComponent
 
   @Input() tbReadOnly = false;
 
-  constructor(
-    private sanitizer: DomSanitizer,
-    private cdr: ChangeDetectorRef,
-  ) {}
+  constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     if (!this.tbReadOnly) {
@@ -60,10 +55,6 @@ export class DescriptionComponent
 
   writeValue(value: string | null): void {
     this.value = value;
-    this.safeValue =
-      this.tbReadOnly && this.value
-        ? this.sanitizer.bypassSecurityTrustHtml(this.value)
-        : null;
     this.cdr.markForCheck();
   }
 

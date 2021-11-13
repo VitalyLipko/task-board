@@ -1,6 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 
 import { Project } from '../../../core/graphql/graphql';
+import { stringToColor } from '../../../shared/utils/string-to-color';
 
 @Component({
   selector: 'tb-project-card',
@@ -10,4 +11,8 @@ import { Project } from '../../../core/graphql/graphql';
 })
 export class ProjectCardComponent {
   @Input() tbProject!: Project;
+
+  get backgroundColor(): string {
+    return stringToColor(this.tbProject.name);
+  }
 }

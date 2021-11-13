@@ -1,21 +1,40 @@
 <a [routerLink]="tbProject.id">
-  <nz-card nzHoverable [nzCover]="coverTemplate" class="project-card">
-    <nz-card-meta
-      [nzTitle]="tbProject.name"
-      nzDescription="This is the description"
-    ></nz-card-meta>
+  <nz-card
+    nzHoverable
+    [nzCover]="coverTemplate"
+    [nzActions]="[taskCountTemplate]"
+    class="project-card"
+  >
+    <nz-card-meta [nzTitle]="tbProject.name"></nz-card-meta>
   </nz-card>
 </a>
 
 <ng-template #coverTemplate>
   <img
-    [src]="
-      tbProject.icon
-        ? (tbProject.icon.url | nzSanitizer: 'url')
-        : 'https://picsum.photos/200/170'
-    "
+    *ngIf="tbProject.icon; else coverNameTemplate"
+    [src]="tbProject.icon.url | nzSanitizer: 'url'"
     width="200"
     height="170"
     alt="Project image"
   />
+</ng-template>
+<ng-template #coverNameTemplate>
+  <div
+    nz-row
+    nzJustify="center"
+    nzAlign="middle"
+    class="project-card-cover-name"
+    [style.backgroundColor]="backgroundColor"
+  >
+    <span>
+      {{ tbProject.name.charAt(0) }}
+    </span>
+  </div>
+</ng-template>
+
+<ng-template #taskCountTemplate>
+  <span nz-typography nzType="secondary" class="project-card-task-counter">
+    {{ tbProject.tasks.length }}
+    <i nz-icon nzType="container"></i>
+  </span>
 </ng-template>

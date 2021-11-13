@@ -1,7 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { InboxOutline, DeleteOutline } from '@ant-design/icons-angular/icons';
+import {
+  InboxOutline,
+  DeleteOutline,
+  ContainerOutline,
+} from '@ant-design/icons-angular/icons';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
@@ -47,7 +51,7 @@ import { ProjectsService } from './projects.service';
     NzInputModule,
     NzFormModule,
     NzUploadModule,
-    NzIconModule.forChild([InboxOutline, DeleteOutline]),
+    NzIconModule.forChild([InboxOutline, DeleteOutline, ContainerOutline]),
     NzPipesModule,
     NzTypographyModule,
     NzToolTipModule,

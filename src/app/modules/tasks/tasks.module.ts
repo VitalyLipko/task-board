@@ -19,6 +19,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzListModule } from 'ng-zorro-antd/list';
 import { NzMessageModule } from 'ng-zorro-antd/message';
+import { NzPipesModule } from 'ng-zorro-antd/pipes';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
@@ -89,6 +90,7 @@ import { TasksService } from './tasks.service';
     NgxTiptapModule,
     NzToolTipModule,
     LabelModule,
+    NzPipesModule,
   ],
   providers: [TasksService],
 })
