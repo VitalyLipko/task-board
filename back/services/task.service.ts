@@ -60,6 +60,7 @@ export default class TaskService {
     }
 
     await document.save();
+    await document.populate(taskPopulateOptions);
 
     const parent = await projectModel.findById(task.parentId);
 

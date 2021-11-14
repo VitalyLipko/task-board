@@ -17,10 +17,7 @@
     <nz-tag class="tb-task-status" [nzColor]="task.isOpen ? 'green' : 'red'">
       {{ task.isOpen ? 'Open' : 'Close' }}
     </nz-tag>
-    <span nz-typography class="tb-task-info">
-      Created {{ task.created | date }} by
-    </span>
-    <tb-user-inline-info [tbUser]="task.creator"></tb-user-inline-info>
+    <tb-task-creation-info [tbTask]="task"></tb-task-creation-info>
   </ng-template>
   <nz-list nzItemLayout="vertical">
     <nz-list-item class="tb-task-assignees">
@@ -58,10 +55,13 @@
     <nz-list-item class="tb-task-assignees">
       <nz-list-item-meta nzTitle="Labels">
         <nz-list-item-meta-description>
-          <tb-label
-            *ngFor="let label of task.labels"
-            [tbLabel]="label"
-          ></tb-label>
+          <ng-container *ngIf="task.labels.length; else emptyLabelsTemplate">
+            <tb-label
+              *ngFor="let label of task.labels; trackBy: trackByFn"
+              [tbLabel]="label"
+            ></tb-label>
+          </ng-container>
+          <ng-template #emptyLabelsTemplate>No labels</ng-template>
         </nz-list-item-meta-description>
       </nz-list-item-meta>
       <ul nz-list-item-actions>

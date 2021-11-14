@@ -12,10 +12,16 @@ import FileStorageService from './file-storage.service';
 
 const projectPopulateOptions: PopulateOptions = {
   path: 'tasks',
-  populate: {
-    path: 'assignees',
-    options: { sort: { firstName: 'asc' } },
-  },
+  populate: [
+    {
+      path: 'assignees',
+      options: { sort: { firstName: 'asc' } },
+    },
+    { path: 'labels', options: { sort: { title: 'asc' } } },
+    {
+      path: 'creator',
+    },
+  ],
   options: { sort: { title: 'asc' } },
 };
 

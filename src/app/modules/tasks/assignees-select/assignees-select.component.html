@@ -43,7 +43,11 @@
     (click)="handleClick(user.id)"
   >
     <div nz-col nzFlex="36px" class="tb-assignees-select-option-avatar">
-      <tb-avatar [tbSize]="36" [tbFullName]="user.fullName"></tb-avatar>
+      <tb-avatar
+        [tbSize]="36"
+        [tbFullName]="user.fullName"
+        [tbShowTooltip]="false"
+      ></tb-avatar>
     </div>
     <div nz-col nzFlex="1" class="tb-assignees-select-option-info">
       <span nz-typography nz-row nzEllipsis>{{ user.fullName }}</span>

@@ -4,6 +4,7 @@ import {
   Input,
   ViewEncapsulation,
 } from '@angular/core';
+import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
 
 import { User } from '../../../core/graphql/graphql';
 
@@ -14,10 +15,11 @@ import { User } from '../../../core/graphql/graphql';
       <tb-avatar
         *ngFor="let assignee of tbAssignees; trackBy: trackByFn"
         [tbFullName]="assignee.fullName"
+        [tbSize]="tbSize"
         class="tb-assignees-avatar"
       ></tb-avatar>
     </div>
-    <ng-template #emptyTemplate>No assignees</ng-template>
+    <ng-template #emptyTemplate>{{ tbEmptyPlaceholder }}</ng-template>
   `,
   styles: [
     `
@@ -39,6 +41,8 @@ import { User } from '../../../core/graphql/graphql';
 })
 export class AssigneesComponent {
   @Input() tbAssignees!: Array<User>;
+  @Input() tbSize: NzSizeLDSType | number = 'default';
+  @Input() tbEmptyPlaceholder: string | null = 'No assignees';
 
   trackByFn(_: number, item: User): string {
     return item.id;

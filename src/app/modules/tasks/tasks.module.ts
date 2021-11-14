@@ -38,6 +38,7 @@ import { AssigneesComponent } from './assignees/assignees.component';
 import { DescriptionEditorToolbarComponent } from './description-editor-toolbar/description-editor-toolbar.component';
 import { DescriptionComponent } from './description/description.component';
 import { LabelsSelectComponent } from './labels-select/labels-select.component';
+import { TaskCreationInfoComponent } from './task-creation-info/task-creation-info.component';
 import { TaskDrawerComponent } from './task-drawer/task-drawer.component';
 import { TaskComponent } from './task/task.component';
 import { TasksListComponent } from './tasks-list/tasks-list.component';
@@ -56,6 +57,7 @@ import { TasksService } from './tasks.service';
     DescriptionComponent,
     DescriptionEditorToolbarComponent,
     LabelsSelectComponent,
+    TaskCreationInfoComponent,
   ],
   imports: [
     CommonModule,

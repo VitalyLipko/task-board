@@ -5,6 +5,21 @@ query GetProjectPageInfo($id: ID!) {
     tasks {
       id
       title
+      created
+      creator {
+        id
+        username
+        fullName
+      }
+      labels {
+        id
+        backgroundColor
+        title
+      }
+      assignees {
+        id
+        fullName
+      }
     }
   }
 }

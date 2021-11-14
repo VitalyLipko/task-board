@@ -12,7 +12,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
 
-import { Task } from '../../../core/graphql/graphql';
+import { Label, Task } from '../../../core/graphql/graphql';
 import { LayoutService } from '../../../core/layout/layout.service';
 import { DropdownAction } from '../../../shared/dropdown-actions/dropdown-action.interface';
 import { TasksService } from '../tasks.service';
@@ -103,5 +103,9 @@ export class TaskComponent implements OnInit, OnDestroy {
         .pipe(takeUntil(this.unsubscribe))
         .subscribe({ error: (err) => this.messageService.error(err.message) });
     }
+  }
+
+  trackByFn(_: number, item: Label): string {
+    return item.id;
   }
 }

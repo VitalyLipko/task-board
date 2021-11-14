@@ -2,5 +2,20 @@ mutation CreateTask($task: CreateTaskInput!) {
   createTask(task: $task) {
     id
     title
+    created
+    creator {
+      id
+      username
+      fullName
+    }
+    labels {
+      id
+      backgroundColor
+      title
+    }
+    assignees {
+      id
+      fullName
+    }
   }
 }

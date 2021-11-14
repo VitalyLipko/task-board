@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 
-import { Task } from '../../../core/graphql/graphql';
+import { Label, Task } from '../../../core/graphql/graphql';
 
 @Component({
   selector: 'tb-tasks-list',
@@ -11,7 +11,7 @@ import { Task } from '../../../core/graphql/graphql';
 export class TasksListComponent {
   @Input() tbTasks!: ReadonlyArray<Task>;
 
-  trackByFn(_: number, item: Task): string {
+  trackByFn(_: number, item: Task | Label): string {
     return item.id;
   }
 }
