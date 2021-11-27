@@ -15,8 +15,8 @@
           (ngModelChange)="modeChange($event)"
         ></nz-switch>
       </span>
-      <nz-card>
-        <ng-container *ngIf="isBoard; else listTemplate">Board</ng-container>
+      <nz-card [nzBorderless]="isBoard" [class.tb-tasks-board]="isBoard">
+        <tb-task-board *ngIf="isBoard; else listTemplate"></tb-task-board>
         <ng-template #listTemplate>
           <tb-tasks-list [tbTasks]="tasks"></tb-tasks-list>
         </ng-template>

@@ -1,0 +1,44 @@
+<div
+  class="tb-task-board"
+  *ngIf="board"
+  cdkDropListGroup
+  nz-row
+  [nzGutter]="16"
+>
+  <ng-container *ngFor="let column of board.columns; trackBy: trackByFn">
+    <div
+      class="tb-task-board-column"
+      cdkDropList
+      cdkDropListSortingDisabled
+      [cdkDropListData]="column"
+      (cdkDropListDropped)="handleDrop($event, column.label.id)"
+      nz-col
+    >
+      <div class="tb-task-board-column-inner">
+        <tb-label [tbLabel]="column.label"></tb-label>
+        <div
+          class="tb-task-board-column-inner-task"
+          *ngFor="let task of column.items; trackBy: trackByFn"
+          cdkDrag
+          cdkDragBoundary=".tb-task-board"
+          [cdkDragData]="task"
+        >
+          <h4 nz-typography class="tb-task-board-column-inner-task-title">
+            <a [routerLink]="task.id">{{ task.title }}</a>
+          </h4>
+          <ng-container *ngFor="let label of task.labels; trackBy: trackByFn">
+            <tb-label
+              *ngIf="label.id !== column.label.id"
+              [tbLabel]="label"
+            ></tb-label>
+          </ng-container>
+          <tb-assignees
+            [tbAssignees]="task.assignees"
+            [tbEmptyPlaceholder]="null"
+            tbSize="small"
+          ></tb-assignees>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>

@@ -1,0 +1,25 @@
+query GetBoard($parentId: ID!) {
+  board(parentId: $parentId) {
+    parentId
+    columns {
+      label {
+        id
+        backgroundColor
+        title
+      }
+      items {
+        id
+        title
+        labels {
+          id
+          backgroundColor
+          title
+        }
+        assignees {
+          id
+          fullName
+        }
+      }
+    }
+  }
+}

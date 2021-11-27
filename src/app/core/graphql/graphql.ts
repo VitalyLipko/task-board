@@ -17,6 +17,18 @@ export type Scalars = {
   Upload: any;
 };
 
+export type Board = {
+  __typename?: 'Board';
+  parentId: Scalars['String'];
+  columns: Array<Column>;
+};
+
+export type Column = {
+  __typename?: 'Column';
+  label: Label;
+  items: Array<Task>;
+};
+
 export type CreateLabelInput = {
   title: Scalars['String'];
   backgroundColor?: Maybe<Scalars['HexColorCode']>;
@@ -44,7 +56,6 @@ export type CreateUserInput = {
   lastName: Scalars['String'];
 };
 
-
 export type File = {
   __typename?: 'File';
   name: Scalars['String'];
@@ -53,7 +64,6 @@ export type File = {
   size: Scalars['Int'];
   encoding: Scalars['String'];
 };
-
 
 export type Label = {
   __typename?: 'Label';
@@ -157,6 +167,7 @@ export type Project = {
 
 export type Query = {
   __typename?: 'Query';
+  board?: Maybe<Board>;
   isLoggedIn?: Maybe<Scalars['Boolean']>;
   label?: Maybe<Label>;
   labels: Array<Label>;
@@ -166,6 +177,11 @@ export type Query = {
   tasks: Array<Task>;
   user?: Maybe<User>;
   users: Array<User>;
+};
+
+
+export type QueryBoardArgs = {
+  parentId: Scalars['ID'];
 };
 
 
@@ -227,7 +243,6 @@ export type UpdateUserInput = {
   firstName?: Maybe<Scalars['String']>;
   lastName?: Maybe<Scalars['String']>;
 };
-
 
 export type User = {
   __typename?: 'User';

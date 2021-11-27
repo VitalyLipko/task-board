@@ -13,8 +13,10 @@ export default class LabelService {
     return res.toJSON();
   }
 
-  async getLabels(): Promise<Array<LeanDocument<Label>>> {
-    return labelModel.find();
+  async getLabels(filterOptions?: {
+    title?: string | RegExp;
+  }): Promise<Array<LeanDocument<Label>>> {
+    return labelModel.find({ ...filterOptions });
   }
 
   async getLabel(id: string): Promise<LeanDocument<Label> | null> {

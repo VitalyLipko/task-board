@@ -1,4 +1,14 @@
 import { FieldPolicy, FieldReadFunction, TypePolicies, TypePolicy } from '@apollo/client/cache';
+export type BoardKeySpecifier = ('parentId' | 'columns' | BoardKeySpecifier)[];
+export type BoardFieldPolicy = {
+	parentId?: FieldPolicy<any> | FieldReadFunction<any>,
+	columns?: FieldPolicy<any> | FieldReadFunction<any>
+};
+export type ColumnKeySpecifier = ('label' | 'items' | ColumnKeySpecifier)[];
+export type ColumnFieldPolicy = {
+	label?: FieldPolicy<any> | FieldReadFunction<any>,
+	items?: FieldPolicy<any> | FieldReadFunction<any>
+};
 export type FileKeySpecifier = ('name' | 'url' | 'mimeType' | 'size' | 'encoding' | FileKeySpecifier)[];
 export type FileFieldPolicy = {
 	name?: FieldPolicy<any> | FieldReadFunction<any>,
@@ -38,8 +48,9 @@ export type ProjectFieldPolicy = {
 	tasks?: FieldPolicy<any> | FieldReadFunction<any>,
 	icon?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type QueryKeySpecifier = ('isLoggedIn' | 'label' | 'labels' | 'project' | 'projects' | 'task' | 'tasks' | 'user' | 'users' | QueryKeySpecifier)[];
+export type QueryKeySpecifier = ('board' | 'isLoggedIn' | 'label' | 'labels' | 'project' | 'projects' | 'task' | 'tasks' | 'user' | 'users' | QueryKeySpecifier)[];
 export type QueryFieldPolicy = {
+	board?: FieldPolicy<any> | FieldReadFunction<any>,
 	isLoggedIn?: FieldPolicy<any> | FieldReadFunction<any>,
 	label?: FieldPolicy<any> | FieldReadFunction<any>,
 	labels?: FieldPolicy<any> | FieldReadFunction<any>,
@@ -73,6 +84,14 @@ export type UserFieldPolicy = {
 	trashed?: FieldPolicy<any> | FieldReadFunction<any>
 };
 export type StrictTypedTypePolicies = {
+	Board?: Omit<TypePolicy, 'fields' | 'keyFields'> & {
+		keyFields?: false | BoardKeySpecifier | (() => undefined | BoardKeySpecifier),
+		fields?: BoardFieldPolicy,
+	},
+	Column?: Omit<TypePolicy, 'fields' | 'keyFields'> & {
+		keyFields?: false | ColumnKeySpecifier | (() => undefined | ColumnKeySpecifier),
+		fields?: ColumnFieldPolicy,
+	},
 	File?: Omit<TypePolicy, 'fields' | 'keyFields'> & {
 		keyFields?: false | FileKeySpecifier | (() => undefined | FileKeySpecifier),
 		fields?: FileFieldPolicy,

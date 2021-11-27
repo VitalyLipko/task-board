@@ -5,6 +5,16 @@ export default gql`
   scalar HexColorCode
   scalar Upload
 
+  type Board {
+    parentId: String!
+    columns: [Column!]!
+  }
+
+  type Column {
+    label: Label!
+    items: [Task!]!
+  }
+
   type File {
     name: String!
     url: String!
@@ -51,6 +61,7 @@ export default gql`
   }
 
   type Query {
+    board(parentId: ID!): Board
     isLoggedIn: Boolean
     label: Label
     labels: [Label!]!

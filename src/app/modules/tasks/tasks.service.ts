@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { InternalRefetchQueriesInclude } from '@apollo/client/core';
 import { Apollo } from 'apollo-angular';
 import { NzDrawerOptions, NzDrawerService } from 'ng-zorro-antd/drawer';
 import { NzMessageService } from 'ng-zorro-antd/message';
@@ -6,6 +7,7 @@ import { Observable } from 'rxjs';
 import { filter, map, switchMap } from 'rxjs/operators';
 
 import {
+  Board,
   CreateTaskInput,
   Project,
   Task,
@@ -14,6 +16,7 @@ import {
 import { errorHandler } from '../../core/operators';
 
 import CreateTask from './graphql/create-task.mutation.graphql';
+import GetBoard from './graphql/get-board.query.graphql';
 import GetProjectPageInfo from './graphql/get-project-page-info.graphql';
 import GetTaskDrawerData from './graphql/get-task-drawer-data.query.graphql';
 import GetTask from './graphql/get-task.query.graphql';
@@ -159,15 +162,30 @@ export class TasksService {
   updateLabels(
     id: string,
     labels: Array<string>,
+    refetchQueries?: InternalRefetchQueriesInclude,
   ): Observable<Task | undefined> {
     return this.apollo
       .mutate<{ updateTask: Task }, { task: UpdateTaskInput }>({
         mutation: UpdateTask,
         variables: { task: { id, labels } },
+        refetchQueries,
       })
       .pipe(
         errorHandler(),
         map(({ data }) => data?.updateTask),
+      );
+  }
+
+  getBoard(parentId: string): Observable<Board> {
+    return this.apollo
+      .watchQuery<{ board: Board }>({
+        query: GetBoard,
+        variables: { parentId },
+        fetchPolicy: 'network-only',
+      })
+      .valueChanges.pipe(
+        errorHandler(),
+        map(({ data }) => data.board),
       );
   }
 }

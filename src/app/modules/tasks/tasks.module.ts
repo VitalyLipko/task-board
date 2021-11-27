@@ -1,3 +1,4 @@
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -38,6 +39,7 @@ import { AssigneesComponent } from './assignees/assignees.component';
 import { DescriptionEditorToolbarComponent } from './description-editor-toolbar/description-editor-toolbar.component';
 import { DescriptionComponent } from './description/description.component';
 import { LabelsSelectComponent } from './labels-select/labels-select.component';
+import { TaskBoardComponent } from './task-board/task-board.component';
 import { TaskCreationInfoComponent } from './task-creation-info/task-creation-info.component';
 import { TaskDrawerComponent } from './task-drawer/task-drawer.component';
 import { TaskComponent } from './task/task.component';
@@ -58,6 +60,7 @@ import { TasksService } from './tasks.service';
     DescriptionEditorToolbarComponent,
     LabelsSelectComponent,
     TaskCreationInfoComponent,
+    TaskBoardComponent,
   ],
   imports: [
     CommonModule,
@@ -93,6 +96,7 @@ import { TasksService } from './tasks.service';
     NzToolTipModule,
     LabelModule,
     NzPipesModule,
+    DragDropModule,
   ],
   providers: [TasksService],
 })

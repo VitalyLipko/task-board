@@ -1,6 +1,5 @@
 import isUndefined from 'lodash/isUndefined';
-import { LeanDocument, PopulateOptions } from 'mongoose';
-import mongoose from 'mongoose';
+import mongoose, { LeanDocument, PopulateOptions } from 'mongoose';
 
 import { taskModel, projectModel } from '../models/db.schema';
 import {
@@ -13,7 +12,7 @@ import { User } from '../models/user.interface';
 import LabelService from './label.service';
 import UserService from './user.service';
 
-const { Schema } = mongoose;
+const { Types } = mongoose;
 const taskPopulateOptions: Array<PopulateOptions> = [
   {
     path: 'assignees',
@@ -27,7 +26,7 @@ const userService = new UserService();
 
 export default class TaskService {
   async getTasks(parentId: string): Promise<Array<Task>> {
-    const objectId = new Schema.Types.ObjectId(parentId);
+    const objectId = new Types.ObjectId(parentId);
     return taskModel.find({ parentId: objectId }).populate(taskPopulateOptions);
   }
 
