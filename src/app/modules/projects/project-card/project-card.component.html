@@ -3,27 +3,31 @@
     nzHoverable
     [nzCover]="coverTemplate"
     [nzActions]="[taskCountTemplate]"
-    class="project-card"
+    class="tb-project-card"
   >
     <nz-card-meta [nzTitle]="tbProject.name"></nz-card-meta>
   </nz-card>
 </a>
 
 <ng-template #coverTemplate>
-  <img
+  <div
     *ngIf="tbProject.icon; else coverNameTemplate"
-    [src]="tbProject.icon.url | nzSanitizer: 'url'"
-    width="200"
-    height="170"
-    alt="Project image"
-  />
+    class="tb-project-card-cover-image-container"
+  >
+    <img
+      [src]="tbProject.icon.url | nzSanitizer: 'url'"
+      width="214"
+      height="170"
+      alt="Project image"
+    />
+  </div>
 </ng-template>
 <ng-template #coverNameTemplate>
   <div
     nz-row
     nzJustify="center"
     nzAlign="middle"
-    class="project-card-cover-name"
+    class="tb-project-card-cover-name"
     [style.backgroundColor]="backgroundColor"
   >
     <span>
@@ -33,7 +37,7 @@
 </ng-template>
 
 <ng-template #taskCountTemplate>
-  <span nz-typography nzType="secondary" class="project-card-task-counter">
+  <span nz-typography nzType="secondary" class="tb-project-card-task-counter">
     {{ tbProject.tasks.length }}
     <i nz-icon nzType="container"></i>
   </span>

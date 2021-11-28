@@ -2,7 +2,11 @@
   <nz-list-item *ngFor="let task of tbTasks; trackBy: trackByFn">
     <nz-list-item-meta>
       <nz-list-item-meta-title>
-        <a [routerLink]="task.id">{{ task.title }}</a>
+        <span nz-typography nzEllipsis class="tb-tasks-list-item-title">
+          <a [routerLink]="task.id">
+            {{ task.title }}
+          </a>
+        </span>
       </nz-list-item-meta-title>
       <nz-list-item-meta-description>
         <tb-task-creation-info [tbTask]="task"></tb-task-creation-info>

@@ -5,7 +5,17 @@ import { Label, Task } from '../../../core/graphql/graphql';
 @Component({
   selector: 'tb-tasks-list',
   templateUrl: './tasks-list.component.html',
-  styleUrls: ['./tasks-list.component.scss'],
+  styles: [
+    `
+      .tb-tasks-list-item-title {
+        max-width: 100%;
+
+        & > a:not(:hover) {
+          color: unset;
+        }
+      }
+    `,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TasksListComponent {

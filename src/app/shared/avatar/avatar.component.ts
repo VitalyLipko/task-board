@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
 
-import { stringToColor } from '../../utils/string-to-color';
+import { stringToColor } from '../utils/string-to-color';
 
 @Component({
   selector: 'tb-avatar',

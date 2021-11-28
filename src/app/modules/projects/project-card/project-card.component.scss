@@ -1,9 +1,30 @@
-.project-card {
+.tb-project-card {
   width: 214px;
 
-  &-cover-name {
-    height: 170px;
-    font-size: 72px;
-    font-weight: lighter;
+  &-cover {
+    &-name {
+      height: 170px;
+      font-size: 72px;
+      font-weight: lighter;
+
+      & > span {
+        transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+      }
+    }
+
+    &-image-container {
+      overflow: hidden;
+
+      & > img {
+        transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+      }
+    }
+  }
+
+  &:hover {
+    img,
+    .tb-project-card-cover-name > span {
+      transform: scale(1.3);
+    }
   }
 }

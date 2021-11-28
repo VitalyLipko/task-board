@@ -1,7 +1,7 @@
 @use 'sass:math';
 @use 'variables' as *;
 
-.layout-container {
+.tb-layout-container {
   height: 100%;
 
   & > .ant-layout-header {

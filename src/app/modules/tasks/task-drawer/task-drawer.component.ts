@@ -19,7 +19,6 @@ import { TasksService } from '../tasks.service';
 @Component({
   selector: 'tb-task-drawer',
   templateUrl: './task-drawer.component.html',
-  styleUrls: ['./task-drawer.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TaskDrawerComponent implements OnInit, OnDestroy {

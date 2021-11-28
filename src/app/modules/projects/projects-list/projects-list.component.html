@@ -1,7 +1,7 @@
 <div
   nz-row
   [nzJustify]="projects && projects.length > 0 ? 'start' : 'center'"
-  class="projects-list-container"
+  class="tb-projects-list-container"
 >
   <ng-container *ngIf="projects; else spinTemplate">
     <ng-container *ngIf="projects.length; else emptyTemplate">

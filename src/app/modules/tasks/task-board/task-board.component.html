@@ -23,7 +23,11 @@
           cdkDragBoundary=".tb-task-board"
           [cdkDragData]="task"
         >
-          <h4 nz-typography class="tb-task-board-column-inner-task-title">
+          <h4
+            nz-typography
+            nzEllipsis
+            class="tb-task-board-column-inner-task-title"
+          >
             <a [routerLink]="task.id">{{ task.title }}</a>
           </h4>
           <ng-container *ngFor="let label of task.labels; trackBy: trackByFn">
