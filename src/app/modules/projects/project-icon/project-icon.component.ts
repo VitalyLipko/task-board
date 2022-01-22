@@ -50,6 +50,8 @@ export class ProjectIconComponent implements ControlValueAccessor {
     if (this.imageUrl) {
       URL.revokeObjectURL(this.imageUrl);
     }
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     this.imageUrl = this.value ? URL.createObjectURL(this.value) : null;
 
     this.onChange(this.value);
