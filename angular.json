@@ -55,7 +55,7 @@
             "scripts": [],
             "allowedCommonJsDependencies": ["zen-observable", "lodash"],
             "customWebpackConfig": {
-              "path": "./webpack.front.config.сjs",
+              "path": "./webpack.front.config.js",
               "replaceDuplicatePlugins": true
             },
             "stylePreprocessorOptions": {

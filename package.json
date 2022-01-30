@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start:back:dev": "nodemon back/app.ts",
+    "start:back:dev": "cross-env TS_NODE_PROJECT=\"back/tsconfig.back.json\" nodemon back/app.ts",
     "start:back:prod": "node dist/back/app.js",
     "start:front": "ng serve",
     "build:back": "cross-env TS_NODE_PROJECT=\"back/tsconfig.webpack.json\" webpack --config back/webpack.config.ts --stats-error-details",
@@ -78,6 +78,7 @@
     "@types/redis": "^2.8.32",
     "@types/uuid": "^8.3.1",
     "@types/webpack": "^5.28.0",
+    "@types/webpack-node-externals": "^2.5.3",
     "@typescript-eslint/eslint-plugin": "^5.10.0",
     "@typescript-eslint/parser": "^5.10.0",
     "cross-env": "^7.0.3",
@@ -97,6 +98,5 @@
     "webpack": "^5.62.1",
     "webpack-cli": "^4.9.1",
     "webpack-node-externals": "^3.0.0"
-  },
-  "type": "module"
+  }
 }

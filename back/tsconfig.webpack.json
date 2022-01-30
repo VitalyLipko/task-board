@@ -1,7 +1,6 @@
 {
   "extends": "./tsconfig.back.json",
   "compilerOptions": {
-    "module": "commonjs",
     "target": "es5",
     "types": ["node"]
   }

@@ -1,11 +1,10 @@
 import { resolve } from 'path';
 import { Configuration } from 'webpack';
-// import nodeExternals from 'webpack-node-externals';
+import nodeExternals from 'webpack-node-externals';
 
 const config: Configuration = {
   mode: 'production',
   entry: './back/app.ts',
-  target: 'node',
   module: {
     rules: [
       {
@@ -23,9 +22,8 @@ const config: Configuration = {
     filename: 'app.js',
     path: resolve(__dirname, '../dist/back'),
   },
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  /* externals: [nodeExternals() as any],
-  externalsPresets: { node: true },*/
+  externalsPresets: { node: true },
+  externals: [nodeExternals()],
 };
 
 export default config;
