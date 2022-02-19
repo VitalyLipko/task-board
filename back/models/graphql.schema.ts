@@ -5,9 +5,8 @@ export default gql`
   scalar HexColorCode
   scalar Upload
 
-  enum Status {
+  enum ProjectStatus {
     ACTIVE
-    ARCHIVED
     DELETED
   }
 
@@ -41,7 +40,7 @@ export default gql`
     name: String!
     created: DateTime!
     tasks: [Task!]!
-    status: Status!
+    status: ProjectStatus!
     icon: File
   }
 

@@ -3,12 +3,12 @@ import isUndefined from 'lodash/isUndefined';
 import { LeanDocument, PopulateOptions } from 'mongoose';
 
 import { projectModel, ProjectModel } from '../models/db.schema';
+import { ProjectStatusEnum } from '../models/project-status.enum';
 import {
   CreateProjectInput,
   Project,
   UpdateProjectInput,
 } from '../models/project.interface';
-import { StatusEnum } from '../models/status.enum';
 
 import FileStorageService from './file-storage.service';
 
@@ -71,7 +71,9 @@ export default class ProjectService {
 
   async getProjects(): Promise<Array<LeanDocument<Project>>> {
     return projectModel
-      .find({ status: StatusEnum.Active }, null, { sort: { name: 'asc' } })
+      .find({ status: ProjectStatusEnum.Active }, null, {
+        sort: { name: 'asc' },
+      })
       .populate(projectPopulateOptions);
   }
 
@@ -88,7 +90,7 @@ export default class ProjectService {
     const project = await ProjectService.findActiveProject(id);
     if (project) {
       // TODO: close related tasks
-      project.status = StatusEnum.Deleted;
+      project.status = ProjectStatusEnum.Deleted;
       await project.save();
       return true;
     }
@@ -96,6 +98,6 @@ export default class ProjectService {
   }
 
   private static findActiveProject(id: string) {
-    return projectModel.findOne({ id, status: StatusEnum.Active });
+    return projectModel.findOne({ id, status: ProjectStatusEnum.Active });
   }
 }

@@ -168,9 +168,14 @@ export type Project = {
   name: Scalars['String'];
   created: Scalars['DateTime'];
   tasks: Array<Task>;
-  status: Status;
+  status: ProjectStatus;
   icon?: Maybe<File>;
 };
+
+export enum ProjectStatus {
+  Active = 'ACTIVE',
+  Deleted = 'DELETED'
+}
 
 export type Query = {
   __typename?: 'Query';
@@ -210,12 +215,6 @@ export type QueryTasksArgs = {
 export type QueryUserArgs = {
   id?: Maybe<Scalars['ID']>;
 };
-
-export enum Status {
-  Active = 'ACTIVE',
-  Archived = 'ARCHIVED',
-  Deleted = 'DELETED'
-}
 
 export type Task = {
   __typename?: 'Task';

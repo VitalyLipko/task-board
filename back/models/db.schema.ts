@@ -2,8 +2,8 @@ import mongoose, { Document, Model } from 'mongoose';
 
 import { File } from './file.interface';
 import { Label } from './label.interface';
+import { ProjectStatusEnum } from './project-status.enum';
 import { Project } from './project.interface';
-import { StatusEnum } from './status.enum';
 import { Task } from './task.interface';
 import { User } from './user.interface';
 
@@ -50,7 +50,7 @@ const projectSchema = new Schema<Project, Model<Project>, Project>(
   {
     name: { type: String, required: true },
     tasks: [{ type: Schema.Types.ObjectId, ref: 'Task' }],
-    status: { type: String, required: true, default: StatusEnum.Active },
+    status: { type: String, required: true, default: ProjectStatusEnum.Active },
     icon: fileSchema,
   },
   {
