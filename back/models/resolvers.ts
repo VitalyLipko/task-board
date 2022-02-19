@@ -64,6 +64,10 @@ export const resolvers: IResolvers<unknown, ContextPayload> = {
       authService.operationGuard(context, () =>
         projectService.updateProject(args.project),
       ),
+    deleteProject: (_, args, context) =>
+      authService.operationGuard(context, () =>
+        projectService.deleteProject(args.id),
+      ),
     createTask: (_, args, context) =>
       authService.operationGuard(context, () =>
         taskService.createTask(args.task, context.user),

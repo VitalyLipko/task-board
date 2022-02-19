@@ -6,6 +6,9 @@ export const typePolicies: TypedTypePolicies = {
       users: {
         merge: false,
       },
+      projects: {
+        merge: false,
+      },
     },
   },
   Task: {

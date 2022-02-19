@@ -13,6 +13,7 @@ import {
 import { errorHandler } from '../../core/operators';
 
 import CreateProject from './graphql/create-project.mutation.graphql';
+import DeleteProject from './graphql/delete-project.mutation.graphql';
 import GetProject from './graphql/get-project.query.graphql';
 import GetProjects from './graphql/get-projects.query.graphql';
 import UpdateProject from './graphql/update-project.mutation.graphql';
@@ -155,6 +156,51 @@ export class ProjectsService {
         errorHandler(),
         map(() => {
           this.messageService.success('Project updated');
+        }),
+      );
+  }
+
+  delete({ id, name }: Project): Observable<void> {
+    return this.modalService
+      .confirm({
+        nzTitle: `Delete ${name}?`,
+        nzMaskClosable: false,
+        nzOkDanger: true,
+        nzOkText: 'Delete',
+        nzOnOk: () => true,
+      })
+      .afterClose.asObservable()
+      .pipe(
+        filter(Boolean),
+        switchMap(() =>
+          this.apollo.mutate<{ deleteProject: boolean }>({
+            mutation: DeleteProject,
+            variables: { id },
+            update(cache, { data }) {
+              const isDeleted = !!data?.deleteProject;
+              const existingProjects = cache.readQuery<{
+                projects: Array<Project>;
+              }>({
+                query: GetProjects,
+              });
+              if (isDeleted && existingProjects) {
+                const filteredProjects = existingProjects.projects.filter(
+                  (project) => project.id !== id,
+                );
+                cache.writeQuery<{ projects: Array<Project> }>({
+                  query: GetProjects,
+                  data: {
+                    projects: filteredProjects,
+                  },
+                });
+              }
+            },
+          }),
+        ),
+        map(({ data }) => {
+          if (data?.deleteProject) {
+            this.messageService.success('Project deleted');
+          }
         }),
       );
   }

@@ -1,4 +1,10 @@
-import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  Input,
+  Output,
+  EventEmitter,
+} from '@angular/core';
 
 import { Project } from '../../../core/graphql/graphql';
 import { stringToColor } from '../../../shared/utils/string-to-color';
@@ -12,7 +18,15 @@ import { stringToColor } from '../../../shared/utils/string-to-color';
 export class ProjectCardComponent {
   @Input() tbProject!: Project;
 
+  @Output() tbDelete = new EventEmitter<string>();
+
   get backgroundColor(): string {
     return stringToColor(this.tbProject.name);
+  }
+
+  handleDelete(event: MouseEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.tbDelete.emit(this.tbProject.id);
   }
 }

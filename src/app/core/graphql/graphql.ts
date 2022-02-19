@@ -77,6 +77,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   createProject: Project;
   updateProject?: Maybe<Project>;
+  deleteProject?: Maybe<Scalars['Boolean']>;
   createTask: Task;
   updateTask?: Maybe<Task>;
   deleteTask?: Maybe<Scalars['Boolean']>;
@@ -98,6 +99,11 @@ export type MutationCreateProjectArgs = {
 
 export type MutationUpdateProjectArgs = {
   project: UpdateProjectInput;
+};
+
+
+export type MutationDeleteProjectArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -162,6 +168,7 @@ export type Project = {
   name: Scalars['String'];
   created: Scalars['DateTime'];
   tasks: Array<Task>;
+  status: Status;
   icon?: Maybe<File>;
 };
 
@@ -203,6 +210,12 @@ export type QueryTasksArgs = {
 export type QueryUserArgs = {
   id?: Maybe<Scalars['ID']>;
 };
+
+export enum Status {
+  Active = 'ACTIVE',
+  Archived = 'ARCHIVED',
+  Deleted = 'DELETED'
+}
 
 export type Task = {
   __typename?: 'Task';

@@ -2,7 +2,7 @@
   <nz-card
     nzHoverable
     [nzCover]="coverTemplate"
-    [nzActions]="[taskCountTemplate]"
+    [nzActions]="[taskCountTemplate, deleteActionTemplate]"
     class="tb-project-card"
   >
     <nz-card-meta [nzTitle]="tbProject.name"></nz-card-meta>
@@ -41,4 +41,7 @@
     {{ tbProject.tasks.length }}
     <i nz-icon nzType="container"></i>
   </span>
+</ng-template>
+<ng-template #deleteActionTemplate>
+  <i nz-icon nzType="delete" (click)="handleDelete($event)"></i>
 </ng-template>

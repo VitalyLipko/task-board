@@ -1,3 +1,4 @@
+import { ApolloError } from 'apollo-server-express';
 import isUndefined from 'lodash/isUndefined';
 import { LeanDocument, PopulateOptions } from 'mongoose';
 
@@ -7,6 +8,7 @@ import {
   Project,
   UpdateProjectInput,
 } from '../models/project.interface';
+import { StatusEnum } from '../models/status.enum';
 
 import FileStorageService from './file-storage.service';
 
@@ -42,10 +44,10 @@ export default class ProjectService {
   async updateProject(
     project: UpdateProjectInput,
   ): Promise<LeanDocument<ProjectModel> | null> {
-    const document = await projectModel.findById(project.id);
+    const document = await ProjectService.findActiveProject(project.id);
 
     if (!document) {
-      return null;
+      throw new ApolloError(`Project ${project.id} not found`);
     }
 
     if (project.name) {
@@ -69,11 +71,31 @@ export default class ProjectService {
 
   async getProjects(): Promise<Array<LeanDocument<Project>>> {
     return projectModel
-      .find({}, null, { sort: { name: 'asc' } })
+      .find({ status: StatusEnum.Active }, null, { sort: { name: 'asc' } })
       .populate(projectPopulateOptions);
   }
 
   async getProject(id: string): Promise<LeanDocument<Project> | null> {
-    return projectModel.findById(id).populate(projectPopulateOptions);
+    const document = await ProjectService.findActiveProject(id);
+    if (document) {
+      return document.populate(projectPopulateOptions);
+    }
+
+    throw new ApolloError(`Project ${id} not found`);
+  }
+
+  async deleteProject(id: string): Promise<boolean> {
+    const project = await ProjectService.findActiveProject(id);
+    if (project) {
+      // TODO: close related tasks
+      project.status = StatusEnum.Deleted;
+      await project.save();
+      return true;
+    }
+    return false;
+  }
+
+  private static findActiveProject(id: string) {
+    return projectModel.findOne({ id, status: StatusEnum.Active });
   }
 }

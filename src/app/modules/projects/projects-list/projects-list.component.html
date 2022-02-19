@@ -8,6 +8,7 @@
       <tb-project-card
         *ngFor="let project of projects; trackBy: trackByFn"
         [tbProject]="project"
+        (tbDelete)="handleDelete(project)"
       ></tb-project-card>
     </ng-container>
     <ng-template #emptyTemplate>

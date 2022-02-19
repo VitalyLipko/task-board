@@ -5,6 +5,12 @@ export default gql`
   scalar HexColorCode
   scalar Upload
 
+  enum Status {
+    ACTIVE
+    ARCHIVED
+    DELETED
+  }
+
   type Board {
     parentId: String!
     columns: [Column!]!
@@ -35,6 +41,7 @@ export default gql`
     name: String!
     created: DateTime!
     tasks: [Task!]!
+    status: Status!
     icon: File
   }
 
@@ -76,6 +83,7 @@ export default gql`
   type Mutation {
     createProject(project: CreateProjectInput!): Project!
     updateProject(project: UpdateProjectInput!): Project
+    deleteProject(id: ID!): Boolean
     createTask(task: CreateTaskInput!): Task!
     updateTask(task: UpdateTaskInput!): Task
     deleteTask(id: ID!): Boolean

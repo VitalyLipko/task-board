@@ -24,10 +24,11 @@ export type LabelFieldPolicy = {
 	backgroundColor?: FieldPolicy<any> | FieldReadFunction<any>,
 	isSystem?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type MutationKeySpecifier = ('createProject' | 'updateProject' | 'createTask' | 'updateTask' | 'deleteTask' | 'login' | 'logout' | 'createUser' | 'updateUser' | 'deleteUser' | 'createLabel' | 'updateLabel' | 'deleteLabel' | MutationKeySpecifier)[];
+export type MutationKeySpecifier = ('createProject' | 'updateProject' | 'deleteProject' | 'createTask' | 'updateTask' | 'deleteTask' | 'login' | 'logout' | 'createUser' | 'updateUser' | 'deleteUser' | 'createLabel' | 'updateLabel' | 'deleteLabel' | MutationKeySpecifier)[];
 export type MutationFieldPolicy = {
 	createProject?: FieldPolicy<any> | FieldReadFunction<any>,
 	updateProject?: FieldPolicy<any> | FieldReadFunction<any>,
+	deleteProject?: FieldPolicy<any> | FieldReadFunction<any>,
 	createTask?: FieldPolicy<any> | FieldReadFunction<any>,
 	updateTask?: FieldPolicy<any> | FieldReadFunction<any>,
 	deleteTask?: FieldPolicy<any> | FieldReadFunction<any>,
@@ -40,12 +41,13 @@ export type MutationFieldPolicy = {
 	updateLabel?: FieldPolicy<any> | FieldReadFunction<any>,
 	deleteLabel?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type ProjectKeySpecifier = ('id' | 'name' | 'created' | 'tasks' | 'icon' | ProjectKeySpecifier)[];
+export type ProjectKeySpecifier = ('id' | 'name' | 'created' | 'tasks' | 'status' | 'icon' | ProjectKeySpecifier)[];
 export type ProjectFieldPolicy = {
 	id?: FieldPolicy<any> | FieldReadFunction<any>,
 	name?: FieldPolicy<any> | FieldReadFunction<any>,
 	created?: FieldPolicy<any> | FieldReadFunction<any>,
 	tasks?: FieldPolicy<any> | FieldReadFunction<any>,
+	status?: FieldPolicy<any> | FieldReadFunction<any>,
 	icon?: FieldPolicy<any> | FieldReadFunction<any>
 };
 export type QueryKeySpecifier = ('board' | 'isLoggedIn' | 'label' | 'labels' | 'project' | 'projects' | 'task' | 'tasks' | 'user' | 'users' | QueryKeySpecifier)[];

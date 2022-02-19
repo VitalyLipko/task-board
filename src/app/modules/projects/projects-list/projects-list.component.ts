@@ -69,4 +69,11 @@ export class ProjectsListComponent implements AfterViewInit, OnInit, OnDestroy {
   onCreate(): void {
     this.projectsService.create().pipe(takeUntil(this.unsubscribe)).subscribe();
   }
+
+  handleDelete(project: Project): void {
+    this.projectsService
+      .delete(project)
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe({ error: (err) => this.messageService.error(err.message) });
+  }
 }
