@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { InternalRefetchQueriesInclude } from '@apollo/client/core';
 import { Apollo } from 'apollo-angular';
 import { NzDrawerOptions, NzDrawerService } from 'ng-zorro-antd/drawer';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { Observable } from 'rxjs';
+import { NzModalService } from 'ng-zorro-antd/modal';
+import { Observable, tap } from 'rxjs';
 import { filter, map, switchMap } from 'rxjs/operators';
 
 import {
@@ -11,10 +13,12 @@ import {
   CreateTaskInput,
   Project,
   Task,
+  TaskStatusEnum,
   UpdateTaskInput,
 } from '../../core/graphql/graphql';
 import { errorHandler } from '../../core/operators';
 
+import ChangeTaskStatus from './graphql/change-task-status.mutation.graphql';
 import CreateTask from './graphql/create-task.mutation.graphql';
 import GetBoard from './graphql/get-board.query.graphql';
 import GetProjectPageInfo from './graphql/get-project-page-info.graphql';
@@ -29,6 +33,8 @@ export class TasksService {
     private apollo: Apollo,
     private messageService: NzMessageService,
     private drawerService: NzDrawerService,
+    private modalService: NzModalService,
+    private router: Router,
   ) {}
 
   getProjectPageInfo(id: string): Observable<Project> {
@@ -186,6 +192,75 @@ export class TasksService {
       .valueChanges.pipe(
         errorHandler(),
         map(({ data }) => data.board),
+      );
+  }
+
+  changeStatus(
+    id: string,
+    value: TaskStatusEnum,
+  ): Observable<boolean | undefined> {
+    return this.apollo
+      .mutate<{ changeTaskStatus: boolean }>({
+        mutation: ChangeTaskStatus,
+        variables: { id, value },
+        refetchQueries: [{ query: GetTask, variables: { id } }],
+      })
+      .pipe(
+        errorHandler(),
+        map(({ data }) => {
+          this.messageService.success(
+            `Task ${value === TaskStatusEnum.Open ? 'open' : 'close'}`,
+          );
+          return data?.changeTaskStatus;
+        }),
+      );
+  }
+
+  deleteTask({ id, title, parentId }: Task): Observable<boolean | undefined> {
+    return this.modalService
+      .confirm({
+        nzTitle: `Delete ${title}?`,
+        nzMaskClosable: false,
+        nzOkDanger: true,
+        nzOkText: 'Delete',
+        nzOnOk: () => true,
+      })
+      .afterClose.asObservable()
+      .pipe(
+        filter(Boolean),
+        switchMap(() =>
+          this.apollo.mutate<{ changeTaskStatus: boolean }>({
+            mutation: ChangeTaskStatus,
+            variables: { id, value: TaskStatusEnum.Deleted },
+            update(cache, { data }) {
+              const isDeleted = !!data?.changeTaskStatus;
+              const existingProjectInfo = cache.readQuery<{
+                project: Project;
+              }>({
+                query: GetProjectPageInfo,
+                variables: { id: parentId },
+              });
+              if (isDeleted && existingProjectInfo) {
+                const tasks = existingProjectInfo.project.tasks.filter(
+                  (task) => task.id !== id,
+                );
+                cache.writeQuery<{ project: Project }>({
+                  query: GetProjectPageInfo,
+                  variables: { id: parentId },
+                  data: { project: { ...existingProjectInfo.project, tasks } },
+                });
+              }
+            },
+          }),
+        ),
+        errorHandler(),
+        map(({ data }) => data?.changeTaskStatus),
+        tap((res) => {
+          if (res) {
+            this.messageService.success('Task deleted');
+            this.router.navigate([`/projects/${parentId}`]);
+          }
+        }),
       );
   }
 }

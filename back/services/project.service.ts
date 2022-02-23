@@ -2,13 +2,14 @@ import { ApolloError } from 'apollo-server-express';
 import isUndefined from 'lodash/isUndefined';
 import { LeanDocument, PopulateOptions } from 'mongoose';
 
-import { projectModel, ProjectModel } from '../models/db.schema';
+import { projectModel, ProjectModel, taskModel } from '../models/db.schema';
 import { ProjectStatusEnum } from '../models/project-status.enum';
 import {
   CreateProjectInput,
   Project,
   UpdateProjectInput,
 } from '../models/project.interface';
+import { TaskStatusEnum } from '../models/task-status.enum';
 
 import FileStorageService from './file-storage.service';
 
@@ -89,15 +90,18 @@ export default class ProjectService {
   async deleteProject(id: string): Promise<boolean> {
     const project = await ProjectService.findActiveProject(id);
     if (project) {
-      // TODO: close related tasks
       project.status = ProjectStatusEnum.Deleted;
       await project.save();
+      await taskModel.updateMany(
+        { parentId: id },
+        { status: TaskStatusEnum.Deleted },
+      );
       return true;
     }
     return false;
   }
 
-  private static findActiveProject(id: string) {
+  static findActiveProject(id: string) {
     return projectModel.findOne({ id, status: ProjectStatusEnum.Active });
   }
 }

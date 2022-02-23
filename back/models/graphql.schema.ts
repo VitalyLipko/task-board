@@ -5,8 +5,14 @@ export default gql`
   scalar HexColorCode
   scalar Upload
 
-  enum ProjectStatus {
+  enum ProjectStatusEnum {
     ACTIVE
+    DELETED
+  }
+
+  enum TaskStatusEnum {
+    OPEN
+    CLOSED
     DELETED
   }
 
@@ -40,7 +46,7 @@ export default gql`
     name: String!
     created: DateTime!
     tasks: [Task!]!
-    status: ProjectStatus!
+    status: ProjectStatusEnum!
     icon: File
   }
 
@@ -52,8 +58,8 @@ export default gql`
     parentId: String!
     assignees: [User!]!
     creator: User!
-    isOpen: Boolean!
     labels: [Label!]!
+    status: TaskStatusEnum!
   }
 
   type User {
@@ -85,7 +91,7 @@ export default gql`
     deleteProject(id: ID!): Boolean
     createTask(task: CreateTaskInput!): Task!
     updateTask(task: UpdateTaskInput!): Task
-    deleteTask(id: ID!): Boolean
+    changeTaskStatus(id: ID!, value: TaskStatusEnum!): Boolean
     login(username: String!, password: String!): String
     logout(id: ID): Boolean
     createUser(user: CreateUserInput): User!

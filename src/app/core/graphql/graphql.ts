@@ -80,7 +80,7 @@ export type Mutation = {
   deleteProject?: Maybe<Scalars['Boolean']>;
   createTask: Task;
   updateTask?: Maybe<Task>;
-  deleteTask?: Maybe<Scalars['Boolean']>;
+  changeTaskStatus?: Maybe<Scalars['Boolean']>;
   login?: Maybe<Scalars['String']>;
   logout?: Maybe<Scalars['Boolean']>;
   createUser: User;
@@ -117,8 +117,9 @@ export type MutationUpdateTaskArgs = {
 };
 
 
-export type MutationDeleteTaskArgs = {
+export type MutationChangeTaskStatusArgs = {
   id: Scalars['ID'];
+  value: TaskStatusEnum;
 };
 
 
@@ -168,11 +169,11 @@ export type Project = {
   name: Scalars['String'];
   created: Scalars['DateTime'];
   tasks: Array<Task>;
-  status: ProjectStatus;
+  status: ProjectStatusEnum;
   icon?: Maybe<File>;
 };
 
-export enum ProjectStatus {
+export enum ProjectStatusEnum {
   Active = 'ACTIVE',
   Deleted = 'DELETED'
 }
@@ -225,9 +226,15 @@ export type Task = {
   parentId: Scalars['String'];
   assignees: Array<User>;
   creator: User;
-  isOpen: Scalars['Boolean'];
   labels: Array<Label>;
+  status: TaskStatusEnum;
 };
+
+export enum TaskStatusEnum {
+  Open = 'OPEN',
+  Closed = 'CLOSED',
+  Deleted = 'DELETED'
+}
 
 export type UpdateLabelInput = {
   id: Scalars['ID'];

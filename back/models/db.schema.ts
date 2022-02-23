@@ -4,11 +4,12 @@ import { File } from './file.interface';
 import { Label } from './label.interface';
 import { ProjectStatusEnum } from './project-status.enum';
 import { Project } from './project.interface';
+import { TaskStatusEnum } from './task-status.enum';
 import { Task } from './task.interface';
 import { User } from './user.interface';
 
 export type ProjectModel = Project & Document;
-type TaskModel = Task & Document;
+export type TaskModel = Task & Document;
 export type UserModel = User & Document;
 export type LabelModel = Label & Document;
 
@@ -31,8 +32,8 @@ const taskSchema = new Schema<Task, Model<Task>, Task>(
     parentId: { type: Schema.Types.ObjectId, required: true },
     assignees: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     creator: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-    isOpen: { type: Boolean, default: true, required: true },
     labels: [{ type: Schema.Types.ObjectId, ref: 'Label' }],
+    status: { type: String, required: true, default: TaskStatusEnum.Open },
   },
   {
     toObject: {

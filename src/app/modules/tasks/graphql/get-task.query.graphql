@@ -13,11 +13,12 @@ query GetTask($id: ID!) {
       username
       fullName
     }
-    isOpen
+    status
     labels {
       id
       backgroundColor
       title
     }
+    parentId
   }
 }

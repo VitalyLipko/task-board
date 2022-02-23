@@ -21,4 +21,11 @@ export const typePolicies: TypedTypePolicies = {
       },
     },
   },
+  Project: {
+    fields: {
+      tasks: {
+        merge: false,
+      },
+    },
+  },
 };

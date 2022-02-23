@@ -1,7 +1,13 @@
+import { ApolloError } from 'apollo-server-express';
 import isUndefined from 'lodash/isUndefined';
-import mongoose, { LeanDocument, PopulateOptions } from 'mongoose';
+import mongoose, {
+  LeanDocument,
+  PopulateOptions,
+  QuerySelector,
+} from 'mongoose';
 
-import { taskModel, projectModel } from '../models/db.schema';
+import { TaskModel, taskModel } from '../models/db.schema';
+import { TaskStatusEnum } from '../models/task-status.enum';
 import {
   CreateTaskInput,
   Task,
@@ -10,6 +16,7 @@ import {
 import { User } from '../models/user.interface';
 
 import LabelService from './label.service';
+import ProjectService from './project.service';
 import UserService from './user.service';
 
 const { Types } = mongoose;
@@ -21,23 +28,41 @@ const taskPopulateOptions: Array<PopulateOptions> = [
   { path: 'creator' },
   { path: 'labels', options: { sort: { title: 'asc' } } },
 ];
+const statusQuerySelectorDefault: QuerySelector<TaskStatusEnum> = {
+  $not: { $eq: TaskStatusEnum.Deleted },
+};
 const labelService = new LabelService();
 const userService = new UserService();
 
 export default class TaskService {
   async getTasks(parentId: string): Promise<Array<Task>> {
     const objectId = new Types.ObjectId(parentId);
-    return taskModel.find({ parentId: objectId }).populate(taskPopulateOptions);
+    return taskModel
+      .find({ parentId: objectId, status: statusQuerySelectorDefault })
+      .populate(taskPopulateOptions);
   }
 
   async getTask(id: string): Promise<Task | null> {
-    return taskModel.findById(id).populate(taskPopulateOptions);
+    const task = await taskModel.findOne({
+      id,
+      status: statusQuerySelectorDefault,
+    });
+    if (task) {
+      return task.populate(taskPopulateOptions);
+    }
+    throw new ApolloError(`Task ${id} not found`);
   }
 
   async createTask(
     task: CreateTaskInput,
     contextUser: User | undefined,
   ): Promise<Task> {
+    const parentIdString = task.parentId.toString();
+    const parent = await ProjectService.findActiveProject(parentIdString);
+    if (!parent) {
+      throw new ApolloError(`Parent project ${parentIdString} not found`);
+    }
+
     const document = new taskModel({
       title: task.title,
       parentId: task.parentId,
@@ -61,12 +86,8 @@ export default class TaskService {
     await document.save();
     await document.populate(taskPopulateOptions);
 
-    const parent = await projectModel.findById(task.parentId);
-
-    if (parent) {
-      parent.tasks.push(document);
-      await parent.save();
-    }
+    parent.tasks.push(document);
+    await parent.save();
 
     return document;
   }
@@ -75,7 +96,7 @@ export default class TaskService {
     const prevTask = await taskModel.findById(task.id).populate('assignees');
 
     if (!prevTask) {
-      return null;
+      throw new ApolloError(`Task ${task.id} not found`);
     }
 
     if (task.assignees) {
@@ -100,23 +121,44 @@ export default class TaskService {
     return curTask.populate(taskPopulateOptions);
   }
 
-  async deleteTask(id: string): Promise<boolean> {
+  async changeStatus(id: string, value: TaskStatusEnum): Promise<boolean> {
     const task = await taskModel.findById(id);
-
     if (!task) {
-      return false;
+      throw new ApolloError(`Task ${id} not found`);
     }
 
-    const project = await projectModel
-      .findById(task.parentId)
-      .populate('tasks', 'id');
+    if (task.status === value || task.status === TaskStatusEnum.Deleted) {
+      throw new ApolloError('Action not allowed');
+    }
+
+    switch (value) {
+      case TaskStatusEnum.Deleted:
+        return this.deleteTask(task);
+      case TaskStatusEnum.Closed:
+      case TaskStatusEnum.Open:
+        task.status = value;
+        await task.save();
+        return true;
+      default:
+        return false;
+    }
+  }
+
+  private async deleteTask(task: TaskModel): Promise<boolean> {
+    const parentIdString = task.parentId.toString();
+    const project = await ProjectService.findActiveProject(
+      parentIdString,
+    ).populate('tasks', 'id');
     if (project) {
-      project.tasks = project.tasks.filter((task) => task && task.id !== id);
-
+      project.tasks = project.tasks.filter(
+        (item) => item && item.id !== task.id,
+      );
       await project.save();
-      await task.remove();
-    }
 
-    return true;
+      task.status = TaskStatusEnum.Deleted;
+      await task.save();
+      return true;
+    }
+    throw new ApolloError(`Parent project ${parentIdString} not found`);
   }
 }

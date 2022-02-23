@@ -1,9 +1,9 @@
 import {
-  Component,
-  OnInit,
   ChangeDetectionStrategy,
-  OnDestroy,
   ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
   ViewEncapsulation,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -12,7 +12,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
 
-import { Label, Task } from '../../../core/graphql/graphql';
+import { Label, Task, TaskStatusEnum } from '../../../core/graphql/graphql';
 import { LayoutService } from '../../../core/layout/layout.service';
 import { DropdownAction } from '../../../shared/dropdown-actions/dropdown-action.interface';
 import { TasksService } from '../tasks.service';
@@ -26,11 +26,33 @@ import { TasksService } from '../tasks.service';
 })
 export class TaskComponent implements OnInit, OnDestroy {
   task!: Task;
-  dropdownActions: Array<DropdownAction> = [
+  dropdownActions: Array<DropdownAction<Task>> = [
     {
       name: 'edit',
       label: 'Edit',
       action: this.handleEdit.bind(this),
+    },
+    {
+      name: 'open',
+      label: 'Open',
+      action: this.handleOpen.bind(this),
+      hide: (task) =>
+        !task ||
+        [TaskStatusEnum.Open, TaskStatusEnum.Deleted].includes(task.status),
+    },
+    {
+      name: 'close',
+      label: 'Close',
+      action: this.handleClose.bind(this),
+      hide: (task) =>
+        !task ||
+        [TaskStatusEnum.Closed, TaskStatusEnum.Deleted].includes(task.status),
+    },
+    {
+      name: 'delete',
+      label: 'Delete',
+      action: this.handleDelete.bind(this),
+      danger: true,
     },
   ];
   assignees!: Array<string>;
@@ -39,6 +61,28 @@ export class TaskComponent implements OnInit, OnDestroy {
   private unsubscribe = new Subject<void>();
   private initialAssignees!: Array<string>;
   private initialLabels!: Array<string>;
+
+  get color(): string | undefined {
+    switch (this.task.status) {
+      case TaskStatusEnum.Open:
+        return 'green';
+      case TaskStatusEnum.Closed:
+        return 'red';
+      default:
+        return undefined;
+    }
+  }
+
+  get title(): string | null {
+    switch (this.task.status) {
+      case TaskStatusEnum.Open:
+        return 'Open';
+      case TaskStatusEnum.Closed:
+        return 'Closed';
+      default:
+        return null;
+    }
+  }
 
   constructor(
     private route: ActivatedRoute,
@@ -58,8 +102,8 @@ export class TaskComponent implements OnInit, OnDestroy {
         ),
         takeUntil(this.unsubscribe),
       )
-      .subscribe(
-        (task) => {
+      .subscribe({
+        next: (task) => {
           this.task = task;
           this.assignees = this.task.assignees.map(({ id }) => id);
           this.labels = this.task.labels.map(({ id }) => id);
@@ -68,8 +112,8 @@ export class TaskComponent implements OnInit, OnDestroy {
           this.layoutService.title = this.task.title;
           this.cdr.markForCheck();
         },
-        (err) => this.messageService.error(err.message),
-      );
+        error: (err) => this.messageService.error(err.message),
+      });
   }
 
   ngOnDestroy(): void {
@@ -107,5 +151,28 @@ export class TaskComponent implements OnInit, OnDestroy {
 
   trackByFn(_: number, item: Label): string {
     return item.id;
+  }
+
+  handleClose(): void {
+    this.tasksService
+      .changeStatus(this.task.id, TaskStatusEnum.Closed)
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe({ error: (err) => this.messageService.error(err.message) });
+  }
+
+  handleOpen(): void {
+    this.tasksService
+      .changeStatus(this.task.id, TaskStatusEnum.Open)
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe({ error: (err) => this.messageService.error(err.message) });
+  }
+
+  handleDelete(): void {
+    this.tasksService
+      .deleteTask(this.task)
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe({
+        error: (err) => this.messageService.error(err.message),
+      });
   }
 }

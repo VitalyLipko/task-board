@@ -1,0 +1,3 @@
+mutation ChangeTaskStatus($id: ID!, $value: TaskStatusEnum!) {
+  changeTaskStatus(id: $id, value: $value)
+}

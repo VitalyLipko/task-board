@@ -76,9 +76,9 @@ export const resolvers: IResolvers<unknown, ContextPayload> = {
       authService.operationGuard(context, () =>
         taskService.updateTask(args.task),
       ),
-    deleteTask: (_, args, context) =>
+    changeTaskStatus: (_, { id, value }, context) =>
       authService.operationGuard(context, () =>
-        taskService.deleteTask(args.id),
+        taskService.changeStatus(id, value),
       ),
     login: (_, args, context) =>
       authService.login(args.username, args.password, context.res),

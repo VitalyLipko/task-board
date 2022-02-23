@@ -24,14 +24,14 @@ export type LabelFieldPolicy = {
 	backgroundColor?: FieldPolicy<any> | FieldReadFunction<any>,
 	isSystem?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type MutationKeySpecifier = ('createProject' | 'updateProject' | 'deleteProject' | 'createTask' | 'updateTask' | 'deleteTask' | 'login' | 'logout' | 'createUser' | 'updateUser' | 'deleteUser' | 'createLabel' | 'updateLabel' | 'deleteLabel' | MutationKeySpecifier)[];
+export type MutationKeySpecifier = ('createProject' | 'updateProject' | 'deleteProject' | 'createTask' | 'updateTask' | 'changeTaskStatus' | 'login' | 'logout' | 'createUser' | 'updateUser' | 'deleteUser' | 'createLabel' | 'updateLabel' | 'deleteLabel' | MutationKeySpecifier)[];
 export type MutationFieldPolicy = {
 	createProject?: FieldPolicy<any> | FieldReadFunction<any>,
 	updateProject?: FieldPolicy<any> | FieldReadFunction<any>,
 	deleteProject?: FieldPolicy<any> | FieldReadFunction<any>,
 	createTask?: FieldPolicy<any> | FieldReadFunction<any>,
 	updateTask?: FieldPolicy<any> | FieldReadFunction<any>,
-	deleteTask?: FieldPolicy<any> | FieldReadFunction<any>,
+	changeTaskStatus?: FieldPolicy<any> | FieldReadFunction<any>,
 	login?: FieldPolicy<any> | FieldReadFunction<any>,
 	logout?: FieldPolicy<any> | FieldReadFunction<any>,
 	createUser?: FieldPolicy<any> | FieldReadFunction<any>,
@@ -63,7 +63,7 @@ export type QueryFieldPolicy = {
 	user?: FieldPolicy<any> | FieldReadFunction<any>,
 	users?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type TaskKeySpecifier = ('id' | 'title' | 'description' | 'created' | 'parentId' | 'assignees' | 'creator' | 'isOpen' | 'labels' | TaskKeySpecifier)[];
+export type TaskKeySpecifier = ('id' | 'title' | 'description' | 'created' | 'parentId' | 'assignees' | 'creator' | 'labels' | 'status' | TaskKeySpecifier)[];
 export type TaskFieldPolicy = {
 	id?: FieldPolicy<any> | FieldReadFunction<any>,
 	title?: FieldPolicy<any> | FieldReadFunction<any>,
@@ -72,8 +72,8 @@ export type TaskFieldPolicy = {
 	parentId?: FieldPolicy<any> | FieldReadFunction<any>,
 	assignees?: FieldPolicy<any> | FieldReadFunction<any>,
 	creator?: FieldPolicy<any> | FieldReadFunction<any>,
-	isOpen?: FieldPolicy<any> | FieldReadFunction<any>,
-	labels?: FieldPolicy<any> | FieldReadFunction<any>
+	labels?: FieldPolicy<any> | FieldReadFunction<any>,
+	status?: FieldPolicy<any> | FieldReadFunction<any>
 };
 export type UserKeySpecifier = ('id' | 'username' | 'email' | 'firstName' | 'lastName' | 'fullName' | 'trashed' | UserKeySpecifier)[];
 export type UserFieldPolicy = {

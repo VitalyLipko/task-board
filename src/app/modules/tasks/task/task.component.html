@@ -11,11 +11,14 @@
     ></tb-description>
   </nz-card>
   <ng-template #extraTemplate>
-    <tb-dropdown-actions [tbActions]="dropdownActions"></tb-dropdown-actions>
+    <tb-dropdown-actions
+      [tbActions]="dropdownActions"
+      [tbContext]="task"
+    ></tb-dropdown-actions>
   </ng-template>
   <ng-template #titleTemplate>
-    <nz-tag class="tb-task-status" [nzColor]="task.isOpen ? 'green' : 'red'">
-      {{ task.isOpen ? 'Open' : 'Close' }}
+    <nz-tag class="tb-task-status" [nzColor]="color">
+      {{ title }}
     </nz-tag>
     <tb-task-creation-info [tbTask]="task"></tb-task-creation-info>
   </ng-template>

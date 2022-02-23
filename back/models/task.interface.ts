@@ -1,6 +1,7 @@
 import { Types, PopulatedDoc } from 'mongoose';
 
 import { Label } from './label.interface';
+import { TaskStatusEnum } from './task-status.enum';
 import { User } from './user.interface';
 
 export interface Task {
@@ -11,8 +12,8 @@ export interface Task {
   parentId: Types.ObjectId;
   assignees: Array<PopulatedDoc<User>>;
   creator: PopulatedDoc<User>;
-  isOpen: boolean;
   labels: Array<PopulatedDoc<Label>>;
+  status: TaskStatusEnum;
 }
 
 export interface CreateTaskInput {
