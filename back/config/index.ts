@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import dotenvExpand from 'dotenv-expand';
+import { expand } from 'dotenv-expand';
 
 const envFound = dotenv.config();
 
@@ -7,7 +7,7 @@ if (envFound.error) {
   throw new Error("Couldn't find .env file");
 }
 
-dotenvExpand(envFound);
+expand(envFound);
 
 export default {
   host: process.env.HOST as string,
