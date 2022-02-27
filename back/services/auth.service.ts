@@ -55,7 +55,7 @@ export default class AuthService {
 
     const user = await userService.getUser(id);
     if (user) {
-      redisService.saveRevokedToken(token);
+      await redisService.saveRevokedToken(token);
       res.clearCookie(JWT_COOKIE_NAME);
     }
 
