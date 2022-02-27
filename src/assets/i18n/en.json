@@ -25,7 +25,8 @@
     "project_created": "Project created",
     "edit_project": "Edit project",
     "project_updated": "Project updated",
-    "project_deleted": "Project deleted"
+    "project_deleted": "Project deleted",
+    "no_projects": "No projects"
   },
   "task": {
     "no_assignees": "No assignees",
