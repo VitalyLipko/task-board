@@ -1,59 +1,61 @@
-<div nz-row nzAlign="middle" nzJustify="center" class="tb-login-container">
-  <div nz-col nzSpan="14" class="tb-login-container-form">
-    <nz-card>
-      <span
-        nz-typography
-        nz-row
-        nzJustify="center"
-        class="tb-login-container-card-title"
-      >
-        Task board
-      </span>
-      <form nz-form (ngSubmit)="handleSubmit()" [formGroup]="form">
-        <nz-form-item>
-          <nz-form-control>
-            <nz-input-group nzPrefixIcon="user" nzSize="large">
-              <input
-                formControlName="username"
-                type="text"
-                nz-input
-                placeholder="Username"
-                autocomplete="username"
-              />
-            </nz-input-group>
-          </nz-form-control>
-        </nz-form-item>
-        <nz-form-item>
-          <nz-form-control>
-            <nz-input-group nzPrefixIcon="lock" nzSize="large">
-              <input
-                formControlName="password"
-                type="password"
-                nz-input
-                placeholder="Password"
-                autocomplete="current-password"
-              />
-            </nz-input-group>
-          </nz-form-control>
-        </nz-form-item>
+<ng-container *transloco="let t">
+  <div nz-row nzAlign="middle" nzJustify="center" class="tb-login-container">
+    <div nz-col nzSpan="14" class="tb-login-container-form">
+      <nz-card>
+        <span
+          nz-typography
+          nz-row
+          nzJustify="center"
+          class="tb-login-container-card-title"
+        >
+          {{ t('login.title') }}
+        </span>
+        <form nz-form (ngSubmit)="handleSubmit()" [formGroup]="form">
+          <nz-form-item>
+            <nz-form-control>
+              <nz-input-group nzPrefixIcon="user" nzSize="large">
+                <input
+                  formControlName="username"
+                  type="text"
+                  nz-input
+                  [placeholder]="t('login.username')"
+                  autocomplete="username"
+                />
+              </nz-input-group>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-control>
+              <nz-input-group nzPrefixIcon="lock" nzSize="large">
+                <input
+                  formControlName="password"
+                  type="password"
+                  nz-input
+                  [placeholder]="t('login.password')"
+                  autocomplete="current-password"
+                />
+              </nz-input-group>
+            </nz-form-control>
+          </nz-form-item>
+          <button
+            type="submit"
+            class="submit-button"
+            [disabled]="form.invalid"
+          ></button>
+        </form>
         <button
-          type="submit"
-          class="submit-button"
+          nz-button
+          nzType="primary"
+          nzBlock
+          nzSize="large"
+          (click)="handleSubmit()"
+          [nzLoading]="loading"
           [disabled]="form.invalid"
-        ></button>
-      </form>
-      <button
-        nz-button
-        nzType="primary"
-        nzBlock
-        nzSize="large"
-        (click)="handleSubmit()"
-        [nzLoading]="loading"
-        [disabled]="form.invalid"
-      >
-        Log in
-      </button>
-    </nz-card>
+        >
+          {{ t('login.log_in') }}
+        </button>
+      </nz-card>
+    </div>
+    <div nz-col nzSpan="10" class="tb-login-container-sider"></div>
   </div>
-  <div nz-col nzSpan="10" class="tb-login-container-sider"></div>
-</div>
+</ng-container>

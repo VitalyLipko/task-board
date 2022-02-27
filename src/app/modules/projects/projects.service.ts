@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { TranslocoService } from '@ngneat/transloco';
 import { Apollo } from 'apollo-angular';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { ModalOptions, NzModalService } from 'ng-zorro-antd/modal';
@@ -21,10 +22,23 @@ import { ProjectModalComponent } from './project-modal/project-modal.component';
 
 @Injectable()
 export class ProjectsService {
+  private readonly translations = {
+    createProject: this.translocoService.translate('project.create_project'),
+    create: this.translocoService.translate('common.create'),
+    cancel: this.translocoService.translate('common.cancel'),
+    projectCreated: this.translocoService.translate('project.project_created'),
+    save: this.translocoService.translate('common.save'),
+    editProject: this.translocoService.translate('project.edit_project'),
+    projectUpdated: this.translocoService.translate('project.project_updated'),
+    delete: this.translocoService.translate('common.delete'),
+    projectDeleted: this.translocoService.translate('project.project_deleted'),
+  };
+
   constructor(
     private apollo: Apollo,
     private modalService: NzModalService,
     private messageService: NzMessageService,
+    private translocoService: TranslocoService,
   ) {}
 
   getProjects(): Observable<Project[]> {
@@ -51,18 +65,18 @@ export class ProjectsService {
 
   create(): Observable<void> {
     const options: ModalOptions<ProjectModalComponent, CreateProjectInput> = {
-      nzTitle: 'Create project',
+      nzTitle: this.translations.createProject,
       nzMaskClosable: false,
       nzContent: ProjectModalComponent,
       nzFooter: [
         {
-          label: 'Cancel',
+          label: this.translations.cancel,
           onClick(contentComponentInstance?: ProjectModalComponent) {
             contentComponentInstance?.modalRef.close();
           },
         },
         {
-          label: 'Create',
+          label: this.translations.create,
           type: 'primary',
           disabled: (contentComponentInstance) =>
             !!contentComponentInstance?.form.invalid,
@@ -109,26 +123,26 @@ export class ProjectsService {
         ),
         errorHandler(),
         map(() => {
-          this.messageService.success('Project created');
+          this.messageService.success(this.translations.projectCreated);
         }),
       );
   }
 
   edit(id: string): Observable<void> {
     const options: ModalOptions<ProjectModalComponent, UpdateProjectInput> = {
-      nzTitle: 'Edit project',
+      nzTitle: this.translations.editProject,
       nzMaskClosable: false,
       nzContent: ProjectModalComponent,
       nzComponentParams: { tbId: id },
       nzFooter: [
         {
-          label: 'Cancel',
+          label: this.translations.cancel,
           onClick(contentComponentInstance?: ProjectModalComponent) {
             contentComponentInstance?.modalRef.close();
           },
         },
         {
-          label: 'Save',
+          label: this.translations.save,
           type: 'primary',
           disabled: (contentComponentInstance) =>
             !!contentComponentInstance?.disabled,
@@ -155,7 +169,7 @@ export class ProjectsService {
         ),
         errorHandler(),
         map(() => {
-          this.messageService.success('Project updated');
+          this.messageService.success(this.translations.projectUpdated);
         }),
       );
   }
@@ -163,10 +177,12 @@ export class ProjectsService {
   delete({ id, name }: Project): Observable<void> {
     return this.modalService
       .confirm({
-        nzTitle: `Delete ${name}?`,
+        nzTitle: this.translocoService.translate('common.delete_entity', {
+          entity: name,
+        }),
         nzMaskClosable: false,
         nzOkDanger: true,
-        nzOkText: 'Delete',
+        nzOkText: this.translations.delete,
         nzOnOk: () => true,
       })
       .afterClose.asObservable()
@@ -199,7 +215,7 @@ export class ProjectsService {
         ),
         map(({ data }) => {
           if (data?.deleteProject) {
-            this.messageService.success('Project deleted');
+            this.messageService.success(this.translations.projectDeleted);
           }
         }),
       );

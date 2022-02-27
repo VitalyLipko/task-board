@@ -7,6 +7,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { TranslocoService } from '@ngneat/transloco';
 import isEqual from 'lodash/isEqual';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Subject } from 'rxjs';
@@ -29,12 +30,12 @@ export class TaskComponent implements OnInit, OnDestroy {
   dropdownActions: Array<DropdownAction<Task>> = [
     {
       name: 'edit',
-      label: 'Edit',
+      label: this.translocoService.translate('common.edit'),
       action: this.handleEdit.bind(this),
     },
     {
       name: 'open',
-      label: 'Open',
+      label: this.translocoService.translate('task.open'),
       action: this.handleOpen.bind(this),
       hide: (task) =>
         !task ||
@@ -42,7 +43,7 @@ export class TaskComponent implements OnInit, OnDestroy {
     },
     {
       name: 'close',
-      label: 'Close',
+      label: this.translocoService.translate('task.close'),
       action: this.handleClose.bind(this),
       hide: (task) =>
         !task ||
@@ -50,7 +51,7 @@ export class TaskComponent implements OnInit, OnDestroy {
     },
     {
       name: 'delete',
-      label: 'Delete',
+      label: this.translocoService.translate('common.delete'),
       action: this.handleDelete.bind(this),
       danger: true,
     },
@@ -76,9 +77,9 @@ export class TaskComponent implements OnInit, OnDestroy {
   get title(): string | null {
     switch (this.task.status) {
       case TaskStatusEnum.Open:
-        return 'Open';
+        return this.translocoService.translate('task.open');
       case TaskStatusEnum.Closed:
-        return 'Closed';
+        return this.translocoService.translate('task.closed');
       default:
         return null;
     }
@@ -90,6 +91,7 @@ export class TaskComponent implements OnInit, OnDestroy {
     private layoutService: LayoutService,
     private messageService: NzMessageService,
     private cdr: ChangeDetectorRef,
+    private translocoService: TranslocoService,
   ) {
     this.layoutService.pageHeaderExtra = null;
   }

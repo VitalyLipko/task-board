@@ -6,6 +6,7 @@ import {
   DeleteOutline,
   ContainerOutline,
 } from '@ant-design/icons-angular/icons';
+import { TranslocoModule } from '@ngneat/transloco';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
@@ -55,6 +56,7 @@ import { ProjectsService } from './projects.service';
     NzPipesModule,
     NzTypographyModule,
     NzToolTipModule,
+    TranslocoModule,
   ],
   providers: [ProjectsService],
 })

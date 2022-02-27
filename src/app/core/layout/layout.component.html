@@ -1,71 +1,73 @@
-<nz-layout class="tb-layout-container">
-  <nz-header nz-row nzAlign="middle">
-    <nz-page-header
-      nz-col
-      nzFlex="1"
-      nzBackIcon
-      [nzTitle]="(layoutService.title$ | async) || ''"
-      (nzBack)="onBack()"
-    >
-      <nz-page-header-extra
-        *ngIf="layoutService.pageHeaderExtra$ | async as pageHeaderExtra"
+<ng-container *transloco="let t">
+  <nz-layout class="tb-layout-container">
+    <nz-header nz-row nzAlign="middle">
+      <nz-page-header
+        nz-col
+        nzFlex="1"
+        nzBackIcon
+        [nzTitle]="(layoutService.title$ | async) || ''"
+        (nzBack)="onBack()"
       >
-        <ng-container *ngTemplateOutlet="pageHeaderExtra"></ng-container>
-      </nz-page-header-extra>
-    </nz-page-header>
-    <nz-avatar
-      nzIcon="user"
-      nz-dropdown
-      nzPlacement="bottomRight"
-      nzTrigger="click"
-      [nzDropdownMenu]="menu"
-    ></nz-avatar>
-  </nz-header>
-  <nz-layout>
-    <nz-sider
-      nzCollapsible
-      nzBreakpoint="lg"
-      nzWidth="200px"
-      nzTheme="light"
-      [nzCollapsedWidth]="48"
-      [(nzCollapsed)]="siderCollapsed"
-    >
-      <ul nz-menu nzMode="inline" [nzInlineCollapsed]="siderCollapsed">
-        <li nz-menu-item nzMatchRouter>
-          <a routerLink="/projects">
-            <i nz-icon nzType="appstore"></i>
-            <span>Projects</span>
-          </a>
-        </li>
-        <li nz-menu-item nzMatchRouter>
-          <a routerLink="/users">
-            <i nz-icon nzType="user"></i>
-            <span>Users</span>
-          </a>
-        </li>
-      </ul>
-    </nz-sider>
-    <nz-content>
-      <nz-breadcrumb
-        *ngIf="breadcrumbService.breadcrumb$ | async as breadcrumb"
+        <nz-page-header-extra
+          *ngIf="layoutService.pageHeaderExtra$ | async as pageHeaderExtra"
+        >
+          <ng-container *ngTemplateOutlet="pageHeaderExtra"></ng-container>
+        </nz-page-header-extra>
+      </nz-page-header>
+      <nz-avatar
+        nzIcon="user"
+        nz-dropdown
+        nzPlacement="bottomRight"
+        nzTrigger="click"
+        [nzDropdownMenu]="menu"
+      ></nz-avatar>
+    </nz-header>
+    <nz-layout>
+      <nz-sider
+        nzCollapsible
+        nzBreakpoint="lg"
+        nzWidth="200px"
+        nzTheme="light"
+        [nzCollapsedWidth]="48"
+        [(nzCollapsed)]="siderCollapsed"
       >
-        <nz-breadcrumb-item *ngFor="let item of breadcrumb; last as isLast">
-          <ng-container *ngIf="isLast; else linkTemplate">
-            {{ item.label }}
-          </ng-container>
-          <ng-template #linkTemplate>
-            <a [routerLink]="item.url">
-              {{ item.label }}
+        <ul nz-menu nzMode="inline" [nzInlineCollapsed]="siderCollapsed">
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/projects">
+              <i nz-icon nzType="appstore"></i>
+              <span>{{ t('common.projects') }}</span>
             </a>
-          </ng-template>
-        </nz-breadcrumb-item>
-      </nz-breadcrumb>
-      <ng-content></ng-content>
-    </nz-content>
+          </li>
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/users">
+              <i nz-icon nzType="user"></i>
+              <span>{{ t('common.users') }}</span>
+            </a>
+          </li>
+        </ul>
+      </nz-sider>
+      <nz-content>
+        <nz-breadcrumb
+          *ngIf="breadcrumbService.breadcrumb$ | async as breadcrumb"
+        >
+          <nz-breadcrumb-item *ngFor="let item of breadcrumb; last as isLast">
+            <ng-container *ngIf="isLast; else linkTemplate">
+              {{ item.label }}
+            </ng-container>
+            <ng-template #linkTemplate>
+              <a [routerLink]="item.url">
+                {{ item.label }}
+              </a>
+            </ng-template>
+          </nz-breadcrumb-item>
+        </nz-breadcrumb>
+        <ng-content></ng-content>
+      </nz-content>
+    </nz-layout>
   </nz-layout>
-</nz-layout>
-<nz-dropdown-menu #menu="nzDropdownMenu">
-  <ul nz-menu>
-    <li nz-menu-item (click)="logout()">Log out</li>
-  </ul>
-</nz-dropdown-menu>
+  <nz-dropdown-menu #menu="nzDropdownMenu">
+    <ul nz-menu>
+      <li nz-menu-item (click)="logout()">{{ t('common.log_out') }}</li>
+    </ul>
+  </nz-dropdown-menu>
+</ng-container>

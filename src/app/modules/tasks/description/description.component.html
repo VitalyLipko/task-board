@@ -1,22 +1,24 @@
-<ng-container *ngIf="tbReadOnly; else editorTemplate">
-  <div
-    *ngIf="value; else emptyTemplate"
-    [innerHTML]="value | nzSanitizer: 'html'"
-  ></div>
-  <ng-template #emptyTemplate>
-    <nz-empty nzNotFoundContent="No description"></nz-empty>
+<ng-container *transloco="let t">
+  <ng-container *ngIf="tbReadOnly; else editorTemplate">
+    <div
+      *ngIf="value; else emptyTemplate"
+      [innerHTML]="value | nzSanitizer: 'html'"
+    ></div>
+    <ng-template #emptyTemplate>
+      <nz-empty [nzNotFoundContent]="t('task.no_description')"></nz-empty>
+    </ng-template>
+  </ng-container>
+  <ng-template #editorTemplate>
+    <div *ngIf="editor" class="tb-description-editor">
+      <tb-description-editor-toolbar
+        [tbEditor]="editor"
+      ></tb-description-editor-toolbar>
+      <div
+        tiptap
+        [editor]="editor"
+        [ngModel]="value"
+        (ngModelChange)="handleValueChange($event)"
+      ></div>
+    </div>
   </ng-template>
 </ng-container>
-<ng-template #editorTemplate>
-  <div *ngIf="editor" class="tb-description-editor">
-    <tb-description-editor-toolbar
-      [tbEditor]="editor"
-    ></tb-description-editor-toolbar>
-    <div
-      tiptap
-      [editor]="editor"
-      [ngModel]="value"
-      (ngModelChange)="handleValueChange($event)"
-    ></div>
-  </div>
-</ng-template>

@@ -1,58 +1,60 @@
-<ng-container *ngIf="tbInline; else selectTemplate">
-  <div class="tb-labels-select-inline">
-    <ng-container *ngFor="let label of labels; trackBy: trackByFn">
-      <ng-container
-        *ngTemplateOutlet="labelTemplate; context: { $implicit: label }"
-      ></ng-container>
-    </ng-container>
-  </div>
-</ng-container>
-<ng-template #selectTemplate>
-  <nz-select
-    nzMode="multiple"
-    nzPlaceHolder="Select labels"
-    [nzOptionHeightPx]="32"
-    [nzLoading]="loading"
-    [nzShowArrow]="true"
-    [nzOpen]="loading"
-    [ngModel]="value"
-    (ngModelChange)="handleValueChange($event)"
-    (nzOpenChange)="handleOpenChange($event)"
-  >
-    <nz-option
-      *ngFor="let label of labels; trackBy: trackByFn"
-      nzCustomContent
-      [nzLabel]="label.title"
-      [nzValue]="label.id"
+<ng-container *transloco="let t">
+  <ng-container *ngIf="tbInline; else selectTemplate">
+    <div class="tb-labels-select-inline">
+      <ng-container *ngFor="let label of labels; trackBy: trackByFn">
+        <ng-container
+          *ngTemplateOutlet="labelTemplate; context: { $implicit: label }"
+        ></ng-container>
+      </ng-container>
+    </div>
+  </ng-container>
+  <ng-template #selectTemplate>
+    <nz-select
+      nzMode="multiple"
+      [nzPlaceHolder]="t('task.select_labels')"
+      [nzOptionHeightPx]="32"
+      [nzLoading]="loading"
+      [nzShowArrow]="true"
+      [nzOpen]="loading"
+      [ngModel]="value"
+      (ngModelChange)="handleValueChange($event)"
+      (nzOpenChange)="handleOpenChange($event)"
     >
-      <ng-container
-        *ngTemplateOutlet="labelTemplate; context: { $implicit: label }"
-      ></ng-container>
-    </nz-option>
-  </nz-select>
-</ng-template>
-<ng-template #labelTemplate let-label>
-  <span
-    nz-row
-    nzAlign="middle"
-    [ngClass]="{
-      'tb-labels-select-inline-option': tbInline,
-      'tb-labels-select-inline-option-selected':
-        tbInline && hasSelected(label.id)
-    }"
-    (click)="handleClick(label.id)"
-  >
+      <nz-option
+        *ngFor="let label of labels; trackBy: trackByFn"
+        nzCustomContent
+        [nzLabel]="label.title"
+        [nzValue]="label.id"
+      >
+        <ng-container
+          *ngTemplateOutlet="labelTemplate; context: { $implicit: label }"
+        ></ng-container>
+      </nz-option>
+    </nz-select>
+  </ng-template>
+  <ng-template #labelTemplate let-label>
     <span
-      nz-col
-      nzFlex="8px"
-      class="tb-labels-select-option-color"
-      [style.background-color]="label.backgroundColor"
-    ></span>
-    <span nzFlex="1" nz-col nz-typography nzEllipsis>
-      {{ label.title }}
+      nz-row
+      nzAlign="middle"
+      [ngClass]="{
+        'tb-labels-select-inline-option': tbInline,
+        'tb-labels-select-inline-option-selected':
+          tbInline && hasSelected(label.id)
+      }"
+      (click)="handleClick(label.id)"
+    >
+      <span
+        nz-col
+        nzFlex="8px"
+        class="tb-labels-select-option-color"
+        [style.background-color]="label.backgroundColor"
+      ></span>
+      <span nzFlex="1" nz-col nz-typography nzEllipsis>
+        {{ label.title }}
+      </span>
+      <span *ngIf="tbInline && hasSelected(label.id)" nz-col nzFlex="24px">
+        <i nz-icon nzType="check"></i>
+      </span>
     </span>
-    <span *ngIf="tbInline && hasSelected(label.id)" nz-col nzFlex="24px">
-      <i nz-icon nzType="check"></i>
-    </span>
-  </span>
-</ng-template>
+  </ng-template>
+</ng-container>

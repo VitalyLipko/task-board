@@ -1,32 +1,40 @@
-<ng-container *ngIf="form; else spinTemplate">
-  <form
-    nz-form
-    nzLayout="vertical"
-    (ngSubmit)="onSubmit()"
-    [formGroup]="form"
-    nzNoColon
-  >
-    <nz-form-item>
-      <nz-form-label nzFor="project-name" nzRequired>Name</nz-form-label>
-      <nz-form-control>
-        <input
-          formControlName="name"
-          type="text"
-          placeholder="Name"
-          nz-input
-          id="project-name"
-        />
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-      <nz-form-label>Icon</nz-form-label>
-      <nz-form-control>
-        <tb-project-icon formControlName="icon"></tb-project-icon>
-      </nz-form-control>
-    </nz-form-item>
-    <button class="submit-button" type="submit" [disabled]="disabled"></button>
-  </form>
+<ng-container *transloco="let t">
+  <ng-container *ngIf="form; else spinTemplate">
+    <form
+      nz-form
+      nzLayout="vertical"
+      (ngSubmit)="onSubmit()"
+      [formGroup]="form"
+      nzNoColon
+    >
+      <nz-form-item>
+        <nz-form-label nzFor="project-name" nzRequired>
+          {{ t('project.name') }}
+        </nz-form-label>
+        <nz-form-control>
+          <input
+            formControlName="name"
+            type="text"
+            [placeholder]="t('project.name')"
+            nz-input
+            id="project-name"
+          />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label>{{ t('project.icon') }}</nz-form-label>
+        <nz-form-control>
+          <tb-project-icon formControlName="icon"></tb-project-icon>
+        </nz-form-control>
+      </nz-form-item>
+      <button
+        class="submit-button"
+        type="submit"
+        [disabled]="disabled"
+      ></button>
+    </form>
+  </ng-container>
+  <ng-template #spinTemplate>
+    <nz-spin nzSimple></nz-spin>
+  </ng-template>
 </ng-container>
-<ng-template #spinTemplate>
-  <nz-spin nzSimple></nz-spin>
-</ng-template>

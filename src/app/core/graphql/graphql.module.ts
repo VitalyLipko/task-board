@@ -1,4 +1,3 @@
-import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { ApolloClientOptions, InMemoryCache } from '@apollo/client/core';
 import { APOLLO_OPTIONS } from 'apollo-angular';
@@ -7,7 +6,6 @@ import { HttpLink } from 'apollo-angular/http';
 import { typePolicies } from './typePolicies';
 
 @NgModule({
-  imports: [HttpClientModule],
   providers: [
     {
       provide: APOLLO_OPTIONS,

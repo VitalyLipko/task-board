@@ -1,0 +1,75 @@
+{
+  "common": {
+    "projects": "Projects",
+    "users": "Users",
+    "log_out": "Log out",
+    "cancel": "Cancel",
+    "create": "Create",
+    "save": "Save",
+    "delete": "Delete",
+    "delete_entity": "Delete {{entity}}?",
+    "edit": "Edit",
+    "upload_placeholder": "Click or drag file to this area to upload"
+  },
+  "login": {
+    "log_in": "Log in",
+    "title": "Task board",
+    "username": "Username",
+    "password": "Password"
+  },
+  "project": {
+    "name": "Name",
+    "icon": "Icon",
+    "new_project": "New Project",
+    "create_project": "Create project",
+    "project_created": "Project created",
+    "edit_project": "Edit project",
+    "project_updated": "Project updated",
+    "project_deleted": "Project deleted"
+  },
+  "task": {
+    "no_assignees": "No assignees",
+    "select_assignees": "Select assignees",
+    "no_description": "No description",
+    "select_labels": "Select labels",
+    "assignees": "Assignees",
+    "no_labels": "No labels",
+    "created_by": "Created {{date}} by",
+    "title": "Title",
+    "description": "Description",
+    "labels": "labels",
+    "list": "List",
+    "board": "Board",
+    "no_tasks": "No tasks",
+    "new_task": "New task",
+    "edit_task": "Edit task",
+    "task_updated": "Task updated",
+    "create_task": "Create task",
+    "task_created": "Task created",
+    "status_changed": "Task {{status}}",
+    "task_deleted": "Task deleted",
+    "close": "Close",
+    "closed": "Closed",
+    "open": "Open",
+    "editor": {
+      "bold": "Bold",
+      "italic": "Italic",
+      "strike": "Strike"
+    }
+  },
+  "user": {
+    "first_name": "First name",
+    "last_name": "Last name",
+    "confirm_password": "Confirm password",
+    "password_dont_match": "Password don't match",
+    "email": "Email",
+    "name": "Name",
+    "actions": "Actions",
+    "new_user": "New user",
+    "create_user": "Create user",
+    "user_created": "User created",
+    "edit_user": "Edit user",
+    "user_updated": "User updated",
+    "user_deleted": "User deleted"
+  }
+}

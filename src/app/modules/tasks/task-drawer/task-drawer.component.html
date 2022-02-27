@@ -1,54 +1,65 @@
-<ng-container *ngIf="form; else spinTemplate">
-  <form nz-form nzLayout="vertical" (ngSubmit)="onSubmit()" [formGroup]="form">
-    <nz-form-item>
-      <nz-form-label nzNoColon nzFor="task-title" nzRequired>
-        Title
-      </nz-form-label>
-      <nz-form-control>
-        <input
-          formControlName="title"
-          type="text"
-          placeholder="Title"
-          nz-input
-          id="task-title"
-        />
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-      <nz-form-label nzNoColon>Description</nz-form-label>
-      <nz-form-control>
-        <tb-description formControlName="description"></tb-description>
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item *ngIf="form.get('assignees')">
-      <nz-form-label nzNoColon nzFor="assignees">Assignees</nz-form-label>
-      <nz-form-control>
-        <tb-assignees-select formControlName="assignees"></tb-assignees-select>
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item *ngIf="form.get('labels')">
-      <nz-form-label nzNoColon>Labels</nz-form-label>
-      <nz-form-control>
-        <tb-labels-select formControlName="labels"></tb-labels-select>
-      </nz-form-control>
-    </nz-form-item>
-    <button
-      class="submit-button"
-      type="submit"
-      [disabled]="form.invalid"
-    ></button>
-  </form>
-  <span nz-row nzJustify="end">
-    <button
-      nz-button
-      nzType="primary"
-      [disabled]="disabled"
-      (click)="onSubmit()"
+<ng-container *transloco="let t">
+  <ng-container *ngIf="form; else spinTemplate">
+    <form
+      nz-form
+      nzLayout="vertical"
+      (ngSubmit)="onSubmit()"
+      [formGroup]="form"
     >
-      {{ tbId ? 'Save' : 'Create' }}
-    </button>
-  </span>
+      <nz-form-item>
+        <nz-form-label nzNoColon nzFor="task-title" nzRequired>
+          {{ t('task.title') }}
+        </nz-form-label>
+        <nz-form-control>
+          <input
+            formControlName="title"
+            type="text"
+            [placeholder]="t('task.title')"
+            nz-input
+            id="task-title"
+          />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzNoColon>{{ t('task.description') }}</nz-form-label>
+        <nz-form-control>
+          <tb-description formControlName="description"></tb-description>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item *ngIf="form.get('assignees')">
+        <nz-form-label nzNoColon nzFor="assignees">
+          {{ t('task.assignees') }}
+        </nz-form-label>
+        <nz-form-control>
+          <tb-assignees-select
+            formControlName="assignees"
+          ></tb-assignees-select>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item *ngIf="form.get('labels')">
+        <nz-form-label nzNoColon>{{ t('task.labels') }}</nz-form-label>
+        <nz-form-control>
+          <tb-labels-select formControlName="labels"></tb-labels-select>
+        </nz-form-control>
+      </nz-form-item>
+      <button
+        class="submit-button"
+        type="submit"
+        [disabled]="form.invalid"
+      ></button>
+    </form>
+    <span nz-row nzJustify="end">
+      <button
+        nz-button
+        nzType="primary"
+        [disabled]="disabled"
+        (click)="onSubmit()"
+      >
+        {{ t(tbId ? 'common.save' : 'common.create') }}
+      </button>
+    </span>
+  </ng-container>
+  <ng-template #spinTemplate>
+    <nz-spin nzSimple></nz-spin>
+  </ng-template>
 </ng-container>
-<ng-template #spinTemplate>
-  <nz-spin nzSimple></nz-spin>
-</ng-template>

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
+import { TranslocoService } from '@ngneat/transloco';
 import { Apollo } from 'apollo-angular';
 import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
 import { filter, map, switchMap } from 'rxjs/operators';
@@ -22,25 +23,29 @@ export class BreadcrumbService {
     this._breadcrumb.next(value);
   }
 
-  constructor(private router: Router, private apollo: Apollo) {
+  constructor(
+    private router: Router,
+    private apollo: Apollo,
+    private translocoService: TranslocoService,
+  ) {
     let breadcrumb: Array<Breadcrumb>;
     this.router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),
         switchMap((event) => {
+          const urlAfterRedirects = (event as NavigationEnd).urlAfterRedirects;
+          const label = this.translocoService.translate(
+            urlAfterRedirects.startsWith('/projects')
+              ? 'common.projects'
+              : 'common.users',
+          );
           breadcrumb = [
             {
               url: '/',
-              label: (event as NavigationEnd).urlAfterRedirects.startsWith(
-                '/projects',
-              )
-                ? 'Projects'
-                : 'Users',
+              label,
             },
           ];
-          const segments = (event as NavigationEnd).urlAfterRedirects.split(
-            '/',
-          );
+          const segments = urlAfterRedirects.split('/');
           const projectId =
             segments[segments.findIndex((value) => value === 'projects') + 1];
           const taskId =

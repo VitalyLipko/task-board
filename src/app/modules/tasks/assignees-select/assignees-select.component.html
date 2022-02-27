@@ -1,62 +1,64 @@
-<ng-container *ngIf="tbInline; else selectTemplate">
-  <div class="tb-assignees-select-inline">
-    <ng-container *ngFor="let user of users; trackBy: trackByFn">
-      <ng-container
-        *ngTemplateOutlet="optionTemplate; context: { $implicit: user }"
-      ></ng-container>
-    </ng-container>
-  </div>
-</ng-container>
-<ng-template #selectTemplate>
-  <nz-select
-    nzMode="multiple"
-    nzPlaceHolder="Select assignees"
-    [nzOptionHeightPx]="54"
-    [nzLoading]="loading"
-    [nzShowArrow]="true"
-    [nzOpen]="loading"
-    [ngModel]="value"
-    (ngModelChange)="handleValueChange($event)"
-    (nzOpenChange)="handleOpenChange($event)"
-  >
-    <nz-option
-      *ngFor="let user of users; trackBy: trackByFn"
-      nzCustomContent
-      [nzLabel]="user.fullName"
-      [nzValue]="user.id"
+<ng-container *transloco="let t">
+  <ng-container *ngIf="tbInline; else selectTemplate">
+    <div class="tb-assignees-select-inline">
+      <ng-container *ngFor="let user of users; trackBy: trackByFn">
+        <ng-container
+          *ngTemplateOutlet="optionTemplate; context: { $implicit: user }"
+        ></ng-container>
+      </ng-container>
+    </div>
+  </ng-container>
+  <ng-template #selectTemplate>
+    <nz-select
+      nzMode="multiple"
+      [nzPlaceHolder]="t('task.select_assignees')"
+      [nzOptionHeightPx]="54"
+      [nzLoading]="loading"
+      [nzShowArrow]="true"
+      [nzOpen]="loading"
+      [ngModel]="value"
+      (ngModelChange)="handleValueChange($event)"
+      (nzOpenChange)="handleOpenChange($event)"
     >
-      <ng-container
-        *ngTemplateOutlet="optionTemplate; context: { $implicit: user }"
-      ></ng-container>
-    </nz-option>
-  </nz-select>
-</ng-template>
-<ng-template #optionTemplate let-user>
-  <div
-    nz-row
-    nzAlign="middle"
-    [ngClass]="{
-      'tb-assignees-select-inline-option': tbInline,
-      'tb-assignees-select-inline-option-selected':
-        tbInline && hasSelected(user.id)
-    }"
-    (click)="handleClick(user.id)"
-  >
-    <div nz-col nzFlex="36px" class="tb-assignees-select-option-avatar">
-      <tb-avatar
-        [tbSize]="36"
-        [tbFullName]="user.fullName"
-        [tbShowTooltip]="false"
-      ></tb-avatar>
+      <nz-option
+        *ngFor="let user of users; trackBy: trackByFn"
+        nzCustomContent
+        [nzLabel]="user.fullName"
+        [nzValue]="user.id"
+      >
+        <ng-container
+          *ngTemplateOutlet="optionTemplate; context: { $implicit: user }"
+        ></ng-container>
+      </nz-option>
+    </nz-select>
+  </ng-template>
+  <ng-template #optionTemplate let-user>
+    <div
+      nz-row
+      nzAlign="middle"
+      [ngClass]="{
+        'tb-assignees-select-inline-option': tbInline,
+        'tb-assignees-select-inline-option-selected':
+          tbInline && hasSelected(user.id)
+      }"
+      (click)="handleClick(user.id)"
+    >
+      <div nz-col nzFlex="36px" class="tb-assignees-select-option-avatar">
+        <tb-avatar
+          [tbSize]="36"
+          [tbFullName]="user.fullName"
+          [tbShowTooltip]="false"
+        ></tb-avatar>
+      </div>
+      <div nz-col nzFlex="1" class="tb-assignees-select-option-info">
+        <span nz-typography nz-row nzEllipsis>{{ user.fullName }}</span>
+        <span nz-typography nzType="secondary" nz-row nzEllipsis>
+          {{ user.username }}
+        </span>
+      </div>
+      <div *ngIf="tbInline && hasSelected(user.id)" nz-col nzFlex="24px">
+        <i nz-icon nzType="check"></i>
+      </div>
     </div>
-    <div nz-col nzFlex="1" class="tb-assignees-select-option-info">
-      <span nz-typography nz-row nzEllipsis>{{ user.fullName }}</span>
-      <span nz-typography nzType="secondary" nz-row nzEllipsis>
-        {{ user.username }}
-      </span>
-    </div>
-    <div *ngIf="tbInline && hasSelected(user.id)" nz-col nzFlex="24px">
-      <i nz-icon nzType="check"></i>
-    </div>
-  </div>
-</ng-template>
+  </ng-template>
+</ng-container>

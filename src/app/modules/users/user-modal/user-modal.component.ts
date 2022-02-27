@@ -72,14 +72,14 @@ export class UserModalComponent implements OnInit, OnDestroy {
       of(undefined),
     )
       .pipe(takeUntil(this.unsubscribe))
-      .subscribe(
-        (user) => {
+      .subscribe({
+        next: (user) => {
           this.user = user;
           this.createForm();
           this.cdr.markForCheck();
         },
-        (err) => this.messageService.error(err.message),
-      );
+        error: (err) => this.messageService.error(err.message),
+      });
   }
 
   ngOnDestroy(): void {

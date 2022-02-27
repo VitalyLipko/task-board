@@ -5,10 +5,12 @@ import { Task } from '../../../core/graphql/graphql';
 @Component({
   selector: 'tb-task-creation-info',
   template: `
-    <span nz-typography class="tb-task-creation-info">
-      Created {{ tbTask.created | date }} by
-    </span>
-    <tb-user-inline-info [tbUser]="tbTask.creator"></tb-user-inline-info>
+    <ng-container *transloco="let t">
+      <span nz-typography class="tb-task-creation-info">
+        {{ t('task.created_by', { date: tbTask.created | date }) }}
+      </span>
+      <tb-user-inline-info [tbUser]="tbTask.creator"></tb-user-inline-info>
+    </ng-container>
   `,
   styles: [
     `

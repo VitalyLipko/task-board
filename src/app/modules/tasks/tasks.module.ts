@@ -9,6 +9,7 @@ import {
   StrikethroughOutline,
   MoreOutline,
 } from '@ant-design/icons-angular/icons';
+import { TranslocoModule } from '@ngneat/transloco';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCardModule } from 'ng-zorro-antd/card';
@@ -97,6 +98,7 @@ import { TasksService } from './tasks.service';
     LabelModule,
     NzPipesModule,
     DragDropModule,
+    TranslocoModule,
   ],
   providers: [TasksService],
 })

@@ -4,6 +4,7 @@ import {
   Input,
   ViewEncapsulation,
 } from '@angular/core';
+import { TranslocoService } from '@ngneat/transloco';
 import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
 
 import { User } from '../../../core/graphql/graphql';
@@ -42,7 +43,10 @@ import { User } from '../../../core/graphql/graphql';
 export class AssigneesComponent {
   @Input() tbAssignees!: Array<User>;
   @Input() tbSize: NzSizeLDSType | number = 'default';
-  @Input() tbEmptyPlaceholder: string | null = 'No assignees';
+  @Input() tbEmptyPlaceholder: string | null =
+    this.translocoService.translate('task.no_assignees');
+
+  constructor(private translocoService: TranslocoService) {}
 
   trackByFn(_: number, item: User): string {
     return item.id;

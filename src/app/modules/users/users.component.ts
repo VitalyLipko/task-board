@@ -8,6 +8,7 @@ import {
   TemplateRef,
   AfterViewInit,
 } from '@angular/core';
+import { TranslocoService } from '@ngneat/transloco';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -30,12 +31,12 @@ export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
   dropdownActions: Array<DropdownAction<User>> = [
     {
       name: 'edit',
-      label: 'Edit',
+      label: this.translocoService.translate('common.edit'),
       action: this.handleEdit.bind(this),
     },
     {
       name: 'delete',
-      label: 'Delete',
+      label: this.translocoService.translate('common.delete'),
       action: this.handleDelete.bind(this),
       danger: true,
       hide: this.hideActionHandler.bind(this),
@@ -52,20 +53,21 @@ export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
     private cdr: ChangeDetectorRef,
     private usersService: UsersService,
     private messageService: NzMessageService,
+    private translocoService: TranslocoService,
   ) {}
 
   ngOnInit(): void {
     this.usersService
       .getUsersPageData()
       .pipe(takeUntil(this.unsubscribe))
-      .subscribe(
-        ({ users, user }) => {
+      .subscribe({
+        next: ({ users, user }) => {
           this.users = users;
           this.currentUser = user;
           this.cdr.markForCheck();
         },
-        (err) => this.messageService.error(err.message),
-      );
+        error: (err) => this.messageService.error(err.message),
+      });
   }
 
   ngOnDestroy(): void {
@@ -74,7 +76,7 @@ export class UsersComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.layoutService.title = 'Users';
+    this.layoutService.title = this.translocoService.translate('common.users');
     this.layoutService.pageHeaderExtra = this.createButtonTemplate;
   }
 

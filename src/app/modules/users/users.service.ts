@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { TranslocoService } from '@ngneat/transloco';
 import { Apollo } from 'apollo-angular';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { ModalOptions, NzModalService } from 'ng-zorro-antd/modal';
@@ -21,10 +22,22 @@ import { UserModalComponent } from './user-modal/user-modal.component';
 
 @Injectable()
 export class UsersService {
+  private readonly translations = {
+    createUser: this.translocoService.translate('user.create_user'),
+    cancel: this.translocoService.translate('common.cancel'),
+    create: this.translocoService.translate('common.create'),
+    userCreated: this.translocoService.translate('user.user_created'),
+    editUser: this.translocoService.translate('user.edit_user'),
+    save: this.translocoService.translate('common.save'),
+    userUpdated: this.translocoService.translate('user.user_updated'),
+    delete: this.translocoService.translate('common.delete'),
+    userDeleted: this.translocoService.translate('user.user_deleted'),
+  };
   constructor(
     private apollo: Apollo,
     private modalService: NzModalService,
     private messageService: NzMessageService,
+    private translocoService: TranslocoService,
   ) {}
 
   getUsersPageData(): Observable<{ users: Array<User>; user: User }> {
@@ -53,18 +66,18 @@ export class UsersService {
 
   create(): Observable<void> {
     const options: ModalOptions<UserModalComponent, CreateUserInput> = {
-      nzTitle: 'Create user',
+      nzTitle: this.translations.createUser,
       nzMaskClosable: false,
       nzContent: UserModalComponent,
       nzFooter: [
         {
-          label: 'Cancel',
+          label: this.translations.cancel,
           onClick(contentComponentInstance: UserModalComponent) {
             contentComponentInstance.modalRef.close();
           },
         },
         {
-          label: 'Create',
+          label: this.translations.create,
           type: 'primary',
           disabled: (contentComponentInstance) =>
             !!contentComponentInstance?.form.invalid,
@@ -107,26 +120,26 @@ export class UsersService {
         ),
         errorHandler(),
         map(() => {
-          this.messageService.success('User created');
+          this.messageService.success(this.translations.userCreated);
         }),
       );
   }
 
   edit(id: string): Observable<void> {
     const options: ModalOptions<UserModalComponent, UpdateUserInput> = {
-      nzTitle: 'Edit user',
+      nzTitle: this.translations.editUser,
       nzMaskClosable: false,
       nzContent: UserModalComponent,
       nzComponentParams: { tbId: id },
       nzFooter: [
         {
-          label: 'Cancel',
+          label: this.translations.cancel,
           onClick(contentComponentInstance: UserModalComponent) {
             contentComponentInstance.modalRef.close();
           },
         },
         {
-          label: 'Save',
+          label: this.translations.save,
           type: 'primary',
           disabled: (contentComponentInstance) =>
             !!contentComponentInstance?.disabled,
@@ -146,7 +159,7 @@ export class UsersService {
         ),
         errorHandler(),
         map(() => {
-          this.messageService.success('User updated');
+          this.messageService.success(this.translations.userUpdated);
         }),
       );
   }
@@ -154,10 +167,12 @@ export class UsersService {
   delete(user: User): Observable<void> {
     return this.modalService
       .confirm({
-        nzTitle: `Delete ${user.fullName}?`,
+        nzTitle: this.translocoService.translate('common.delete_entity', {
+          entity: user.fullName,
+        }),
         nzMaskClosable: false,
         nzOkDanger: true,
-        nzOkText: 'Delete',
+        nzOkText: this.translations.delete,
         nzOnOk: () => true,
       })
       .afterClose.asObservable()
@@ -192,7 +207,7 @@ export class UsersService {
         ),
         errorHandler(),
         map(() => {
-          this.messageService.success('User deleted');
+          this.messageService.success(this.translations.userDeleted);
         }),
       );
   }

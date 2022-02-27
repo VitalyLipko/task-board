@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { InternalRefetchQueriesInclude } from '@apollo/client/core';
+import { TranslocoService } from '@ngneat/transloco';
 import { Apollo } from 'apollo-angular';
 import { NzDrawerOptions, NzDrawerService } from 'ng-zorro-antd/drawer';
 import { NzMessageService } from 'ng-zorro-antd/message';
@@ -29,12 +30,21 @@ import { TaskDrawerComponent } from './task-drawer/task-drawer.component';
 
 @Injectable()
 export class TasksService {
+  private readonly translations = {
+    createTask: this.translocoService.translate('task.create_task'),
+    taskCreated: this.translocoService.translate('task.task_created'),
+    editTask: this.translocoService.translate('task.edit_task'),
+    taskUpdated: this.translocoService.translate('task.task_updated'),
+    delete: this.translocoService.translate('common.delete'),
+    taskDeleted: this.translocoService.translate('task.task_deleted'),
+  };
   constructor(
     private apollo: Apollo,
     private messageService: NzMessageService,
     private drawerService: NzDrawerService,
     private modalService: NzModalService,
     private router: Router,
+    private translocoService: TranslocoService,
   ) {}
 
   getProjectPageInfo(id: string): Observable<Project> {
@@ -76,7 +86,7 @@ export class TasksService {
 
   create(parentId: string): Observable<void> {
     const options: NzDrawerOptions<TaskDrawerComponent> = {
-      nzTitle: 'Create task',
+      nzTitle: this.translations.createTask,
       nzMaskClosable: false,
       nzContent: TaskDrawerComponent,
       nzWidth: 500,
@@ -121,14 +131,14 @@ export class TasksService {
         ),
         errorHandler(),
         map(() => {
-          this.messageService.success('Task created');
+          this.messageService.success(this.translations.taskCreated);
         }),
       );
   }
 
   edit(id: string): Observable<void> {
     const options: NzDrawerOptions<TaskDrawerComponent> = {
-      nzTitle: 'Edit task',
+      nzTitle: this.translations.editTask,
       nzContent: TaskDrawerComponent,
       nzContentParams: { tbId: id },
       nzMaskClosable: false,
@@ -145,7 +155,7 @@ export class TasksService {
       ),
       errorHandler(),
       map(() => {
-        this.messageService.success('Task updated');
+        this.messageService.success(this.translations.taskUpdated);
       }),
     );
   }
@@ -208,9 +218,11 @@ export class TasksService {
       .pipe(
         errorHandler(),
         map(({ data }) => {
-          this.messageService.success(
-            `Task ${value === TaskStatusEnum.Open ? 'open' : 'close'}`,
+          const message = this.translocoService.translate(
+            'task.status_changed',
+            { status: value === TaskStatusEnum.Open ? 'open' : 'close' },
           );
+          this.messageService.success(message);
           return data?.changeTaskStatus;
         }),
       );
@@ -219,10 +231,12 @@ export class TasksService {
   deleteTask({ id, title, parentId }: Task): Observable<boolean | undefined> {
     return this.modalService
       .confirm({
-        nzTitle: `Delete ${title}?`,
+        nzTitle: this.translocoService.translate('common.delete_entity', {
+          entity: title,
+        }),
         nzMaskClosable: false,
         nzOkDanger: true,
-        nzOkText: 'Delete',
+        nzOkText: this.translations.delete,
         nzOnOk: () => true,
       })
       .afterClose.asObservable()
@@ -257,7 +271,7 @@ export class TasksService {
         map(({ data }) => data?.changeTaskStatus),
         tap((res) => {
           if (res) {
-            this.messageService.success('Task deleted');
+            this.messageService.success(this.translations.taskDeleted);
             this.router.navigate([`/projects/${parentId}`]);
           }
         }),

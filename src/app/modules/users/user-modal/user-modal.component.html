@@ -1,104 +1,112 @@
-<ng-container *ngIf="form; else spinTemplate">
-  <form
-    nz-form
-    nzLayout="vertical"
-    (ngSubmit)="onSubmit()"
-    [formGroup]="form"
-    autocomplete="off"
-  >
-    <nz-form-item *ngIf="form.get('username')">
-      <nz-form-label nzNoColon nzFor="user-name" nzRequired>
-        Username
-      </nz-form-label>
-      <nz-form-control>
-        <input
-          formControlName="username"
-          type="text"
-          placeholder="Username"
-          nz-input
-          id="user-name"
-        />
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-      <nz-form-label nzNoColon nzFor="first-name" nzRequired>
-        First name
-      </nz-form-label>
-      <nz-form-control>
-        <input
-          formControlName="firstName"
-          type="text"
-          placeholder="First name"
-          nz-input
-          id="first-name"
-        />
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-      <nz-form-label nzNoColon nzFor="last-name" nzRequired>
-        Last name
-      </nz-form-label>
-      <nz-form-control>
-        <input
-          formControlName="lastName"
-          type="text"
-          placeholder="Last name"
-          nz-input
-          id="last-name"
-        />
-      </nz-form-control>
-    </nz-form-item>
-    <ng-container *ngIf="form.get('password')">
-      <nz-form-item>
-        <nz-form-label nzNoColon nzFor="password" nzRequired>
-          Password
+<ng-container *transloco="let t">
+  <ng-container *ngIf="form; else spinTemplate">
+    <form
+      nz-form
+      nzLayout="vertical"
+      (ngSubmit)="onSubmit()"
+      [formGroup]="form"
+      autocomplete="off"
+    >
+      <nz-form-item *ngIf="form.get('username')">
+        <nz-form-label nzNoColon nzFor="user-name" nzRequired>
+          {{ t('login.username') }}
         </nz-form-label>
         <nz-form-control>
           <input
-            formControlName="password"
-            type="password"
-            placeholder="Password"
-            autocomplete="new-password"
+            formControlName="username"
+            type="text"
+            [placeholder]="t('login.username')"
             nz-input
-            id="password"
+            id="user-name"
           />
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
-        <nz-form-label nzNoColon nzFor="confirm-password" nzRequired>
-          Confirm password
+        <nz-form-label nzNoColon nzFor="first-name" nzRequired>
+          {{ t('user.first_name') }}
         </nz-form-label>
-        <nz-form-control [nzErrorTip]="confirmPasswordTemplate">
+        <nz-form-control>
           <input
-            formControlName="confirmPassword"
-            type="password"
-            placeholder="Confirm password"
+            formControlName="firstName"
+            type="text"
+            [placeholder]="t('user.first_name')"
             nz-input
-            id="confirm-password"
+            id="first-name"
           />
-          <ng-template #confirmPasswordTemplate let-control>
-            <ng-container *ngIf="control.hasError('confirmPassword')">
-              Passwords don't match
-            </ng-container>
-          </ng-template>
         </nz-form-control>
       </nz-form-item>
-    </ng-container>
-    <nz-form-item>
-      <nz-form-label nzNoColon nzFor="email" nzRequired>Email</nz-form-label>
-      <nz-form-control>
-        <input
-          formControlName="email"
-          type="email"
-          placeholder="Email"
-          nz-input
-          id="email"
-        />
-      </nz-form-control>
-    </nz-form-item>
-    <button class="submit-button" type="submit" [disabled]="disabled"></button>
-  </form>
+      <nz-form-item>
+        <nz-form-label nzNoColon nzFor="last-name" nzRequired>
+          {{ t('user.last_name') }}
+        </nz-form-label>
+        <nz-form-control>
+          <input
+            formControlName="lastName"
+            type="text"
+            [placeholder]="t('user.last_name')"
+            nz-input
+            id="last-name"
+          />
+        </nz-form-control>
+      </nz-form-item>
+      <ng-container *ngIf="form.get('password')">
+        <nz-form-item>
+          <nz-form-label nzNoColon nzFor="password" nzRequired>
+            {{ t('login.password') }}
+          </nz-form-label>
+          <nz-form-control>
+            <input
+              formControlName="password"
+              type="password"
+              [placeholder]="t('login.password')"
+              autocomplete="new-password"
+              nz-input
+              id="password"
+            />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label nzNoColon nzFor="confirm-password" nzRequired>
+            {{ t('user.confirm_password') }}
+          </nz-form-label>
+          <nz-form-control [nzErrorTip]="confirmPasswordTemplate">
+            <input
+              formControlName="confirmPassword"
+              type="password"
+              [placeholder]="t('user.confirm_password')"
+              nz-input
+              id="confirm-password"
+            />
+            <ng-template #confirmPasswordTemplate let-control>
+              <ng-container *ngIf="control.hasError('confirmPassword')">
+                {{ t('user.password_dont_match') }}
+              </ng-container>
+            </ng-template>
+          </nz-form-control>
+        </nz-form-item>
+      </ng-container>
+      <nz-form-item>
+        <nz-form-label nzNoColon nzFor="email" nzRequired>
+          {{ t('user.email') }}
+        </nz-form-label>
+        <nz-form-control>
+          <input
+            formControlName="email"
+            type="email"
+            [placeholder]="t('user.email')"
+            nz-input
+            id="email"
+          />
+        </nz-form-control>
+      </nz-form-item>
+      <button
+        class="submit-button"
+        type="submit"
+        [disabled]="disabled"
+      ></button>
+    </form>
+  </ng-container>
+  <ng-template #spinTemplate>
+    <nz-spin nzSimple></nz-spin>
+  </ng-template>
 </ng-container>
-<ng-template #spinTemplate>
-  <nz-spin nzSimple></nz-spin>
-</ng-template>

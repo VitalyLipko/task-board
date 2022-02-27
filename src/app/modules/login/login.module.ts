@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { UserOutline, LockOutline } from '@ant-design/icons-angular/icons';
+import { TranslocoModule } from '@ngneat/transloco';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzFormModule } from 'ng-zorro-antd/form';
@@ -28,6 +29,7 @@ import { LoginComponent } from './login.component';
     NzButtonModule,
     NzMessageModule,
     NzTypographyModule,
+    TranslocoModule,
   ],
 })
 export class LoginModule {}

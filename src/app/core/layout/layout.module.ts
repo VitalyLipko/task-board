@@ -6,6 +6,7 @@ import {
   ArrowLeftOutline,
   AppstoreOutline,
 } from '@ant-design/icons-angular/icons';
+import { TranslocoModule } from '@ngneat/transloco';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -32,6 +33,7 @@ import { LayoutComponent } from './layout.component';
     NzDropDownModule,
     NzBreadCrumbModule,
     RouterModule,
+    TranslocoModule,
   ],
   exports: [LayoutComponent],
 })

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgModule, SkipSelf, Optional } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -8,11 +8,17 @@ import { WithCredentialsInterceptor } from './interceptors/with-credentials.inte
 import { LayoutModule } from './layout/layout.module';
 import { AuthService } from './services/auth.service';
 import { BreadcrumbService } from './services/breadcrumb.service';
+import { TranslocoRootModule } from './transloco-root.module';
 
 @NgModule({
-  declarations: [],
-  imports: [CommonModule, GraphQLModule, BrowserAnimationsModule],
-  exports: [GraphQLModule, LayoutModule],
+  imports: [
+    CommonModule,
+    HttpClientModule,
+    TranslocoRootModule,
+    GraphQLModule,
+    BrowserAnimationsModule,
+  ],
+  exports: [LayoutModule],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
