@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Editor } from '@tiptap/core';
+import { CharacterCount } from '@tiptap/extension-character-count';
 import StarterKit from '@tiptap/starter-kit';
 
 @Component({
@@ -42,7 +43,7 @@ export class DescriptionComponent
   ngOnInit(): void {
     if (!this.tbReadOnly) {
       this.editor = new Editor({
-        extensions: [StarterKit],
+        extensions: [StarterKit, CharacterCount],
       });
     }
   }
@@ -67,7 +68,10 @@ export class DescriptionComponent
   }
 
   handleValueChange(value: string): void {
-    this.value = this.editor && this.editor.getCharacterCount() ? value : null;
+    this.value =
+      this.editor && this.editor.storage.characterCount.characters()
+        ? value
+        : null;
     this.onChange(this.value);
     this.onTouched();
   }
