@@ -1,12 +1,12 @@
 import mongoose, { Document, Model } from 'mongoose';
 
-import { File } from './file.interface';
-import { Label } from './label.interface';
-import { ProjectStatusEnum } from './project-status.enum';
-import { Project } from './project.interface';
-import { TaskStatusEnum } from './task-status.enum';
-import { Task } from './task.interface';
-import { User } from './user.interface';
+import { ProjectStatusEnum } from '../enums/project-status.enum';
+import { TaskStatusEnum } from '../enums/task-status.enum';
+import { File } from '../interfaces/file.interface';
+import { Label } from '../interfaces/label.interface';
+import { Project } from '../interfaces/project.interface';
+import { Task } from '../interfaces/task.interface';
+import { User } from '../interfaces/user.interface';
 
 export type ProjectModel = Project & Document;
 export type TaskModel = Task & Document;

@@ -1,13 +1,13 @@
 import { ApolloError, AuthenticationError } from 'apollo-server-express';
-import { DecodedToken } from 'back/models/decoded-token.interface';
+import { DecodedToken } from 'back/models/interfaces/decoded-token.interface';
 import bcrypt from 'bcrypt';
 import express from 'express';
 import jsonwebtoken from 'jsonwebtoken';
 import { v4 as uuidv4 } from 'uuid';
 
 import config from '../config';
-import { ContextPayload } from '../models/context-payload.interface';
-import { User } from '../models/user.interface';
+import { ContextPayload } from '../models/interfaces/context-payload.interface';
+import { User } from '../models/interfaces/user.interface';
 
 import RedisService from './redis.service';
 import UserService from './user.service';

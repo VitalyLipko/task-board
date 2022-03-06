@@ -7,7 +7,7 @@ import { promisify } from 'util';
 import { v4 as uuidv4 } from 'uuid';
 
 import config from '../config';
-import { File } from '../models/file.interface';
+import { File } from '../models/interfaces/file.interface';
 
 export default class FileStorageService {
   async save(file: FileUpload): Promise<File> {

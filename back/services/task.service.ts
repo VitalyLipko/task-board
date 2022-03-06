@@ -6,14 +6,14 @@ import mongoose, {
   QuerySelector,
 } from 'mongoose';
 
-import { TaskModel, taskModel } from '../models/db.schema';
-import { TaskStatusEnum } from '../models/task-status.enum';
+import { TaskStatusEnum } from '../models/enums/task-status.enum';
 import {
   CreateTaskInput,
   Task,
   UpdateTaskInput,
-} from '../models/task.interface';
-import { User } from '../models/user.interface';
+} from '../models/interfaces/task.interface';
+import { User } from '../models/interfaces/user.interface';
+import { TaskModel, taskModel } from '../models/schemas/db.schema';
 
 import LabelService from './label.service';
 import ProjectService from './project.service';

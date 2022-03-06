@@ -1,7 +1,8 @@
 import { Types, PopulatedDoc } from 'mongoose';
 
+import { TaskStatusEnum } from '../enums/task-status.enum';
+
 import { Label } from './label.interface';
-import { TaskStatusEnum } from './task-status.enum';
 import { User } from './user.interface';
 
 export interface Task {

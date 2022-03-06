@@ -8,9 +8,9 @@ import { createServer } from 'http';
 import { constants } from 'http2';
 
 import config from '../config';
-import { ContextPayload } from '../models/context-payload.interface';
-import typeDefs from '../models/graphql.schema';
+import { ContextPayload } from '../models/interfaces/context-payload.interface';
 import { resolvers } from '../models/resolvers';
+import typeDefs from '../models/schemas/graphql.schema';
 import AuthService from '../services/auth.service';
 const authService = new AuthService();
 

@@ -1,8 +1,8 @@
 import { mkdir } from 'fs';
 import { access } from 'fs/promises';
 
-import { CreateLabelInput } from '../models/label.interface';
-import { CreateUserInput } from '../models/user.interface';
+import { CreateLabelInput } from '../models/interfaces/label.interface';
+import { CreateUserInput } from '../models/interfaces/user.interface';
 import LabelService from '../services/label.service';
 import UserService from '../services/user.service';
 

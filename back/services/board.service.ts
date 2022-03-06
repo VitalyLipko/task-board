@@ -1,4 +1,4 @@
-import { Board, Column } from '../models/board.interface';
+import { Board, Column } from '../models/interfaces/board.interface';
 
 import LabelService from './label.service';
 import TaskService from './task.service';

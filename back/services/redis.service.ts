@@ -2,7 +2,7 @@ import jsonwebtoken from 'jsonwebtoken';
 
 import config from '../config';
 import redisClient from '../loaders/redis';
-import { DecodedToken } from '../models/decoded-token.interface';
+import { DecodedToken } from '../models/interfaces/decoded-token.interface';
 
 export default class RedisService {
   async saveRevokedToken(token: string): Promise<void> {

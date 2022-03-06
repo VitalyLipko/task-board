@@ -1,8 +1,8 @@
 import { LeanDocument } from 'mongoose';
 
 import { extractLabel } from '../../shared-utils/extract-label';
-import { LabelModel, labelModel } from '../models/db.schema';
-import { CreateLabelInput, Label } from '../models/label.interface';
+import { CreateLabelInput, Label } from '../models/interfaces/label.interface';
+import { LabelModel, labelModel } from '../models/schemas/db.schema';
 
 export default class LabelService {
   async createLabel(

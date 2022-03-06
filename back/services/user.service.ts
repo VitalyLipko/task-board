@@ -2,12 +2,12 @@ import { ApolloError } from 'apollo-server-express';
 import bcrypt from 'bcrypt';
 import { LeanDocument } from 'mongoose';
 
-import { UserModel, userModel } from '../models/db.schema';
 import {
   CreateUserInput,
   UpdateUserInput,
   User,
-} from '../models/user.interface';
+} from '../models/interfaces/user.interface';
+import { UserModel, userModel } from '../models/schemas/db.schema';
 
 export default class UserService {
   async getUsers(): Promise<Array<LeanDocument<UserModel>>> {

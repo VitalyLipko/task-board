@@ -2,14 +2,18 @@ import { ApolloError } from 'apollo-server-express';
 import isUndefined from 'lodash/isUndefined';
 import { LeanDocument, PopulateOptions } from 'mongoose';
 
-import { projectModel, ProjectModel, taskModel } from '../models/db.schema';
-import { ProjectStatusEnum } from '../models/project-status.enum';
+import { ProjectStatusEnum } from '../models/enums/project-status.enum';
+import { TaskStatusEnum } from '../models/enums/task-status.enum';
 import {
   CreateProjectInput,
   Project,
   UpdateProjectInput,
-} from '../models/project.interface';
-import { TaskStatusEnum } from '../models/task-status.enum';
+} from '../models/interfaces/project.interface';
+import {
+  projectModel,
+  ProjectModel,
+  taskModel,
+} from '../models/schemas/db.schema';
 
 import FileStorageService from './file-storage.service';
 
