@@ -1,16 +1,13 @@
 import { Board, Column } from '../models/interfaces/board.interface';
 
-import LabelService from './label.service';
-import TaskService from './task.service';
-
-const tasksService = new TaskService();
-const labelService = new LabelService();
+import labelService from './label.service';
+import taskService from './task.service';
 
 const BOARD_SCOPE = 'priority';
-export default class BoardService {
+class BoardService {
   async getBoard(parentId: string): Promise<Board> {
     const [tasks, scopedLabels] = await Promise.all([
-      tasksService.getTasks(parentId),
+      taskService.getTasks(parentId),
       labelService.getLabels({
         title: new RegExp(`^${BOARD_SCOPE}::`),
       }),
@@ -30,3 +27,5 @@ export default class BoardService {
     };
   }
 }
+
+export default new BoardService();

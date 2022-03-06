@@ -4,7 +4,7 @@ import config from '../config';
 import redisClient from '../loaders/redis';
 import { DecodedToken } from '../models/interfaces/decoded-token.interface';
 
-export default class RedisService {
+class RedisService {
   async saveRevokedToken(token: string): Promise<void> {
     const decoded = jsonwebtoken.verify(
       token,
@@ -30,3 +30,5 @@ export default class RedisService {
     return `${payload.userId}:${payload.id}`;
   }
 }
+
+export default new RedisService();

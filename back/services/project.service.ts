@@ -15,7 +15,7 @@ import {
   taskModel,
 } from '../models/schemas/db.schema';
 
-import FileStorageService from './file-storage.service';
+import fileStorageService from './file-storage.service';
 
 const projectPopulateOptions: PopulateOptions = {
   path: 'tasks',
@@ -32,9 +32,7 @@ const projectPopulateOptions: PopulateOptions = {
   options: { sort: { title: 'asc' } },
 };
 
-const fileStorageService = new FileStorageService();
-
-export default class ProjectService {
+export class ProjectService {
   async createProject(
     project: CreateProjectInput,
   ): Promise<LeanDocument<ProjectModel>> {
@@ -109,3 +107,5 @@ export default class ProjectService {
     return projectModel.findOne({ id, status: ProjectStatusEnum.Active });
   }
 }
+
+export default new ProjectService();

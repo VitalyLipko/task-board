@@ -9,15 +9,12 @@ import config from '../config';
 import { ContextPayload } from '../models/interfaces/context-payload.interface';
 import { User } from '../models/interfaces/user.interface';
 
-import RedisService from './redis.service';
-import UserService from './user.service';
-
-const userService = new UserService();
-const redisService = new RedisService();
+import redisService from './redis.service';
+import userService from './user.service';
 
 const JWT_COOKIE_NAME = 'JWT';
 
-export default class AuthService {
+class AuthService {
   async login(
     username: string,
     password: string,
@@ -119,3 +116,5 @@ export default class AuthService {
     throw new AuthenticationError('Not authenticated');
   }
 }
+
+export default new AuthService();

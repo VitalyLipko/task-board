@@ -2,21 +2,14 @@ import { IResolvers } from '@graphql-tools/utils';
 import { DateTimeResolver, HexColorCodeResolver } from 'graphql-scalars';
 import { GraphQLUpload } from 'graphql-upload';
 
-import AuthService from '../services/auth.service';
-import BoardService from '../services/board.service';
-import LabelService from '../services/label.service';
-import ProjectService from '../services/project.service';
-import TaskService from '../services/task.service';
-import UserService from '../services/user.service';
+import authService from '../services/auth.service';
+import boardService from '../services/board.service';
+import labelService from '../services/label.service';
+import projectService from '../services/project.service';
+import taskService from '../services/task.service';
+import userService from '../services/user.service';
 
 import { ContextPayload } from './interfaces/context-payload.interface';
-
-const projectService = new ProjectService();
-const taskService = new TaskService();
-const authService = new AuthService();
-const userService = new UserService();
-const labelService = new LabelService();
-const boardService = new BoardService();
 
 export const resolvers: IResolvers<unknown, ContextPayload> = {
   DateTime: DateTimeResolver,

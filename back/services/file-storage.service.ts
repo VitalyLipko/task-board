@@ -9,7 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
 import config from '../config';
 import { File } from '../models/interfaces/file.interface';
 
-export default class FileStorageService {
+class FileStorageService {
   async save(file: FileUpload): Promise<File> {
     const { createReadStream, filename: name, mimetype: mimeType } = await file;
     const stream = createReadStream();
@@ -50,3 +50,5 @@ export default class FileStorageService {
     );
   }
 }
+
+export default new FileStorageService();

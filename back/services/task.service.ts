@@ -15,9 +15,9 @@ import {
 import { User } from '../models/interfaces/user.interface';
 import { TaskModel, taskModel } from '../models/schemas/db.schema';
 
-import LabelService from './label.service';
-import ProjectService from './project.service';
-import UserService from './user.service';
+import labelService from './label.service';
+import { ProjectService } from './project.service';
+import userService from './user.service';
 
 const { Types } = mongoose;
 const taskPopulateOptions: Array<PopulateOptions> = [
@@ -31,10 +31,8 @@ const taskPopulateOptions: Array<PopulateOptions> = [
 const statusQuerySelectorDefault: QuerySelector<TaskStatusEnum> = {
   $not: { $eq: TaskStatusEnum.Deleted },
 };
-const labelService = new LabelService();
-const userService = new UserService();
 
-export default class TaskService {
+class TaskService {
   async getTasks(parentId: string): Promise<Array<Task>> {
     const objectId = new Types.ObjectId(parentId);
     return taskModel
@@ -162,3 +160,5 @@ export default class TaskService {
     throw new ApolloError(`Parent project ${parentIdString} not found`);
   }
 }
+
+export default new TaskService();

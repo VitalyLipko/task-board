@@ -4,7 +4,7 @@ import { extractLabel } from '../../shared-utils/extract-label';
 import { CreateLabelInput, Label } from '../models/interfaces/label.interface';
 import { LabelModel, labelModel } from '../models/schemas/db.schema';
 
-export default class LabelService {
+class LabelService {
   async createLabel(
     label: CreateLabelInput,
   ): Promise<LeanDocument<LabelModel>> {
@@ -49,3 +49,5 @@ export default class LabelService {
     return newLabels;
   }
 }
+
+export default new LabelService();

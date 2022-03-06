@@ -3,8 +3,8 @@ import { access } from 'fs/promises';
 
 import { CreateLabelInput } from '../models/interfaces/label.interface';
 import { CreateUserInput } from '../models/interfaces/user.interface';
-import LabelService from '../services/label.service';
-import UserService from '../services/user.service';
+import labelService from '../services/label.service';
+import userService from '../services/user.service';
 
 import config from './index';
 
@@ -32,8 +32,6 @@ const systemLabels: Array<CreateLabelInput> = [
     isSystem: true,
   },
 ];
-const userService = new UserService();
-const labelService = new LabelService();
 
 export default async (): Promise<void> => {
   const adminUser = await userService.getUserByName(admin.username);

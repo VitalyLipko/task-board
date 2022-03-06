@@ -9,7 +9,7 @@ import {
 } from '../models/interfaces/user.interface';
 import { UserModel, userModel } from '../models/schemas/db.schema';
 
-export default class UserService {
+class UserService {
   async getUsers(): Promise<Array<LeanDocument<UserModel>>> {
     const users = await userModel.find({ trashed: false }, null, {
       sort: { firstName: 'asc' },
@@ -82,3 +82,5 @@ export default class UserService {
     );
   }
 }
+
+export default new UserService();

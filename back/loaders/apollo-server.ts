@@ -11,8 +11,7 @@ import config from '../config';
 import { ContextPayload } from '../models/interfaces/context-payload.interface';
 import { resolvers } from '../models/resolvers';
 import typeDefs from '../models/schemas/graphql.schema';
-import AuthService from '../services/auth.service';
-const authService = new AuthService();
+import authService from '../services/auth.service';
 
 export default async (): Promise<void> => {
   const app = express();
