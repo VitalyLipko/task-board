@@ -1,3 +1,4 @@
+import { TaskStatusEnum } from '../models/enums/task-status.enum';
 import { Board, Column } from '../models/interfaces/board.interface';
 
 import labelService from './label.service';
@@ -7,7 +8,7 @@ const BOARD_SCOPE = 'priority';
 class BoardService {
   async getBoard(parentId: string): Promise<Board> {
     const [tasks, scopedLabels] = await Promise.all([
-      taskService.getTasks(parentId),
+      taskService.getTasks(parentId, TaskStatusEnum.Open),
       labelService.getLabels({
         title: new RegExp(`^${BOARD_SCOPE}::`),
       }),

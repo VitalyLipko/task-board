@@ -1,4 +1,4 @@
-query GetProjects {
+query GetProjects($tasksStatus: TaskStatusEnum) {
   projects {
     id
     name
@@ -6,7 +6,7 @@ query GetProjects {
       name
       url
     }
-    tasks {
+    tasks(status: $tasksStatus) {
       id
     }
   }

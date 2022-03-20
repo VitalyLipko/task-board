@@ -38,7 +38,7 @@
     "created_by": "Created {{date}} by",
     "title": "Title",
     "description": "Description",
-    "labels": "labels",
+    "labels": "Labels",
     "list": "List",
     "board": "Board",
     "no_tasks": "No tasks",
@@ -52,6 +52,7 @@
     "close": "Close",
     "closed": "Closed",
     "open": "Open",
+    "all": "All",
     "editor": {
       "bold": "Bold",
       "italic": "Italic",

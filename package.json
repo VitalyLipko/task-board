@@ -46,7 +46,7 @@
     "graphql-upload": "^13.0.0",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
-    "mongoose": "^6.0.12",
+    "mongoose": "^6.2.6",
     "ng-zorro-antd": "^13.1.0",
     "ngx-tiptap": "^4.0.4",
     "redis": "^4.0.4",

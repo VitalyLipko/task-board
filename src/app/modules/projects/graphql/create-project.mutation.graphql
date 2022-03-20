@@ -1,4 +1,7 @@
-mutation CreateProject($project: CreateProjectInput!) {
+mutation CreateProject(
+  $project: CreateProjectInput!
+  $tasksStatus: TaskStatusEnum
+) {
   createProject(project: $project) {
     id
     name
@@ -7,7 +10,7 @@ mutation CreateProject($project: CreateProjectInput!) {
       name
       url
     }
-    tasks {
+    tasks(status: $tasksStatus) {
       id
     }
   }

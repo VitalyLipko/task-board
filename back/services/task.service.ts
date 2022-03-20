@@ -28,21 +28,27 @@ const taskPopulateOptions: Array<PopulateOptions> = [
   { path: 'creator' },
   { path: 'labels', options: { sort: { title: 'asc' } } },
 ];
-const statusQuerySelectorDefault: QuerySelector<TaskStatusEnum> = {
+export const statusQuerySelectorDefault: QuerySelector<TaskStatusEnum> = {
   $not: { $eq: TaskStatusEnum.Deleted },
 };
 
 class TaskService {
-  async getTasks(parentId: string): Promise<Array<Task>> {
+  async getTasks(
+    parentId: string,
+    status?: TaskStatusEnum,
+  ): Promise<Array<Task>> {
     const objectId = new Types.ObjectId(parentId);
     return taskModel
-      .find({ parentId: objectId, status: statusQuerySelectorDefault })
+      .find({
+        parentId: objectId,
+        status: status || statusQuerySelectorDefault,
+      })
       .populate(taskPopulateOptions);
   }
 
   async getTask(id: string): Promise<Task | null> {
     const task = await taskModel.findOne({
-      id,
+      _id: id,
       status: statusQuerySelectorDefault,
     });
     if (task) {

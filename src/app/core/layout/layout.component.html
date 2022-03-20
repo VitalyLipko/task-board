@@ -55,7 +55,7 @@
               {{ item.label }}
             </ng-container>
             <ng-template #linkTemplate>
-              <a [routerLink]="item.url">
+              <a [routerLink]="item.url" [queryParams]="item.queryParams">
                 {{ item.label }}
               </a>
             </ng-template>

@@ -27,9 +27,9 @@ export const resolvers: IResolvers<unknown, ContextPayload> = {
       authService.operationGuard(context, () => labelService.getLabels()),
     projects: (_, __, context) =>
       authService.operationGuard(context, () => projectService.getProjects()),
-    project: (_, args, context) =>
+    project: (_, args, context, { variableValues }) =>
       authService.operationGuard(context, () =>
-        projectService.getProject(args.id),
+        projectService.getProject(args.id, variableValues.tasksStatus),
       ),
     tasks: (_, args, context) =>
       authService.operationGuard(context, () =>

@@ -17,5 +17,6 @@ mutation CreateTask($task: CreateTaskInput!) {
       id
       fullName
     }
+    status
   }
 }

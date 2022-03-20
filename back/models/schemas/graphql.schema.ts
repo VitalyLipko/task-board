@@ -45,7 +45,7 @@ export default gql`
     id: ID!
     name: String!
     created: DateTime!
-    tasks: [Task!]!
+    tasks(status: TaskStatusEnum): [Task!]!
     status: ProjectStatusEnum!
     icon: File
   }

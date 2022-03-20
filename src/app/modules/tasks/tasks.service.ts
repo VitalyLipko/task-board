@@ -22,7 +22,7 @@ import { errorHandler } from '../../core/operators';
 import ChangeTaskStatus from './graphql/change-task-status.mutation.graphql';
 import CreateTask from './graphql/create-task.mutation.graphql';
 import GetBoard from './graphql/get-board.query.graphql';
-import GetProjectPageInfo from './graphql/get-project-page-info.graphql';
+import GetProjectPageInfo from './graphql/get-project-page-info.query.graphql';
 import GetTaskDrawerData from './graphql/get-task-drawer-data.query.graphql';
 import GetTask from './graphql/get-task.query.graphql';
 import UpdateTask from './graphql/update-task.mutation.graphql';
@@ -47,11 +47,15 @@ export class TasksService {
     private translocoService: TranslocoService,
   ) {}
 
-  getProjectPageInfo(id: string): Observable<Project> {
+  getProjectPageInfo(
+    id: string,
+    tasksStatus: TaskStatusEnum | null,
+  ): Observable<Project> {
     return this.apollo
       .watchQuery<{ project: Project }>({
         query: GetProjectPageInfo,
-        variables: { id },
+        variables: { id, ...(tasksStatus && { tasksStatus }) },
+        fetchPolicy: 'network-only',
       })
       .valueChanges.pipe(
         errorHandler(),
@@ -84,7 +88,10 @@ export class TasksService {
       );
   }
 
-  create(parentId: string): Observable<void> {
+  create(
+    parentId: string,
+    tasksStatus: TaskStatusEnum | null,
+  ): Observable<void> {
     const options: NzDrawerOptions<TaskDrawerComponent> = {
       nzTitle: this.translations.createTask,
       nzMaskClosable: false,
@@ -106,27 +113,15 @@ export class TasksService {
                 ...(task.assignees?.length && { assignees: task.assignees }),
               },
             },
-            update(cache, { data }) {
-              const newTask = data?.createTask;
-              const existingProjectInfo = cache.readQuery<{
-                project: Project;
-              }>({
+            refetchQueries: [
+              {
                 query: GetProjectPageInfo,
-                variables: { id: parentId },
-              });
-
-              if (newTask && existingProjectInfo) {
-                const tasks = [
-                  ...existingProjectInfo.project.tasks,
-                  newTask,
-                ].sort((a, b) => a.title.localeCompare(b.title));
-                cache.writeQuery<{ project: Project }>({
-                  query: GetProjectPageInfo,
-                  variables: { id: parentId },
-                  data: { project: { ...existingProjectInfo.project, tasks } },
-                });
-              }
-            },
+                variables: {
+                  id: parentId,
+                  ...(tasksStatus && { tasksStatus }),
+                },
+              },
+            ],
           }),
         ),
         errorHandler(),
@@ -246,25 +241,6 @@ export class TasksService {
           this.apollo.mutate<{ changeTaskStatus: boolean }>({
             mutation: ChangeTaskStatus,
             variables: { id, value: TaskStatusEnum.Deleted },
-            update(cache, { data }) {
-              const isDeleted = !!data?.changeTaskStatus;
-              const existingProjectInfo = cache.readQuery<{
-                project: Project;
-              }>({
-                query: GetProjectPageInfo,
-                variables: { id: parentId },
-              });
-              if (isDeleted && existingProjectInfo) {
-                const tasks = existingProjectInfo.project.tasks.filter(
-                  (task) => task.id !== id,
-                );
-                cache.writeQuery<{ project: Project }>({
-                  query: GetProjectPageInfo,
-                  variables: { id: parentId },
-                  data: { project: { ...existingProjectInfo.project, tasks } },
-                });
-              }
-            },
           }),
         ),
         errorHandler(),

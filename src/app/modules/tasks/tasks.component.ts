@@ -1,18 +1,18 @@
 import {
-  Component,
-  OnInit,
   ChangeDetectionStrategy,
-  OnDestroy,
-  ViewChild,
-  TemplateRef,
   ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
+  TemplateRef,
+  ViewChild,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
 
-import { Task } from '../../core/graphql/graphql';
+import { Task, TaskStatusEnum } from '../../core/graphql/graphql';
 import { LayoutService } from '../../core/layout/layout.service';
 import { ProjectsService } from '../projects/projects.service';
 
@@ -27,12 +27,22 @@ import { TasksService } from './tasks.service';
 export class TasksComponent implements OnInit, OnDestroy {
   tasks: Array<Task> | undefined;
   isBoard = false;
+  isClosedTasks = false;
+  readonly boardBodyStyle: Record<string, unknown> = {
+    display: 'flex',
+    overflow: 'auto',
+  };
 
   private unsubscribe = new Subject<void>();
   private parentId!: string;
+  private tasksStatus: TaskStatusEnum | null = null;
 
   @ViewChild('createButtonTemplate')
   private createButtonTemplate!: TemplateRef<void>;
+
+  get tasksStatusEnum(): typeof TaskStatusEnum {
+    return TaskStatusEnum;
+  }
 
   constructor(
     private tasksService: TasksService,
@@ -44,24 +54,31 @@ export class TasksComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.route.paramMap
+    this.route.queryParamMap
       .pipe(
         switchMap((paramMap) => {
-          this.parentId = paramMap.get('projectId') as string;
-          return this.tasksService.getProjectPageInfo(this.parentId);
+          this.parentId = this.route.snapshot.paramMap.get(
+            'projectId',
+          ) as string;
+          this.tasksStatus = paramMap.get('status') as TaskStatusEnum;
+          return this.tasksService.getProjectPageInfo(
+            this.parentId,
+            this.tasksStatus,
+          );
         }),
         takeUntil(this.unsubscribe),
       )
-      .subscribe(
-        (project) => {
+      .subscribe({
+        next: (project) => {
           this.layoutService.title = project.name;
           this.layoutService.pageHeaderExtra = this.createButtonTemplate;
 
           this.tasks = project.tasks;
+          this.isClosedTasks = this.tasksStatus === TaskStatusEnum.Closed;
           this.cdr.markForCheck();
         },
-        (err) => this.messageService.error(err.message),
-      );
+        error: (err) => this.messageService.error(err.message),
+      });
   }
 
   ngOnDestroy(): void {
@@ -71,7 +88,7 @@ export class TasksComponent implements OnInit, OnDestroy {
 
   handleCreateTask(): void {
     this.tasksService
-      .create(this.parentId)
+      .create(this.parentId, this.tasksStatus)
       .pipe(takeUntil(this.unsubscribe))
       .subscribe({ error: (err) => this.messageService.error(err.message) });
   }

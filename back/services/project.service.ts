@@ -16,21 +16,7 @@ import {
 } from '../models/schemas/db.schema';
 
 import fileStorageService from './file-storage.service';
-
-const projectPopulateOptions: PopulateOptions = {
-  path: 'tasks',
-  populate: [
-    {
-      path: 'assignees',
-      options: { sort: { firstName: 'asc' } },
-    },
-    { path: 'labels', options: { sort: { title: 'asc' } } },
-    {
-      path: 'creator',
-    },
-  ],
-  options: { sort: { title: 'asc' } },
-};
+import { statusQuerySelectorDefault } from './task.service';
 
 export class ProjectService {
   async createProject(
@@ -77,13 +63,18 @@ export class ProjectService {
       .find({ status: ProjectStatusEnum.Active }, null, {
         sort: { name: 'asc' },
       })
-      .populate(projectPopulateOptions);
+      .populate(ProjectService.getProjectPopulateOptions());
   }
 
-  async getProject(id: string): Promise<LeanDocument<Project> | null> {
+  async getProject(
+    id: string,
+    tasksStatus?: TaskStatusEnum,
+  ): Promise<LeanDocument<Project> | null> {
     const document = await ProjectService.findActiveProject(id);
     if (document) {
-      return document.populate(projectPopulateOptions);
+      return document.populate(
+        ProjectService.getProjectPopulateOptions(tasksStatus),
+      );
     }
 
     throw new ApolloError(`Project ${id} not found`);
@@ -104,7 +95,32 @@ export class ProjectService {
   }
 
   static findActiveProject(id: string) {
-    return projectModel.findOne({ id, status: ProjectStatusEnum.Active });
+    return projectModel.findOne({
+      _id: id,
+      status: ProjectStatusEnum.Active,
+    });
+  }
+
+  private static getProjectPopulateOptions(
+    status?: TaskStatusEnum,
+  ): PopulateOptions {
+    return {
+      path: 'tasks',
+      populate: [
+        {
+          path: 'assignees',
+          options: { sort: { firstName: 'asc' } },
+        },
+        { path: 'labels', options: { sort: { title: 'asc' } } },
+        {
+          path: 'creator',
+        },
+      ],
+      options: { sort: { title: 'asc' } },
+      match: {
+        status: status || statusQuerySelectorDefault,
+      },
+    };
   }
 }
 

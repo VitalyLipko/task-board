@@ -108,7 +108,7 @@ const labelSchema = new Schema<Label, Model<Label>, Label>(
 );
 labelSchema.virtual('id').get(idToString);
 
-export const projectModel = model<ProjectModel>('Project', projectSchema);
-export const taskModel = model<TaskModel>('Task', taskSchema);
-export const userModel = model<UserModel>('User', userSchema);
-export const labelModel = model<LabelModel>('Label', labelSchema);
+export const projectModel = model('Project', projectSchema);
+export const taskModel = model('Task', taskSchema);
+export const userModel = model('User', userSchema);
+export const labelModel = model('Label', labelSchema);

@@ -1,35 +1,60 @@
 <ng-container *transloco="let t">
   <div
     nz-row
-    [nzJustify]="tasks && tasks.length > 0 ? 'start' : 'center'"
-    [nzAlign]="tasks && tasks.length > 0 ? null : 'middle'"
+    [nzJustify]="tasks ? 'start' : 'center'"
+    [nzAlign]="tasks ? null : 'middle'"
     class="tb-tasks"
   >
     <ng-container *ngIf="tasks; else spinTemplate">
-      <ng-container *ngIf="tasks.length; else emptyTemplate">
-        <span nz-col class="tb-tasks-mode-switch">
-          <nz-switch
-            [nzCheckedChildren]="t('task.board')"
-            [nzUnCheckedChildren]="t('task.list')"
-            [nzDisabled]="!tasks.length"
-            [ngModel]="isBoard"
-            (ngModelChange)="modeChange($event)"
-          ></nz-switch>
-        </span>
-        <nz-card
-          [nzBorderless]="isBoard"
-          [nzBodyStyle]="isBoard ? { display: 'flex', overflow: 'auto' } : null"
-          [class.tb-tasks-board]="isBoard"
-        >
-          <tb-task-board *ngIf="isBoard; else listTemplate"></tb-task-board>
-          <ng-template #listTemplate>
-            <tb-tasks-list [tbTasks]="tasks"></tb-tasks-list>
-          </ng-template>
-        </nz-card>
-      </ng-container>
-      <ng-template #emptyTemplate>
-        <nz-empty [nzNotFoundContent]="t('task.no_tasks')"></nz-empty>
-      </ng-template>
+      <div nz-col class="tb-tasks-toolbar">
+        <nz-switch
+          [nzCheckedChildren]="t('task.board')"
+          [nzUnCheckedChildren]="t('task.list')"
+          [nzDisabled]="!tasks"
+          [ngModel]="isBoard"
+          (ngModelChange)="modeChange($event)"
+        ></nz-switch>
+      </div>
+      <nz-card
+        [nzBorderless]="isBoard"
+        [nzBodyStyle]="isBoard ? boardBodyStyle : null"
+        [class.tb-tasks-board]="isBoard"
+      >
+        <tb-task-board *ngIf="isBoard; else listTemplate"></tb-task-board>
+        <ng-template #listTemplate>
+          <nz-tabset nzLinkRouter nzSize="small">
+            <nz-tab>
+              <a
+                *nzTabLink
+                nz-tab-link
+                routerLink="."
+                [queryParams]="{ status: tasksStatusEnum.Open }"
+              >
+                {{ t('task.open') }}
+              </a>
+            </nz-tab>
+            <nz-tab>
+              <a
+                *nzTabLink
+                nz-tab-link
+                routerLink="."
+                [queryParams]="{ status: tasksStatusEnum.Closed }"
+              >
+                {{ t('task.closed') }}
+              </a>
+            </nz-tab>
+            <nz-tab>
+              <a *nzTabLink nz-tab-link routerLink=".">
+                {{ t('task.all') }}
+              </a>
+            </nz-tab>
+          </nz-tabset>
+          <tb-tasks-list
+            [tbTasks]="tasks"
+            [tbSkipTagClosed]="isClosedTasks"
+          ></tb-tasks-list>
+        </ng-template>
+      </nz-card>
     </ng-container>
     <ng-template #spinTemplate>
       <nz-spin nzSimple nzSize="large"></nz-spin>

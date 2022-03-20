@@ -1,8 +1,8 @@
-query GetProjectPageInfo($id: ID!) {
+query GetProjectPageInfo($id: ID!, $tasksStatus: TaskStatusEnum) {
   project(id: $id) {
     id
     name
-    tasks {
+    tasks(status: $tasksStatus) {
       id
       title
       created
@@ -20,6 +20,7 @@ query GetProjectPageInfo($id: ID!) {
         id
         fullName
       }
+      status
     }
   }
 }

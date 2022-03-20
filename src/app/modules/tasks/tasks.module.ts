@@ -25,6 +25,7 @@ import { NzPipesModule } from 'ng-zorro-antd/pipes';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
@@ -99,6 +100,7 @@ import { TasksService } from './tasks.service';
     NzPipesModule,
     DragDropModule,
     TranslocoModule,
+    NzTabsModule,
   ],
   providers: [TasksService],
 })

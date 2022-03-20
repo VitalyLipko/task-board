@@ -173,6 +173,11 @@ export type Project = {
   icon?: Maybe<File>;
 };
 
+
+export type ProjectTasksArgs = {
+  status?: Maybe<TaskStatusEnum>;
+};
+
 export enum ProjectStatusEnum {
   Active = 'ACTIVE',
   Deleted = 'DELETED'

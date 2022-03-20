@@ -1,27 +1,35 @@
-<nz-list>
-  <nz-list-item *ngFor="let task of tbTasks; trackBy: trackByFn">
-    <nz-list-item-meta>
-      <nz-list-item-meta-title>
-        <span nz-typography nzEllipsis class="tb-tasks-list-item-title">
-          <a [routerLink]="task.id">
-            {{ task.title }}
-          </a>
-        </span>
-      </nz-list-item-meta-title>
-      <nz-list-item-meta-description>
-        <tb-task-creation-info [tbTask]="task"></tb-task-creation-info>
-        <tb-label
-          *ngFor="let label of task.labels; trackBy: trackByFn"
-          [tbLabel]="label"
-        ></tb-label>
-      </nz-list-item-meta-description>
-    </nz-list-item-meta>
-    <nz-list-item-extra>
-      <tb-assignees
-        [tbAssignees]="task.assignees"
-        [tbEmptyPlaceholder]="null"
-        tbSize="small"
-      ></tb-assignees>
-    </nz-list-item-extra>
-  </nz-list-item>
-</nz-list>
+<ng-container *transloco="let t">
+  <nz-list *ngIf="tbTasks.length; else emptyTemplate">
+    <nz-list-item *ngFor="let task of tbTasks; trackBy: trackByFn">
+      <nz-list-item-meta>
+        <nz-list-item-meta-title class="tb-tasks-list-item-title">
+          <span nz-typography nzEllipsis>
+            <a [routerLink]="task.id">
+              {{ task.title }}
+            </a>
+          </span>
+          <nz-tag *ngIf="!tbSkipTagClosed && task.status === taskStatus.Closed">
+            {{ t('task.closed') }}
+          </nz-tag>
+        </nz-list-item-meta-title>
+        <nz-list-item-meta-description>
+          <tb-task-creation-info [tbTask]="task"></tb-task-creation-info>
+          <tb-label
+            *ngFor="let label of task.labels; trackBy: trackByFn"
+            [tbLabel]="label"
+          ></tb-label>
+        </nz-list-item-meta-description>
+      </nz-list-item-meta>
+      <nz-list-item-extra>
+        <tb-assignees
+          [tbAssignees]="task.assignees"
+          [tbEmptyPlaceholder]="null"
+          tbSize="small"
+        ></tb-assignees>
+      </nz-list-item-extra>
+    </nz-list-item>
+  </nz-list>
+  <ng-template #emptyTemplate>
+    <nz-empty [nzNotFoundContent]="t('task.no_tasks')"></nz-empty>
+  </ng-template>
+</ng-container>
