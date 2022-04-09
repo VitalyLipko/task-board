@@ -1,0 +1,10 @@
+fragment CommentFields on Comment {
+  id
+  message
+  created
+  creator {
+    id
+    username
+    fullName
+  }
+}

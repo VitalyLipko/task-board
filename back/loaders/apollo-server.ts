@@ -1,11 +1,14 @@
+import { makeExecutableSchema } from '@graphql-tools/schema';
 import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core';
 import { ApolloServer } from 'apollo-server-express';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express from 'express';
+import { execute, subscribe } from 'graphql';
 import { graphqlUploadExpress } from 'graphql-upload';
 import { createServer } from 'http';
 import { constants } from 'http2';
+import { SubscriptionServer } from 'subscriptions-transport-ws';
 
 import config from '../config';
 import { ContextPayload } from '../models/interfaces/context-payload.interface';
@@ -16,14 +19,36 @@ import authService from '../services/auth.service';
 export default async (): Promise<void> => {
   const app = express();
   const httpServer = createServer(app);
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const schema = makeExecutableSchema({ typeDefs, resolvers });
+  const subscriptionServer = SubscriptionServer.create(
+    {
+      schema,
+      execute,
+      subscribe,
+      onConnect: authService.checkWSConnection,
+    },
+    { server: httpServer, path: '/graphql' },
+  );
   const server = new ApolloServer({
-    typeDefs,
-    resolvers,
+    schema,
     context: async ({ req, res }): Promise<ContextPayload> => {
       const result = await authService.createContext(req);
       return { ...result, res };
     },
-    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+    plugins: [
+      ApolloServerPluginDrainHttpServer({ httpServer }),
+      {
+        async serverWillStart() {
+          return {
+            async drainServer() {
+              subscriptionServer.close();
+            },
+          };
+        },
+      },
+    ],
   });
 
   await server.start();

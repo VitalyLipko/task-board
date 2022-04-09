@@ -8,6 +8,7 @@
       position: sticky;
       top: -40px;
       background: white;
+      z-index: 1;
     }
   }
 
@@ -16,7 +17,7 @@
     line-height: 25px;
   }
 
-  nz-list {
+  nz-list.tb-task-right-panel {
     width: 250px;
 
     nz-list-item {

@@ -1,11 +1,14 @@
 import { IResolvers } from '@graphql-tools/utils';
 import { DateTimeResolver, HexColorCodeResolver } from 'graphql-scalars';
+import { withFilter } from 'graphql-subscriptions';
 import { GraphQLUpload } from 'graphql-upload';
 
 import authService from '../services/auth.service';
 import boardService from '../services/board.service';
+import commentService from '../services/comment.service';
 import labelService from '../services/label.service';
 import projectService from '../services/project.service';
+import subscriptionsService from '../services/subscriptions.service';
 import taskService from '../services/task.service';
 import userService from '../services/user.service';
 
@@ -43,6 +46,10 @@ export const resolvers: IResolvers<unknown, ContextPayload> = {
       ),
     users: (_, args, context) =>
       authService.operationGuard(context, () => userService.getUsers()),
+    comments: (_, args, context) =>
+      authService.operationGuard(context, () =>
+        commentService.getComments(args.parentId),
+      ),
   },
   Mutation: {
     createLabel: (_, args, context) =>
@@ -95,5 +102,18 @@ export const resolvers: IResolvers<unknown, ContextPayload> = {
       authService.operationGuard(context, () =>
         userService.deleteUser(args.id, context.user?.id),
       ),
+    createComment: (_, args, context) =>
+      authService.operationGuard(context, () =>
+        commentService.createComment(args.comment, context.user),
+      ),
+  },
+  Subscription: {
+    commentCreated: {
+      subscribe: withFilter(
+        () => subscriptionsService.commentCreatedListener(),
+        ({ commentCreated }, { parentId }) =>
+          commentCreated.parentId.toString() === parentId,
+      ),
+    },
   },
 };

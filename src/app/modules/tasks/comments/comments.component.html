@@ -1,0 +1,48 @@
+<ng-container *transloco="let t">
+  <nz-collapse [nzBordered]="false">
+    <nz-collapse-panel
+      [(nzActive)]="commentsOpened"
+      [nzHeader]="t('task.comments')"
+      [nzExtra]="commentsCounterTemplate"
+      class="tb-comments-collapse-panel"
+    >
+      <ng-container *ngIf="comments">
+        <nz-list *ngIf="comments.length">
+          <nz-list-item
+            *ngFor="let comment of comments; trackBy: trackByFn"
+            class="tb-comments-collapse-panel-list-item"
+          >
+            <tb-comment [tbComment]="comment"></tb-comment>
+          </nz-list-item>
+        </nz-list>
+        <nz-comment>
+          <nz-comment-content>
+            <nz-form-item>
+              <textarea [(ngModel)]="inputComment" nz-input rows="4"></textarea>
+            </nz-form-item>
+            <nz-form-item>
+              <button
+                nz-button
+                nzType="primary"
+                [nzLoading]="false"
+                [disabled]="!inputComment"
+                (click)="handleSubmit()"
+              >
+                {{ t('task.add_comment') }}
+              </button>
+            </nz-form-item>
+          </nz-comment-content>
+        </nz-comment>
+      </ng-container>
+    </nz-collapse-panel>
+    <ng-template #commentsCounterTemplate>
+      <nz-badge
+        *ngIf="comments"
+        nzStandalone
+        nzShowZero
+        [nzCount]="comments?.length"
+        [nzStyle]="commentsCounterStyle"
+      ></nz-badge>
+    </ng-template>
+  </nz-collapse>
+</ng-container>

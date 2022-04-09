@@ -29,6 +29,20 @@ export type Column = {
   items: Array<Task>;
 };
 
+export type Comment = {
+  __typename?: 'Comment';
+  id: Scalars['ID'];
+  parentId: Scalars['String'];
+  created: Scalars['DateTime'];
+  creator: User;
+  message: Scalars['String'];
+};
+
+export type CreateCommentInput = {
+  parentId: Scalars['String'];
+  message: Scalars['String'];
+};
+
 export type CreateLabelInput = {
   title: Scalars['String'];
   backgroundColor?: Maybe<Scalars['HexColorCode']>;
@@ -89,6 +103,7 @@ export type Mutation = {
   createLabel: Label;
   updateLabel?: Maybe<Label>;
   deleteLabel?: Maybe<Scalars['Boolean']>;
+  createComment: Comment;
 };
 
 
@@ -163,6 +178,11 @@ export type MutationDeleteLabelArgs = {
   id: Scalars['ID'];
 };
 
+
+export type MutationCreateCommentArgs = {
+  comment: CreateCommentInput;
+};
+
 export type Project = {
   __typename?: 'Project';
   id: Scalars['ID'];
@@ -195,6 +215,7 @@ export type Query = {
   tasks: Array<Task>;
   user?: Maybe<User>;
   users: Array<User>;
+  comments: Array<Comment>;
 };
 
 
@@ -220,6 +241,21 @@ export type QueryTasksArgs = {
 
 export type QueryUserArgs = {
   id?: Maybe<Scalars['ID']>;
+};
+
+
+export type QueryCommentsArgs = {
+  parentId: Scalars['String'];
+};
+
+export type Subscription = {
+  __typename?: 'Subscription';
+  commentCreated: Comment;
+};
+
+
+export type SubscriptionCommentCreatedArgs = {
+  parentId: Scalars['String'];
 };
 
 export type Task = {

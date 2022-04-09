@@ -1,5 +1,5 @@
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
@@ -11,8 +11,11 @@ import {
 } from '@ant-design/icons-angular/icons';
 import { TranslocoModule } from '@ngneat/transloco';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzCollapseModule } from 'ng-zorro-antd/collapse';
+import { NzCommentModule } from 'ng-zorro-antd/comment';
 import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
@@ -38,6 +41,8 @@ import { UserInlineInfoModule } from '../../shared/user-inline-info/user-inline-
 
 import { AssigneesSelectComponent } from './assignees-select/assignees-select.component';
 import { AssigneesComponent } from './assignees/assignees.component';
+import { CommentComponent } from './comment/comment.component';
+import { CommentsComponent } from './comments/comments.component';
 import { DescriptionEditorToolbarComponent } from './description-editor-toolbar/description-editor-toolbar.component';
 import { DescriptionComponent } from './description/description.component';
 import { LabelsSelectComponent } from './labels-select/labels-select.component';
@@ -63,6 +68,8 @@ import { TasksService } from './tasks.service';
     LabelsSelectComponent,
     TaskCreationInfoComponent,
     TaskBoardComponent,
+    CommentsComponent,
+    CommentComponent,
   ],
   imports: [
     CommonModule,
@@ -101,7 +108,10 @@ import { TasksService } from './tasks.service';
     DragDropModule,
     TranslocoModule,
     NzTabsModule,
+    NzCommentModule,
+    NzCollapseModule,
+    NzBadgeModule,
   ],
-  providers: [TasksService],
+  providers: [TasksService, DatePipe],
 })
 export class TasksModule {}

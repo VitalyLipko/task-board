@@ -9,6 +9,14 @@ export type ColumnFieldPolicy = {
 	label?: FieldPolicy<any> | FieldReadFunction<any>,
 	items?: FieldPolicy<any> | FieldReadFunction<any>
 };
+export type CommentKeySpecifier = ('id' | 'parentId' | 'created' | 'creator' | 'message' | CommentKeySpecifier)[];
+export type CommentFieldPolicy = {
+	id?: FieldPolicy<any> | FieldReadFunction<any>,
+	parentId?: FieldPolicy<any> | FieldReadFunction<any>,
+	created?: FieldPolicy<any> | FieldReadFunction<any>,
+	creator?: FieldPolicy<any> | FieldReadFunction<any>,
+	message?: FieldPolicy<any> | FieldReadFunction<any>
+};
 export type FileKeySpecifier = ('name' | 'url' | 'mimeType' | 'size' | 'encoding' | FileKeySpecifier)[];
 export type FileFieldPolicy = {
 	name?: FieldPolicy<any> | FieldReadFunction<any>,
@@ -24,7 +32,7 @@ export type LabelFieldPolicy = {
 	backgroundColor?: FieldPolicy<any> | FieldReadFunction<any>,
 	isSystem?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type MutationKeySpecifier = ('createProject' | 'updateProject' | 'deleteProject' | 'createTask' | 'updateTask' | 'changeTaskStatus' | 'login' | 'logout' | 'createUser' | 'updateUser' | 'deleteUser' | 'createLabel' | 'updateLabel' | 'deleteLabel' | MutationKeySpecifier)[];
+export type MutationKeySpecifier = ('createProject' | 'updateProject' | 'deleteProject' | 'createTask' | 'updateTask' | 'changeTaskStatus' | 'login' | 'logout' | 'createUser' | 'updateUser' | 'deleteUser' | 'createLabel' | 'updateLabel' | 'deleteLabel' | 'createComment' | MutationKeySpecifier)[];
 export type MutationFieldPolicy = {
 	createProject?: FieldPolicy<any> | FieldReadFunction<any>,
 	updateProject?: FieldPolicy<any> | FieldReadFunction<any>,
@@ -39,7 +47,8 @@ export type MutationFieldPolicy = {
 	deleteUser?: FieldPolicy<any> | FieldReadFunction<any>,
 	createLabel?: FieldPolicy<any> | FieldReadFunction<any>,
 	updateLabel?: FieldPolicy<any> | FieldReadFunction<any>,
-	deleteLabel?: FieldPolicy<any> | FieldReadFunction<any>
+	deleteLabel?: FieldPolicy<any> | FieldReadFunction<any>,
+	createComment?: FieldPolicy<any> | FieldReadFunction<any>
 };
 export type ProjectKeySpecifier = ('id' | 'name' | 'created' | 'tasks' | 'status' | 'icon' | ProjectKeySpecifier)[];
 export type ProjectFieldPolicy = {
@@ -50,7 +59,7 @@ export type ProjectFieldPolicy = {
 	status?: FieldPolicy<any> | FieldReadFunction<any>,
 	icon?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type QueryKeySpecifier = ('board' | 'isLoggedIn' | 'label' | 'labels' | 'project' | 'projects' | 'task' | 'tasks' | 'user' | 'users' | QueryKeySpecifier)[];
+export type QueryKeySpecifier = ('board' | 'isLoggedIn' | 'label' | 'labels' | 'project' | 'projects' | 'task' | 'tasks' | 'user' | 'users' | 'comments' | QueryKeySpecifier)[];
 export type QueryFieldPolicy = {
 	board?: FieldPolicy<any> | FieldReadFunction<any>,
 	isLoggedIn?: FieldPolicy<any> | FieldReadFunction<any>,
@@ -61,7 +70,12 @@ export type QueryFieldPolicy = {
 	task?: FieldPolicy<any> | FieldReadFunction<any>,
 	tasks?: FieldPolicy<any> | FieldReadFunction<any>,
 	user?: FieldPolicy<any> | FieldReadFunction<any>,
-	users?: FieldPolicy<any> | FieldReadFunction<any>
+	users?: FieldPolicy<any> | FieldReadFunction<any>,
+	comments?: FieldPolicy<any> | FieldReadFunction<any>
+};
+export type SubscriptionKeySpecifier = ('commentCreated' | SubscriptionKeySpecifier)[];
+export type SubscriptionFieldPolicy = {
+	commentCreated?: FieldPolicy<any> | FieldReadFunction<any>
 };
 export type TaskKeySpecifier = ('id' | 'title' | 'description' | 'created' | 'parentId' | 'assignees' | 'creator' | 'labels' | 'status' | TaskKeySpecifier)[];
 export type TaskFieldPolicy = {
@@ -94,6 +108,10 @@ export type StrictTypedTypePolicies = {
 		keyFields?: false | ColumnKeySpecifier | (() => undefined | ColumnKeySpecifier),
 		fields?: ColumnFieldPolicy,
 	},
+	Comment?: Omit<TypePolicy, 'fields' | 'keyFields'> & {
+		keyFields?: false | CommentKeySpecifier | (() => undefined | CommentKeySpecifier),
+		fields?: CommentFieldPolicy,
+	},
 	File?: Omit<TypePolicy, 'fields' | 'keyFields'> & {
 		keyFields?: false | FileKeySpecifier | (() => undefined | FileKeySpecifier),
 		fields?: FileFieldPolicy,
@@ -113,6 +131,10 @@ export type StrictTypedTypePolicies = {
 	Query?: Omit<TypePolicy, 'fields' | 'keyFields'> & {
 		keyFields?: false | QueryKeySpecifier | (() => undefined | QueryKeySpecifier),
 		fields?: QueryFieldPolicy,
+	},
+	Subscription?: Omit<TypePolicy, 'fields' | 'keyFields'> & {
+		keyFields?: false | SubscriptionKeySpecifier | (() => undefined | SubscriptionKeySpecifier),
+		fields?: SubscriptionFieldPolicy,
 	},
 	Task?: Omit<TypePolicy, 'fields' | 'keyFields'> & {
 		keyFields?: false | TaskKeySpecifier | (() => undefined | TaskKeySpecifier),

@@ -2,6 +2,7 @@ import mongoose, { Document, Model } from 'mongoose';
 
 import { ProjectStatusEnum } from '../enums/project-status.enum';
 import { TaskStatusEnum } from '../enums/task-status.enum';
+import { Comment } from '../interfaces/comment.interface';
 import { File } from '../interfaces/file.interface';
 import { Label } from '../interfaces/label.interface';
 import { Project } from '../interfaces/project.interface';
@@ -108,7 +109,26 @@ const labelSchema = new Schema<Label, Model<Label>, Label>(
 );
 labelSchema.virtual('id').get(idToString);
 
+const commentSchema = new Schema<Comment, Model<Comment>, Comment>(
+  {
+    parentId: { type: Schema.Types.ObjectId, required: true },
+    creator: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    message: { type: Schema.Types.String, required: true },
+  },
+  {
+    toObject: {
+      virtuals: true,
+    },
+    toJSON: {
+      virtuals: true,
+    },
+    timestamps: { createdAt: 'created', updatedAt: 'updated' },
+  },
+);
+commentSchema.virtual('id').get(idToString);
+
 export const projectModel = model('Project', projectSchema);
 export const taskModel = model('Task', taskSchema);
 export const userModel = model('User', userSchema);
 export const labelModel = model('Label', labelSchema);
+export const commentModel = model('Comment', commentSchema);

@@ -6,6 +6,7 @@ import {
 } from '@angular/core';
 import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
 
+import { fullNameToInitials } from '../utils/fullname-to-initials';
 import { stringToColor } from '../utils/string-to-color';
 
 @Component({
@@ -38,9 +39,7 @@ export class AvatarComponent {
   @Input() tbShowTooltip = true;
 
   get text(): string {
-    const [firstName, lastName] = this.tbFullName.split(' ');
-
-    return `${firstName.charAt(0)}${lastName.charAt(0)}`;
+    return fullNameToInitials(this.tbFullName);
   }
 
   get backgroundColor(): string {

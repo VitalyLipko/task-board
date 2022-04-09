@@ -1,0 +1,12 @@
+<nz-comment [nzAuthor]="tbComment.creator.fullName" [nzDatetime]="created">
+  <nz-avatar
+    nz-comment-avatar
+    [nzText]="initials"
+    [style.backgroundColor]="backgroundColor"
+  ></nz-avatar>
+  <nz-comment-content>
+    <p nz-typography nzEllipsis nzExpandable [nzEllipsisRows]="3">
+      {{ tbComment.message }}
+    </p>
+  </nz-comment-content>
+</nz-comment>

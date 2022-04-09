@@ -11,8 +11,11 @@ import { filter, map, switchMap } from 'rxjs/operators';
 
 import {
   Board,
+  Comment,
+  CreateCommentInput,
   CreateTaskInput,
   Project,
+  SubscriptionCommentCreatedArgs,
   Task,
   TaskStatusEnum,
   UpdateTaskInput,
@@ -20,8 +23,11 @@ import {
 import { errorHandler } from '../../core/operators';
 
 import ChangeTaskStatus from './graphql/change-task-status.mutation.graphql';
+import CommentCreated from './graphql/comment-created.subscription.graphql';
+import CreateComment from './graphql/create-comment.mutation.graphql';
 import CreateTask from './graphql/create-task.mutation.graphql';
 import GetBoard from './graphql/get-board.query.graphql';
+import GetComments from './graphql/get-comments.query.graphql';
 import GetProjectPageInfo from './graphql/get-project-page-info.query.graphql';
 import GetTaskDrawerData from './graphql/get-task-drawer-data.query.graphql';
 import GetTask from './graphql/get-task.query.graphql';
@@ -251,6 +257,43 @@ export class TasksService {
             this.router.navigate([`/projects/${parentId}`]);
           }
         }),
+      );
+  }
+
+  getComments(parentId: string): Observable<Array<Comment>> {
+    return this.apollo
+      .query<{ comments: Array<Comment> }>({
+        query: GetComments,
+        variables: { parentId },
+        fetchPolicy: 'no-cache',
+      })
+      .pipe(
+        errorHandler(),
+        map(({ data }) => data.comments),
+      );
+  }
+
+  createComment(comment: CreateCommentInput): Observable<Comment | undefined> {
+    return this.apollo
+      .mutate<{ createComment: Comment }>({
+        mutation: CreateComment,
+        variables: { comment },
+      })
+      .pipe(
+        errorHandler(),
+        map(({ data }) => data?.createComment),
+      );
+  }
+
+  commentCreated(parentId: string): Observable<Comment | undefined> {
+    return this.apollo
+      .subscribe<{ commentCreated: Comment }, SubscriptionCommentCreatedArgs>({
+        query: CommentCreated,
+        variables: { parentId },
+      })
+      .pipe(
+        errorHandler(),
+        map(({ data }) => data?.commentCreated),
       );
   }
 }

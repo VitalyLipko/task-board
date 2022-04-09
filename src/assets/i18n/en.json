@@ -57,7 +57,9 @@
       "bold": "Bold",
       "italic": "Italic",
       "strike": "Strike"
-    }
+    },
+    "comments": "Comments",
+    "add_comment": "Add comment"
   },
   "user": {
     "first_name": "First name",

@@ -16,6 +16,14 @@ export default gql`
     DELETED
   }
 
+  type Comment {
+    id: ID!
+    parentId: String!
+    created: DateTime!
+    creator: User!
+    message: String!
+  }
+
   type Board {
     parentId: String!
     columns: [Column!]!
@@ -83,6 +91,7 @@ export default gql`
     tasks(parentId: ID!): [Task!]!
     user(id: ID): User
     users: [User!]!
+    comments(parentId: String!): [Comment!]!
   }
 
   type Mutation {
@@ -100,6 +109,16 @@ export default gql`
     createLabel(label: CreateLabelInput!): Label!
     updateLabel(label: UpdateLabelInput!): Label
     deleteLabel(id: ID!): Boolean
+    createComment(comment: CreateCommentInput!): Comment!
+  }
+
+  type Subscription {
+    commentCreated(parentId: String!): Comment!
+  }
+
+  input CreateCommentInput {
+    parentId: String!
+    message: String!
   }
 
   input CreateProjectInput {

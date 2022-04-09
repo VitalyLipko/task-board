@@ -4,6 +4,9 @@
 
 export const environment = {
   production: false,
+  GRAPHQL_URI: 'http://localhost:8000/graphql',
+  WS_URI: 'ws://localhost:8000/graphql',
+  DEFAULT_LANG: 'en',
 };
 
 /*

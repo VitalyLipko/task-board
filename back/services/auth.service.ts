@@ -3,6 +3,7 @@ import { DecodedToken } from 'back/models/interfaces/decoded-token.interface';
 import bcrypt from 'bcrypt';
 import express from 'express';
 import jsonwebtoken from 'jsonwebtoken';
+import { ConnectionContext } from 'subscriptions-transport-ws';
 import { v4 as uuidv4 } from 'uuid';
 
 import config from '../config';
@@ -18,7 +19,7 @@ class AuthService {
   async login(
     username: string,
     password: string,
-    res: express.Response,
+    res: express.Response | undefined,
   ): Promise<string | null> {
     const user = await userService.getUserByName(username);
 
@@ -33,7 +34,7 @@ class AuthService {
             expiresIn: config.tokenExpireTime,
           },
         );
-        res.cookie(JWT_COOKIE_NAME, token, { httpOnly: true });
+        res?.cookie(JWT_COOKIE_NAME, token, { httpOnly: true });
         return token;
       }
     }
@@ -44,7 +45,7 @@ class AuthService {
   async logout(
     id: string,
     token: string | undefined,
-    res: express.Response,
+    res: express.Response | undefined,
   ): Promise<boolean> {
     if (!token) {
       return false;
@@ -53,7 +54,7 @@ class AuthService {
     const user = await userService.getUser(id);
     if (user) {
       await redisService.saveRevokedToken(token);
-      res.clearCookie(JWT_COOKIE_NAME);
+      res?.clearCookie(JWT_COOKIE_NAME);
     }
 
     return !!user;
@@ -100,6 +101,45 @@ class AuthService {
     }
 
     return { user, token };
+  }
+
+  async checkWSConnection(
+    ...args: [unknown, unknown, ConnectionContext]
+  ): Promise<boolean> {
+    const connectionContext = args[2];
+    const payload =
+      connectionContext.request.headers.cookie?.split(`${JWT_COOKIE_NAME}=`) ||
+      [];
+    const token = payload[1];
+    let allChecksPassed = false;
+
+    if (token) {
+      try {
+        const decoded = jsonwebtoken.verify(
+          token,
+          config.tokenSecret,
+        ) as DecodedToken;
+
+        if (decoded?.userId) {
+          const result = await userService.getUser(decoded.userId);
+
+          if (result) {
+            allChecksPassed = !(await redisService.isTokenRevoked({
+              userId: decoded.userId,
+              id: decoded.id,
+            }));
+          }
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    if (!token || !allChecksPassed) {
+      throw new Error('Not authenticated');
+    }
+
+    return true;
   }
 
   isLoggedIn(partialContext: Pick<ContextPayload, 'user' | 'token'>): boolean {

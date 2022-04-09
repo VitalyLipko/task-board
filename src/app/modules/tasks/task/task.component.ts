@@ -27,6 +27,7 @@ import { TasksService } from '../tasks.service';
 })
 export class TaskComponent implements OnInit, OnDestroy {
   task!: Task;
+  parentId!: string;
   dropdownActions: Array<DropdownAction<Task>> = [
     {
       name: 'edit',
@@ -99,9 +100,10 @@ export class TaskComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.route.paramMap
       .pipe(
-        switchMap((params) =>
-          this.tasksService.getTask(params.get('taskId') as string),
-        ),
+        switchMap((params) => {
+          this.parentId = params.get('taskId') as string;
+          return this.tasksService.getTask(this.parentId);
+        }),
         takeUntil(this.unsubscribe),
       )
       .subscribe({

@@ -1,0 +1,7 @@
+#import "./comment-fields.fragment.graphql"
+
+query GetComments($parentId: String!) {
+  comments(parentId: $parentId) {
+    ...CommentFields
+  }
+}

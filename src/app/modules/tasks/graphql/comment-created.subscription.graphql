@@ -1,0 +1,7 @@
+#import "./comment-fields.fragment.graphql"
+
+subscription CommentCreated($parentId: String!) {
+  commentCreated(parentId: $parentId) {
+    ...CommentFields
+  }
+}

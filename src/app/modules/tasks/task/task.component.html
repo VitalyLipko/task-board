@@ -10,6 +10,7 @@
         [tbReadOnly]="true"
         [ngModel]="task.description"
       ></tb-description>
+      <tb-comments [tbParentId]="parentId"></tb-comments>
     </nz-card>
     <ng-template #extraTemplate>
       <tb-dropdown-actions
@@ -23,7 +24,7 @@
       </nz-tag>
       <tb-task-creation-info [tbTask]="task"></tb-task-creation-info>
     </ng-template>
-    <nz-list nzItemLayout="vertical">
+    <nz-list nzItemLayout="vertical" class="tb-task-right-panel">
       <nz-list-item class="tb-task-assignees">
         <nz-list-item-meta [nzTitle]="t('task.assignees')">
           <nz-list-item-meta-description>
