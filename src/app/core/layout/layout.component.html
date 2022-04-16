@@ -14,13 +14,17 @@
           <ng-container *ngTemplateOutlet="pageHeaderExtra"></ng-container>
         </nz-page-header-extra>
       </nz-page-header>
-      <nz-avatar
-        nzIcon="user"
+      <tb-avatar
+        *ngIf="user"
+        [tbShowTooltip]="false"
+        [tbClickable]="true"
+        [tbFullName]="user.fullName"
         nz-dropdown
         nzPlacement="bottomRight"
         nzTrigger="click"
+        nzOverlayClassName="tb-layout-header-dropdown-menu"
         [nzDropdownMenu]="menu"
-      ></nz-avatar>
+      ></tb-avatar>
     </nz-header>
     <nz-layout>
       <nz-sider
@@ -67,6 +71,12 @@
   </nz-layout>
   <nz-dropdown-menu #menu="nzDropdownMenu">
     <ul nz-menu>
+      <li class="tb-layout-header-dropdown-menu-fullname">
+        <span nz-typography nzEllipsis>
+          {{ user?.fullName }}
+        </span>
+      </li>
+      <li nz-menu-divider></li>
       <li nz-menu-item (click)="logout()">{{ t('common.log_out') }}</li>
     </ul>
   </nz-dropdown-menu>

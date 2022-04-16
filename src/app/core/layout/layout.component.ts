@@ -1,8 +1,17 @@
 import { Location } from '@angular/common';
-import { Component, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewEncapsulation,
+} from '@angular/core';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { User } from '../graphql/graphql';
 import { AuthService } from '../services/auth.service';
 import { BreadcrumbService } from '../services/breadcrumb.service';
 
@@ -13,9 +22,11 @@ import { LayoutService } from './layout.service';
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
 })
-export class LayoutComponent implements OnDestroy {
+export class LayoutComponent implements OnInit, OnDestroy {
   siderCollapsed = false;
+  user: User | undefined;
 
   private unsubscribe = new Subject<void>();
 
@@ -24,7 +35,22 @@ export class LayoutComponent implements OnDestroy {
     private authService: AuthService,
     private location: Location,
     public breadcrumbService: BreadcrumbService,
+    private cdr: ChangeDetectorRef,
+    private messageService: NzMessageService,
   ) {}
+
+  ngOnInit(): void {
+    this.layoutService
+      .getCurrentUser()
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe({
+        next: (user) => {
+          this.user = user;
+          this.cdr.markForCheck();
+        },
+        error: (err) => this.messageService.error(err.message),
+      });
+  }
 
   ngOnDestroy(): void {
     this.unsubscribe.next();

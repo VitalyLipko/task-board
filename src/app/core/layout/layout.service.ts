@@ -1,5 +1,12 @@
 import { Injectable, TemplateRef } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { Apollo } from 'apollo-angular';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+import { User } from '../graphql/graphql';
+import { errorHandler } from '../operators';
+
+import GetCurrentUser from './get-current-user.query.graphql';
 
 @Injectable({ providedIn: 'root' })
 export class LayoutService {
@@ -16,5 +23,16 @@ export class LayoutService {
 
   set title(value: string) {
     this._title.next(value);
+  }
+
+  constructor(private apollo: Apollo) {}
+
+  getCurrentUser(): Observable<User> {
+    return this.apollo
+      .watchQuery<{ user: User }>({ query: GetCurrentUser })
+      .valueChanges.pipe(
+        errorHandler(),
+        map(({ data }) => data.user),
+      );
   }
 }

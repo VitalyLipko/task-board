@@ -1,43 +1,50 @@
 @use 'sass:math';
 @use 'variables' as *;
 
-.tb-layout-container {
-  height: 100%;
+.tb-layout {
+  &-container {
+    height: 100%;
 
-  & > .ant-layout-header {
-    height: auto;
-    width: 100%;
-    padding-left: $indent-xl;
-    position: fixed;
-    box-shadow: 1px 2px 2px hsl(0deg 0% 50% / 0.075),
-      2px 4px 4px hsl(0deg 0% 50% / 0.075), 4px 8px 8px hsl(0deg 0% 50% / 0.075);
-    z-index: 2;
-    background: white;
+    & > .ant-layout-header {
+      height: auto;
+      width: 100%;
+      padding-left: $indent-xl;
+      position: fixed;
+      box-shadow: 1px 2px 2px hsl(0deg 0% 50% / 0.075),
+        2px 4px 4px hsl(0deg 0% 50% / 0.075),
+        4px 8px 8px hsl(0deg 0% 50% / 0.075);
+      z-index: 2;
+      background: white;
 
-    nz-page-header {
-      padding-left: 0;
+      nz-page-header {
+        padding-left: 0;
+      }
+    }
+
+    nz-content {
+      padding: $indent-xl;
+      overflow: auto;
+
+      nz-breadcrumb {
+        position: relative;
+        top: -16px;
+      }
+    }
+
+    nz-layout {
+      margin-top: 72px;
+    }
+
+    a {
+      display: inline;
     }
   }
 
-  nz-avatar {
-    cursor: pointer;
-  }
+  &-header-dropdown-menu {
+    max-width: 200px;
 
-  nz-content {
-    padding: $indent-xl;
-    overflow: auto;
-
-    nz-breadcrumb {
-      position: relative;
-      top: -16px;
+    &-fullname {
+      padding: 5px 12px;
     }
-  }
-
-  nz-layout {
-    margin-top: 72px;
-  }
-
-  a {
-    display: inline;
   }
 }

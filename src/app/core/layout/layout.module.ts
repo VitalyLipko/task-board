@@ -7,15 +7,17 @@ import {
   AppstoreOutline,
 } from '@ant-design/icons-angular/icons';
 import { TranslocoModule } from '@ngneat/transloco';
-import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
+import { NzMessageModule } from 'ng-zorro-antd/message';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
+
+import { AvatarModule } from '../../shared/avatar/avatar.module';
 
 import { LayoutComponent } from './layout.component';
 
@@ -28,12 +30,13 @@ import { LayoutComponent } from './layout.component';
     NzGridModule,
     NzPageHeaderModule,
     NzButtonModule,
-    NzAvatarModule,
     NzIconModule.forChild([UserOutline, ArrowLeftOutline, AppstoreOutline]),
     NzDropDownModule,
     NzBreadCrumbModule,
     RouterModule,
     TranslocoModule,
+    AvatarModule,
+    NzMessageModule,
   ],
   exports: [LayoutComponent],
 })

@@ -17,13 +17,14 @@ import { stringToColor } from '../utils/string-to-color';
       [nzSize]="tbSize"
       [style.backgroundColor]="backgroundColor"
       nz-tooltip
-      [nzTooltipTitle]="tbShowTooltip ? tbFullName : null"
+      [nzTooltipTitle]="tbFullName"
+      [nzTooltipTrigger]="tbShowTooltip ? 'hover' : null"
     ></nz-avatar>
   `,
   styles: [
     `
       :host {
-        display: inline-block;
+        display: inline-flex;
       }
     `,
   ],
@@ -31,12 +32,13 @@ import { stringToColor } from '../utils/string-to-color';
 })
 export class AvatarComponent {
   @HostBinding('style.cursor') get cursor(): string {
-    return this.tbShowTooltip ? 'pointer' : 'default';
+    return this.tbShowTooltip || this.tbClickable ? 'pointer' : 'default';
   }
 
   @Input() tbFullName!: string;
   @Input() tbSize: NzSizeLDSType | number = 'default';
   @Input() tbShowTooltip = true;
+  @Input() tbClickable = false;
 
   get text(): string {
     return fullNameToInitials(this.tbFullName);
