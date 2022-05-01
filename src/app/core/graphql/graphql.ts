@@ -99,6 +99,7 @@ export type Mutation = {
   logout?: Maybe<Scalars['Boolean']>;
   createUser: User;
   updateUser: User;
+  updateProfile: User;
   deleteUser?: Maybe<Scalars['Boolean']>;
   createLabel: Label;
   updateLabel?: Maybe<Label>;
@@ -159,6 +160,11 @@ export type MutationUpdateUserArgs = {
 };
 
 
+export type MutationUpdateProfileArgs = {
+  user: UpdateProfileInput;
+};
+
+
 export type MutationDeleteUserArgs = {
   id: Scalars['ID'];
 };
@@ -181,6 +187,11 @@ export type MutationDeleteLabelArgs = {
 
 export type MutationCreateCommentArgs = {
   comment: CreateCommentInput;
+};
+
+export type Profile = {
+  __typename?: 'Profile';
+  avatar?: Maybe<File>;
 };
 
 export type Project = {
@@ -283,6 +294,14 @@ export type UpdateLabelInput = {
   backgroundColor?: Maybe<Scalars['HexColorCode']>;
 };
 
+export type UpdateProfileInput = {
+  id: Scalars['ID'];
+  email?: Maybe<Scalars['String']>;
+  firstName?: Maybe<Scalars['String']>;
+  lastName?: Maybe<Scalars['String']>;
+  avatar?: Maybe<Scalars['Upload']>;
+};
+
 export type UpdateProjectInput = {
   id: Scalars['ID'];
   name?: Maybe<Scalars['String']>;
@@ -313,4 +332,5 @@ export type User = {
   lastName: Scalars['String'];
   fullName: Scalars['String'];
   trashed: Scalars['Boolean'];
+  profile: Profile;
 };

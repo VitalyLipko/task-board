@@ -1,0 +1,7 @@
+#import "./user-fields.fragment.graphql"
+
+mutation UpdateProfile($user: UpdateProfileInput!) {
+  updateProfile(user: $user) {
+    ...UserFields
+  }
+}

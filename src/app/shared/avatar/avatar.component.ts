@@ -15,7 +15,9 @@ import { stringToColor } from '../utils/string-to-color';
     <nz-avatar
       [nzText]="text"
       [nzSize]="tbSize"
+      [nzSrc]="tbUrl ? $any(tbUrl | nzSanitizer: 'url') : null"
       [style.backgroundColor]="backgroundColor"
+      [style.fontSize]="fontSize"
       nz-tooltip
       [nzTooltipTitle]="tbFullName"
       [nzTooltipTrigger]="tbShowTooltip ? 'hover' : null"
@@ -39,6 +41,7 @@ export class AvatarComponent {
   @Input() tbSize: NzSizeLDSType | number = 'default';
   @Input() tbShowTooltip = true;
   @Input() tbClickable = false;
+  @Input() tbUrl: string | undefined;
 
   get text(): string {
     return fullNameToInitials(this.tbFullName);
@@ -46,5 +49,11 @@ export class AvatarComponent {
 
   get backgroundColor(): string {
     return stringToColor(this.tbFullName);
+  }
+
+  get fontSize(): string | null {
+    return typeof this.tbSize === 'number'
+      ? `${Math.floor(this.tbSize / 3)}px`
+      : null;
   }
 }

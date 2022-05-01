@@ -1,0 +1,33 @@
+$avatar-size: 150px;
+
+.tb-profile-avatar {
+  .ant-upload.ant-upload-select-picture-card {
+    height: $avatar-size;
+    width: $avatar-size;
+    border-radius: 50%;
+  }
+
+  &-overlay {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: $avatar-size;
+    width: $avatar-size;
+    border-radius: 50%;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.25);
+
+      .anticon {
+        display: block;
+      }
+    }
+
+    .anticon {
+      display: none;
+      font-size: 32px;
+      color: white;
+    }
+  }
+}

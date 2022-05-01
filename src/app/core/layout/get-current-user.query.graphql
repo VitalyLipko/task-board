@@ -2,5 +2,10 @@ query GetCurrentUser {
   user {
     id
     fullName
+    profile {
+      avatar {
+        url
+      }
+    }
   }
 }

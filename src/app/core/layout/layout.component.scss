@@ -46,5 +46,14 @@
     &-fullname {
       padding: 5px 12px;
     }
+
+    &-item-link {
+      padding: 0;
+
+      & > a {
+        padding: 5px 12px;
+        width: 100%;
+      }
+    }
   }
 }

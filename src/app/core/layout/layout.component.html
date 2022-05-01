@@ -19,6 +19,7 @@
         [tbShowTooltip]="false"
         [tbClickable]="true"
         [tbFullName]="user.fullName"
+        [tbUrl]="user.profile.avatar?.url"
         nz-dropdown
         nzPlacement="bottomRight"
         nzTrigger="click"
@@ -75,6 +76,13 @@
         <span nz-typography nzEllipsis>
           {{ user?.fullName }}
         </span>
+      </li>
+      <li
+        nz-menu-item
+        nzMatchRouter
+        class="tb-layout-header-dropdown-menu-item-link"
+      >
+        <a routerLink="profile">{{ t('profile.profile') }}</a>
       </li>
       <li nz-menu-divider></li>
       <li nz-menu-item (click)="logout()">{{ t('common.log_out') }}</li>

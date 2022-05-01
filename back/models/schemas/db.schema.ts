@@ -7,7 +7,7 @@ import { File } from '../interfaces/file.interface';
 import { Label } from '../interfaces/label.interface';
 import { Project } from '../interfaces/project.interface';
 import { Task } from '../interfaces/task.interface';
-import { User } from '../interfaces/user.interface';
+import { Profile, User } from '../interfaces/user.interface';
 
 export type ProjectModel = Project & Document;
 export type TaskModel = Task & Document;
@@ -24,6 +24,9 @@ const fileSchema = new Schema<File, Model<File>, File>({
   name: { type: String, required: true },
   url: { type: String, required: true },
   mimeType: { type: String, required: true },
+});
+const profileSchema = new Schema<Profile, Model<Profile>, Profile>({
+  avatar: fileSchema,
 });
 
 const taskSchema = new Schema<Task, Model<Task>, Task>(
@@ -75,6 +78,7 @@ const userSchema = new Schema<User, Model<User>, User>(
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
     trashed: { type: Boolean, default: false },
+    profile: profileSchema,
   },
   {
     toObject: {

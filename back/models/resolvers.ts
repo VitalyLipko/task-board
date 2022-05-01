@@ -98,6 +98,10 @@ export const resolvers: IResolvers<unknown, ContextPayload> = {
       authService.operationGuard(context, () =>
         userService.updateUser(args.user),
       ),
+    updateProfile: (_, args, context) =>
+      authService.operationGuard(context, () =>
+        userService.updateProfile(args.user),
+      ),
     deleteUser: (_, args, context) =>
       authService.operationGuard(context, () =>
         userService.deleteUser(args.id, context.user?.id),

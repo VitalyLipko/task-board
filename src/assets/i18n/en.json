@@ -9,7 +9,8 @@
     "delete": "Delete",
     "delete_entity": "Delete {{entity}}?",
     "edit": "Edit",
-    "upload_placeholder": "Click or drag file to this area to upload"
+    "upload_placeholder": "Click or drag file to this area to upload",
+    "reset": "Reset"
   },
   "login": {
     "log_in": "Log in",
@@ -75,5 +76,9 @@
     "edit_user": "Edit user",
     "user_updated": "User updated",
     "user_deleted": "User deleted"
+  },
+  "profile": {
+    "profile": "Profile",
+    "profile_updated": "Profile updated"
   }
 }

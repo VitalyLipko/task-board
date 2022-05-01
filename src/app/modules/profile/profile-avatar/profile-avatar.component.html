@@ -1,0 +1,19 @@
+<nz-upload
+  nzAccept="image/*"
+  nzListType="picture-card"
+  [nzShowUploadList]="false"
+  [nzSize]="8000"
+  [nzBeforeUpload]="handleValueChange.bind(this)"
+  class="tb-profile-avatar"
+>
+  <tb-avatar
+    [tbUrl]="imageUrl || ''"
+    [tbFullName]="tbFullName"
+    [tbSize]="150"
+    [tbShowTooltip]="false"
+    [tbClickable]="true"
+  ></tb-avatar>
+  <div class="tb-profile-avatar-overlay" (click)="handleOverlayClick($event)">
+    <i nz-icon [nzType]="imageUrl ? 'delete' : 'plus'" nzTheme="outline"></i>
+  </div>
+</nz-upload>

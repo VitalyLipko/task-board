@@ -32,7 +32,7 @@ export type LabelFieldPolicy = {
 	backgroundColor?: FieldPolicy<any> | FieldReadFunction<any>,
 	isSystem?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type MutationKeySpecifier = ('createProject' | 'updateProject' | 'deleteProject' | 'createTask' | 'updateTask' | 'changeTaskStatus' | 'login' | 'logout' | 'createUser' | 'updateUser' | 'deleteUser' | 'createLabel' | 'updateLabel' | 'deleteLabel' | 'createComment' | MutationKeySpecifier)[];
+export type MutationKeySpecifier = ('createProject' | 'updateProject' | 'deleteProject' | 'createTask' | 'updateTask' | 'changeTaskStatus' | 'login' | 'logout' | 'createUser' | 'updateUser' | 'updateProfile' | 'deleteUser' | 'createLabel' | 'updateLabel' | 'deleteLabel' | 'createComment' | MutationKeySpecifier)[];
 export type MutationFieldPolicy = {
 	createProject?: FieldPolicy<any> | FieldReadFunction<any>,
 	updateProject?: FieldPolicy<any> | FieldReadFunction<any>,
@@ -44,11 +44,16 @@ export type MutationFieldPolicy = {
 	logout?: FieldPolicy<any> | FieldReadFunction<any>,
 	createUser?: FieldPolicy<any> | FieldReadFunction<any>,
 	updateUser?: FieldPolicy<any> | FieldReadFunction<any>,
+	updateProfile?: FieldPolicy<any> | FieldReadFunction<any>,
 	deleteUser?: FieldPolicy<any> | FieldReadFunction<any>,
 	createLabel?: FieldPolicy<any> | FieldReadFunction<any>,
 	updateLabel?: FieldPolicy<any> | FieldReadFunction<any>,
 	deleteLabel?: FieldPolicy<any> | FieldReadFunction<any>,
 	createComment?: FieldPolicy<any> | FieldReadFunction<any>
+};
+export type ProfileKeySpecifier = ('avatar' | ProfileKeySpecifier)[];
+export type ProfileFieldPolicy = {
+	avatar?: FieldPolicy<any> | FieldReadFunction<any>
 };
 export type ProjectKeySpecifier = ('id' | 'name' | 'created' | 'tasks' | 'status' | 'icon' | ProjectKeySpecifier)[];
 export type ProjectFieldPolicy = {
@@ -89,7 +94,7 @@ export type TaskFieldPolicy = {
 	labels?: FieldPolicy<any> | FieldReadFunction<any>,
 	status?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type UserKeySpecifier = ('id' | 'username' | 'email' | 'firstName' | 'lastName' | 'fullName' | 'trashed' | UserKeySpecifier)[];
+export type UserKeySpecifier = ('id' | 'username' | 'email' | 'firstName' | 'lastName' | 'fullName' | 'trashed' | 'profile' | UserKeySpecifier)[];
 export type UserFieldPolicy = {
 	id?: FieldPolicy<any> | FieldReadFunction<any>,
 	username?: FieldPolicy<any> | FieldReadFunction<any>,
@@ -97,7 +102,8 @@ export type UserFieldPolicy = {
 	firstName?: FieldPolicy<any> | FieldReadFunction<any>,
 	lastName?: FieldPolicy<any> | FieldReadFunction<any>,
 	fullName?: FieldPolicy<any> | FieldReadFunction<any>,
-	trashed?: FieldPolicy<any> | FieldReadFunction<any>
+	trashed?: FieldPolicy<any> | FieldReadFunction<any>,
+	profile?: FieldPolicy<any> | FieldReadFunction<any>
 };
 export type StrictTypedTypePolicies = {
 	Board?: Omit<TypePolicy, 'fields' | 'keyFields'> & {
@@ -123,6 +129,10 @@ export type StrictTypedTypePolicies = {
 	Mutation?: Omit<TypePolicy, 'fields' | 'keyFields'> & {
 		keyFields?: false | MutationKeySpecifier | (() => undefined | MutationKeySpecifier),
 		fields?: MutationFieldPolicy,
+	},
+	Profile?: Omit<TypePolicy, 'fields' | 'keyFields'> & {
+		keyFields?: false | ProfileKeySpecifier | (() => undefined | ProfileKeySpecifier),
+		fields?: ProfileFieldPolicy,
 	},
 	Project?: Omit<TypePolicy, 'fields' | 'keyFields'> & {
 		keyFields?: false | ProjectKeySpecifier | (() => undefined | ProjectKeySpecifier),

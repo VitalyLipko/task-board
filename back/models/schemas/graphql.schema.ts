@@ -70,6 +70,10 @@ export default gql`
     status: TaskStatusEnum!
   }
 
+  type Profile {
+    avatar: File
+  }
+
   type User {
     id: ID!
     username: String!
@@ -78,6 +82,7 @@ export default gql`
     lastName: String!
     fullName: String!
     trashed: Boolean!
+    profile: Profile!
   }
 
   type Query {
@@ -105,6 +110,7 @@ export default gql`
     logout(id: ID): Boolean
     createUser(user: CreateUserInput): User!
     updateUser(user: UpdateUserInput): User!
+    updateProfile(user: UpdateProfileInput!): User!
     deleteUser(id: ID!): Boolean
     createLabel(label: CreateLabelInput!): Label!
     updateLabel(label: UpdateLabelInput!): Label
@@ -161,6 +167,14 @@ export default gql`
     email: String
     firstName: String
     lastName: String
+  }
+
+  input UpdateProfileInput {
+    id: ID!
+    email: String
+    firstName: String
+    lastName: String
+    avatar: Upload
   }
 
   input CreateLabelInput {

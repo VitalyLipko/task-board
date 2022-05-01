@@ -1,0 +1,7 @@
+#import "./user-fields.fragment.graphql"
+
+query GetProfile {
+  user {
+    ...UserFields
+  }
+}

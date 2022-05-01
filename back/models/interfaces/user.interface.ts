@@ -1,3 +1,7 @@
+import { FileUpload } from 'graphql-upload';
+
+import { File } from './file.interface';
+
 export interface User {
   id: string;
   username: string;
@@ -7,6 +11,11 @@ export interface User {
   lastName: string;
   fullName: string;
   trashed: boolean;
+  profile: Profile;
+}
+
+export interface Profile {
+  avatar?: File;
 }
 
 export interface CreateUserInput {
@@ -22,4 +31,8 @@ export interface UpdateUserInput {
   email?: User['email'];
   firstName?: User['firstName'];
   lastName?: User['lastName'];
+}
+
+export interface UpdateProfileInput extends UpdateUserInput {
+  avatar?: FileUpload;
 }

@@ -1,13 +1,17 @@
 import { ApolloError } from 'apollo-server-express';
 import bcrypt from 'bcrypt';
+import isUndefined from 'lodash/isUndefined';
 import { LeanDocument } from 'mongoose';
 
 import {
   CreateUserInput,
+  UpdateProfileInput,
   UpdateUserInput,
   User,
 } from '../models/interfaces/user.interface';
 import { UserModel, userModel } from '../models/schemas/db.schema';
+
+import fileStorageService from './file-storage.service';
 
 class UserService {
   async getUsers(): Promise<Array<LeanDocument<UserModel>>> {
@@ -33,8 +37,7 @@ class UserService {
 
   async createUser(user: CreateUserInput): Promise<User> {
     user.password = await bcrypt.hash(user.password, 10);
-
-    return userModel.create(user);
+    return userModel.create({ ...user, profile: {} });
   }
 
   async updateUser(
@@ -54,6 +57,33 @@ class UserService {
     }
 
     return null;
+  }
+
+  async updateProfile(user: UpdateProfileInput): Promise<User> {
+    const document = await userModel.findById(user.id);
+
+    if (!document) {
+      throw new ApolloError(`User ${user.id} not found`);
+    }
+
+    if (!isUndefined(user.avatar)) {
+      if (user.avatar === null && document.profile.avatar) {
+        await fileStorageService.delete(document.profile.avatar.url);
+        document.profile.avatar = user.avatar;
+      } else if (user.avatar && document.profile.avatar) {
+        await fileStorageService.delete(document.profile.avatar.url);
+        document.profile.avatar = await fileStorageService.save(user.avatar);
+      } else {
+        document.profile.avatar = await fileStorageService.save(user.avatar);
+      }
+    }
+    Object.entries(user).forEach(([key, value]) => {
+      if (!['id', 'avatar'].includes(key) && value) {
+        document.set(key, value);
+      }
+    });
+
+    return document.save();
   }
 
   async deleteUser(
