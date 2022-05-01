@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { TranslocoService } from '@ngneat/transloco';
 import { Apollo } from 'apollo-angular';
 import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
@@ -27,17 +27,18 @@ export class BreadcrumbService {
     private router: Router,
     private apollo: Apollo,
     private translocoService: TranslocoService,
+    private route: ActivatedRoute,
   ) {
     let breadcrumb: Array<Breadcrumb>;
     this.router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),
         switchMap((event) => {
-          const urlAfterRedirects = (event as NavigationEnd).urlAfterRedirects;
+          const segments = (event as NavigationEnd).urlAfterRedirects.split(
+            '/',
+          );
           const label = this.translocoService.translate(
-            urlAfterRedirects.startsWith('/projects')
-              ? 'common.projects'
-              : 'common.users',
+            BreadcrumbService.getRootLabelKey(segments[1]),
           );
           breadcrumb = [
             {
@@ -45,11 +46,9 @@ export class BreadcrumbService {
               label,
             },
           ];
-          const segments = urlAfterRedirects.split('/');
-          const projectId =
-            segments[segments.findIndex((value) => value === 'projects') + 1];
-          const taskId =
-            segments[segments.findIndex((value) => value === 'tasks') + 1];
+
+          const projectId = this.getId(segments, 'projects');
+          const taskId = this.getId(segments, 'tasks');
 
           return combineLatest([
             projectId ? this.getProjectBreadcrumb(projectId) : of(null),
@@ -74,6 +73,26 @@ export class BreadcrumbService {
         }),
       )
       .subscribe((res) => (this.breadcrumb = res));
+  }
+
+  private getId(
+    segments: Array<string>,
+    predicate: string,
+  ): string | undefined {
+    return segments[segments.findIndex((value) => value === predicate) + 1];
+  }
+
+  private static getRootLabelKey(segment: string): string {
+    switch (segment) {
+      case 'projects':
+        return 'common.projects';
+      case 'users':
+        return 'common.users';
+      case 'profile':
+        return 'profile.profile';
+      default:
+        return '';
+    }
   }
 
   private getProjectBreadcrumb(id: string): Observable<Breadcrumb> {

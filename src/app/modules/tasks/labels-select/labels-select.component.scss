@@ -4,7 +4,7 @@ $option-height: 32px;
 
 .tb-labels-select {
   &-inline {
-    width: 234px;
+    width: $inline-select-width;
     max-height: $option-height * 5;
     overflow: hidden auto;
 
