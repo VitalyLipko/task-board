@@ -1,72 +1,73 @@
 import { FieldPolicy, FieldReadFunction, TypePolicies, TypePolicy } from '@apollo/client/cache';
-export type BoardKeySpecifier = ('parentId' | 'columns' | BoardKeySpecifier)[];
+export type BoardKeySpecifier = ('columns' | 'parentId' | BoardKeySpecifier)[];
 export type BoardFieldPolicy = {
-	parentId?: FieldPolicy<any> | FieldReadFunction<any>,
-	columns?: FieldPolicy<any> | FieldReadFunction<any>
+	columns?: FieldPolicy<any> | FieldReadFunction<any>,
+	parentId?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type ColumnKeySpecifier = ('label' | 'items' | ColumnKeySpecifier)[];
+export type ColumnKeySpecifier = ('items' | 'label' | ColumnKeySpecifier)[];
 export type ColumnFieldPolicy = {
-	label?: FieldPolicy<any> | FieldReadFunction<any>,
-	items?: FieldPolicy<any> | FieldReadFunction<any>
+	items?: FieldPolicy<any> | FieldReadFunction<any>,
+	label?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type CommentKeySpecifier = ('id' | 'parentId' | 'created' | 'creator' | 'message' | CommentKeySpecifier)[];
+export type CommentKeySpecifier = ('created' | 'creator' | 'id' | 'message' | 'parentId' | CommentKeySpecifier)[];
 export type CommentFieldPolicy = {
-	id?: FieldPolicy<any> | FieldReadFunction<any>,
-	parentId?: FieldPolicy<any> | FieldReadFunction<any>,
 	created?: FieldPolicy<any> | FieldReadFunction<any>,
 	creator?: FieldPolicy<any> | FieldReadFunction<any>,
-	message?: FieldPolicy<any> | FieldReadFunction<any>
-};
-export type FileKeySpecifier = ('name' | 'url' | 'mimeType' | 'size' | 'encoding' | FileKeySpecifier)[];
-export type FileFieldPolicy = {
-	name?: FieldPolicy<any> | FieldReadFunction<any>,
-	url?: FieldPolicy<any> | FieldReadFunction<any>,
-	mimeType?: FieldPolicy<any> | FieldReadFunction<any>,
-	size?: FieldPolicy<any> | FieldReadFunction<any>,
-	encoding?: FieldPolicy<any> | FieldReadFunction<any>
-};
-export type LabelKeySpecifier = ('id' | 'title' | 'backgroundColor' | 'isSystem' | LabelKeySpecifier)[];
-export type LabelFieldPolicy = {
 	id?: FieldPolicy<any> | FieldReadFunction<any>,
-	title?: FieldPolicy<any> | FieldReadFunction<any>,
-	backgroundColor?: FieldPolicy<any> | FieldReadFunction<any>,
-	isSystem?: FieldPolicy<any> | FieldReadFunction<any>
+	message?: FieldPolicy<any> | FieldReadFunction<any>,
+	parentId?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type MutationKeySpecifier = ('createProject' | 'updateProject' | 'deleteProject' | 'createTask' | 'updateTask' | 'changeTaskStatus' | 'login' | 'logout' | 'createUser' | 'updateUser' | 'updateProfile' | 'deleteUser' | 'createLabel' | 'updateLabel' | 'deleteLabel' | 'createComment' | MutationKeySpecifier)[];
+export type FileKeySpecifier = ('encoding' | 'mimeType' | 'name' | 'size' | 'url' | FileKeySpecifier)[];
+export type FileFieldPolicy = {
+	encoding?: FieldPolicy<any> | FieldReadFunction<any>,
+	mimeType?: FieldPolicy<any> | FieldReadFunction<any>,
+	name?: FieldPolicy<any> | FieldReadFunction<any>,
+	size?: FieldPolicy<any> | FieldReadFunction<any>,
+	url?: FieldPolicy<any> | FieldReadFunction<any>
+};
+export type LabelKeySpecifier = ('backgroundColor' | 'id' | 'isSystem' | 'title' | LabelKeySpecifier)[];
+export type LabelFieldPolicy = {
+	backgroundColor?: FieldPolicy<any> | FieldReadFunction<any>,
+	id?: FieldPolicy<any> | FieldReadFunction<any>,
+	isSystem?: FieldPolicy<any> | FieldReadFunction<any>,
+	title?: FieldPolicy<any> | FieldReadFunction<any>
+};
+export type MutationKeySpecifier = ('changeTaskStatus' | 'createComment' | 'createLabel' | 'createProject' | 'createTask' | 'createUser' | 'deleteLabel' | 'deleteProject' | 'deleteUser' | 'login' | 'logout' | 'updateLabel' | 'updateProfile' | 'updateProject' | 'updateTask' | 'updateUser' | MutationKeySpecifier)[];
 export type MutationFieldPolicy = {
-	createProject?: FieldPolicy<any> | FieldReadFunction<any>,
-	updateProject?: FieldPolicy<any> | FieldReadFunction<any>,
-	deleteProject?: FieldPolicy<any> | FieldReadFunction<any>,
-	createTask?: FieldPolicy<any> | FieldReadFunction<any>,
-	updateTask?: FieldPolicy<any> | FieldReadFunction<any>,
 	changeTaskStatus?: FieldPolicy<any> | FieldReadFunction<any>,
+	createComment?: FieldPolicy<any> | FieldReadFunction<any>,
+	createLabel?: FieldPolicy<any> | FieldReadFunction<any>,
+	createProject?: FieldPolicy<any> | FieldReadFunction<any>,
+	createTask?: FieldPolicy<any> | FieldReadFunction<any>,
+	createUser?: FieldPolicy<any> | FieldReadFunction<any>,
+	deleteLabel?: FieldPolicy<any> | FieldReadFunction<any>,
+	deleteProject?: FieldPolicy<any> | FieldReadFunction<any>,
+	deleteUser?: FieldPolicy<any> | FieldReadFunction<any>,
 	login?: FieldPolicy<any> | FieldReadFunction<any>,
 	logout?: FieldPolicy<any> | FieldReadFunction<any>,
-	createUser?: FieldPolicy<any> | FieldReadFunction<any>,
-	updateUser?: FieldPolicy<any> | FieldReadFunction<any>,
-	updateProfile?: FieldPolicy<any> | FieldReadFunction<any>,
-	deleteUser?: FieldPolicy<any> | FieldReadFunction<any>,
-	createLabel?: FieldPolicy<any> | FieldReadFunction<any>,
 	updateLabel?: FieldPolicy<any> | FieldReadFunction<any>,
-	deleteLabel?: FieldPolicy<any> | FieldReadFunction<any>,
-	createComment?: FieldPolicy<any> | FieldReadFunction<any>
+	updateProfile?: FieldPolicy<any> | FieldReadFunction<any>,
+	updateProject?: FieldPolicy<any> | FieldReadFunction<any>,
+	updateTask?: FieldPolicy<any> | FieldReadFunction<any>,
+	updateUser?: FieldPolicy<any> | FieldReadFunction<any>
 };
 export type ProfileKeySpecifier = ('avatar' | ProfileKeySpecifier)[];
 export type ProfileFieldPolicy = {
 	avatar?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type ProjectKeySpecifier = ('id' | 'name' | 'created' | 'tasks' | 'status' | 'icon' | ProjectKeySpecifier)[];
+export type ProjectKeySpecifier = ('created' | 'icon' | 'id' | 'name' | 'status' | 'tasks' | ProjectKeySpecifier)[];
 export type ProjectFieldPolicy = {
+	created?: FieldPolicy<any> | FieldReadFunction<any>,
+	icon?: FieldPolicy<any> | FieldReadFunction<any>,
 	id?: FieldPolicy<any> | FieldReadFunction<any>,
 	name?: FieldPolicy<any> | FieldReadFunction<any>,
-	created?: FieldPolicy<any> | FieldReadFunction<any>,
-	tasks?: FieldPolicy<any> | FieldReadFunction<any>,
 	status?: FieldPolicy<any> | FieldReadFunction<any>,
-	icon?: FieldPolicy<any> | FieldReadFunction<any>
+	tasks?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type QueryKeySpecifier = ('board' | 'isLoggedIn' | 'label' | 'labels' | 'project' | 'projects' | 'task' | 'tasks' | 'user' | 'users' | 'comments' | QueryKeySpecifier)[];
+export type QueryKeySpecifier = ('board' | 'comments' | 'isLoggedIn' | 'label' | 'labels' | 'project' | 'projects' | 'task' | 'tasks' | 'user' | 'users' | QueryKeySpecifier)[];
 export type QueryFieldPolicy = {
 	board?: FieldPolicy<any> | FieldReadFunction<any>,
+	comments?: FieldPolicy<any> | FieldReadFunction<any>,
 	isLoggedIn?: FieldPolicy<any> | FieldReadFunction<any>,
 	label?: FieldPolicy<any> | FieldReadFunction<any>,
 	labels?: FieldPolicy<any> | FieldReadFunction<any>,
@@ -75,35 +76,34 @@ export type QueryFieldPolicy = {
 	task?: FieldPolicy<any> | FieldReadFunction<any>,
 	tasks?: FieldPolicy<any> | FieldReadFunction<any>,
 	user?: FieldPolicy<any> | FieldReadFunction<any>,
-	users?: FieldPolicy<any> | FieldReadFunction<any>,
-	comments?: FieldPolicy<any> | FieldReadFunction<any>
+	users?: FieldPolicy<any> | FieldReadFunction<any>
 };
 export type SubscriptionKeySpecifier = ('commentCreated' | SubscriptionKeySpecifier)[];
 export type SubscriptionFieldPolicy = {
 	commentCreated?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type TaskKeySpecifier = ('id' | 'title' | 'description' | 'created' | 'parentId' | 'assignees' | 'creator' | 'labels' | 'status' | TaskKeySpecifier)[];
+export type TaskKeySpecifier = ('assignees' | 'created' | 'creator' | 'description' | 'id' | 'labels' | 'parentId' | 'status' | 'title' | TaskKeySpecifier)[];
 export type TaskFieldPolicy = {
-	id?: FieldPolicy<any> | FieldReadFunction<any>,
-	title?: FieldPolicy<any> | FieldReadFunction<any>,
-	description?: FieldPolicy<any> | FieldReadFunction<any>,
-	created?: FieldPolicy<any> | FieldReadFunction<any>,
-	parentId?: FieldPolicy<any> | FieldReadFunction<any>,
 	assignees?: FieldPolicy<any> | FieldReadFunction<any>,
+	created?: FieldPolicy<any> | FieldReadFunction<any>,
 	creator?: FieldPolicy<any> | FieldReadFunction<any>,
-	labels?: FieldPolicy<any> | FieldReadFunction<any>,
-	status?: FieldPolicy<any> | FieldReadFunction<any>
-};
-export type UserKeySpecifier = ('id' | 'username' | 'email' | 'firstName' | 'lastName' | 'fullName' | 'trashed' | 'profile' | UserKeySpecifier)[];
-export type UserFieldPolicy = {
+	description?: FieldPolicy<any> | FieldReadFunction<any>,
 	id?: FieldPolicy<any> | FieldReadFunction<any>,
-	username?: FieldPolicy<any> | FieldReadFunction<any>,
+	labels?: FieldPolicy<any> | FieldReadFunction<any>,
+	parentId?: FieldPolicy<any> | FieldReadFunction<any>,
+	status?: FieldPolicy<any> | FieldReadFunction<any>,
+	title?: FieldPolicy<any> | FieldReadFunction<any>
+};
+export type UserKeySpecifier = ('email' | 'firstName' | 'fullName' | 'id' | 'lastName' | 'profile' | 'trashed' | 'username' | UserKeySpecifier)[];
+export type UserFieldPolicy = {
 	email?: FieldPolicy<any> | FieldReadFunction<any>,
 	firstName?: FieldPolicy<any> | FieldReadFunction<any>,
-	lastName?: FieldPolicy<any> | FieldReadFunction<any>,
 	fullName?: FieldPolicy<any> | FieldReadFunction<any>,
+	id?: FieldPolicy<any> | FieldReadFunction<any>,
+	lastName?: FieldPolicy<any> | FieldReadFunction<any>,
+	profile?: FieldPolicy<any> | FieldReadFunction<any>,
 	trashed?: FieldPolicy<any> | FieldReadFunction<any>,
-	profile?: FieldPolicy<any> | FieldReadFunction<any>
+	username?: FieldPolicy<any> | FieldReadFunction<any>
 };
 export type StrictTypedTypePolicies = {
 	Board?: Omit<TypePolicy, 'fields' | 'keyFields'> & {

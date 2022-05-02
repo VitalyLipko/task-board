@@ -2,14 +2,16 @@ import { NgModule } from '@angular/core';
 import { ApolloClientOptions, split, InMemoryCache } from '@apollo/client/core';
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
-import { APOLLO_OPTIONS } from 'apollo-angular';
+import { APOLLO_OPTIONS, ApolloModule } from 'apollo-angular';
 import { HttpLink } from 'apollo-angular/http';
+import { extractFiles } from 'extract-files';
 
 import { environment } from '../../../environments/environment';
 
 import { typePolicies } from './typePolicies';
 
 @NgModule({
+  imports: [ApolloModule],
   providers: [
     {
       provide: APOLLO_OPTIONS,
@@ -17,6 +19,7 @@ import { typePolicies } from './typePolicies';
         const http = httpLink.create({
           uri: environment.GRAPHQL_URI,
           withCredentials: true,
+          extractFiles,
         });
         const ws = new WebSocketLink({
           uri: environment.WS_URI,

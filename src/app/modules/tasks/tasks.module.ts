@@ -7,7 +7,6 @@ import {
   BoldOutline,
   ItalicOutline,
   StrikethroughOutline,
-  MoreOutline,
 } from '@ant-design/icons-angular/icons';
 import { TranslocoModule } from '@ngneat/transloco';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
@@ -97,7 +96,6 @@ import { TasksService } from './tasks.service';
       BoldOutline,
       ItalicOutline,
       StrikethroughOutline,
-      MoreOutline,
     ]),
     NzTagModule,
     UserInlineInfoModule,

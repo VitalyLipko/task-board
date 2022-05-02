@@ -1,4 +1,5 @@
 export type Maybe<T> = T | null;
+export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
@@ -19,117 +20,92 @@ export type Scalars = {
 
 export type Board = {
   __typename?: 'Board';
-  parentId: Scalars['String'];
   columns: Array<Column>;
+  parentId: Scalars['String'];
 };
 
 export type Column = {
   __typename?: 'Column';
-  label: Label;
   items: Array<Task>;
+  label: Label;
 };
 
 export type Comment = {
   __typename?: 'Comment';
-  id: Scalars['ID'];
-  parentId: Scalars['String'];
   created: Scalars['DateTime'];
   creator: User;
+  id: Scalars['ID'];
   message: Scalars['String'];
+  parentId: Scalars['String'];
 };
 
 export type CreateCommentInput = {
-  parentId: Scalars['String'];
   message: Scalars['String'];
+  parentId: Scalars['String'];
 };
 
 export type CreateLabelInput = {
+  backgroundColor?: InputMaybe<Scalars['HexColorCode']>;
+  isSystem?: InputMaybe<Scalars['Boolean']>;
   title: Scalars['String'];
-  backgroundColor?: Maybe<Scalars['HexColorCode']>;
-  isSystem?: Maybe<Scalars['Boolean']>;
 };
 
 export type CreateProjectInput = {
+  icon?: InputMaybe<Scalars['Upload']>;
   name: Scalars['String'];
-  icon?: Maybe<Scalars['Upload']>;
 };
 
 export type CreateTaskInput = {
-  title: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
+  assignees?: InputMaybe<Array<Scalars['String']>>;
+  description?: InputMaybe<Scalars['String']>;
+  labels?: InputMaybe<Array<Scalars['String']>>;
   parentId: Scalars['String'];
-  assignees?: Maybe<Array<Scalars['String']>>;
-  labels?: Maybe<Array<Scalars['String']>>;
+  title: Scalars['String'];
 };
 
 export type CreateUserInput = {
-  username: Scalars['String'];
-  password: Scalars['String'];
   email: Scalars['String'];
   firstName: Scalars['String'];
   lastName: Scalars['String'];
+  password: Scalars['String'];
+  username: Scalars['String'];
 };
 
 export type File = {
   __typename?: 'File';
-  name: Scalars['String'];
-  url: Scalars['String'];
-  mimeType: Scalars['String'];
-  size: Scalars['Int'];
   encoding: Scalars['String'];
+  mimeType: Scalars['String'];
+  name: Scalars['String'];
+  size: Scalars['Int'];
+  url: Scalars['String'];
 };
 
 export type Label = {
   __typename?: 'Label';
-  id: Scalars['ID'];
-  title: Scalars['String'];
   backgroundColor?: Maybe<Scalars['HexColorCode']>;
+  id: Scalars['ID'];
   isSystem: Scalars['Boolean'];
+  title: Scalars['String'];
 };
 
 export type Mutation = {
   __typename?: 'Mutation';
-  createProject: Project;
-  updateProject?: Maybe<Project>;
-  deleteProject?: Maybe<Scalars['Boolean']>;
-  createTask: Task;
-  updateTask?: Maybe<Task>;
   changeTaskStatus?: Maybe<Scalars['Boolean']>;
+  createComment: Comment;
+  createLabel: Label;
+  createProject: Project;
+  createTask: Task;
+  createUser: User;
+  deleteLabel?: Maybe<Scalars['Boolean']>;
+  deleteProject?: Maybe<Scalars['Boolean']>;
+  deleteUser?: Maybe<Scalars['Boolean']>;
   login?: Maybe<Scalars['String']>;
   logout?: Maybe<Scalars['Boolean']>;
-  createUser: User;
-  updateUser: User;
-  updateProfile: User;
-  deleteUser?: Maybe<Scalars['Boolean']>;
-  createLabel: Label;
   updateLabel?: Maybe<Label>;
-  deleteLabel?: Maybe<Scalars['Boolean']>;
-  createComment: Comment;
-};
-
-
-export type MutationCreateProjectArgs = {
-  project: CreateProjectInput;
-};
-
-
-export type MutationUpdateProjectArgs = {
-  project: UpdateProjectInput;
-};
-
-
-export type MutationDeleteProjectArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type MutationCreateTaskArgs = {
-  task: CreateTaskInput;
-};
-
-
-export type MutationUpdateTaskArgs = {
-  task: UpdateTaskInput;
+  updateProfile: User;
+  updateProject?: Maybe<Project>;
+  updateTask?: Maybe<Task>;
+  updateUser: User;
 };
 
 
@@ -139,34 +115,8 @@ export type MutationChangeTaskStatusArgs = {
 };
 
 
-export type MutationLoginArgs = {
-  username: Scalars['String'];
-  password: Scalars['String'];
-};
-
-
-export type MutationLogoutArgs = {
-  id?: Maybe<Scalars['ID']>;
-};
-
-
-export type MutationCreateUserArgs = {
-  user?: Maybe<CreateUserInput>;
-};
-
-
-export type MutationUpdateUserArgs = {
-  user?: Maybe<UpdateUserInput>;
-};
-
-
-export type MutationUpdateProfileArgs = {
-  user: UpdateProfileInput;
-};
-
-
-export type MutationDeleteUserArgs = {
-  id: Scalars['ID'];
+export type MutationCreateCommentArgs = {
+  comment: CreateCommentInput;
 };
 
 
@@ -175,8 +125,18 @@ export type MutationCreateLabelArgs = {
 };
 
 
-export type MutationUpdateLabelArgs = {
-  label: UpdateLabelInput;
+export type MutationCreateProjectArgs = {
+  project: CreateProjectInput;
+};
+
+
+export type MutationCreateTaskArgs = {
+  task: CreateTaskInput;
+};
+
+
+export type MutationCreateUserArgs = {
+  user?: InputMaybe<CreateUserInput>;
 };
 
 
@@ -185,8 +145,49 @@ export type MutationDeleteLabelArgs = {
 };
 
 
-export type MutationCreateCommentArgs = {
-  comment: CreateCommentInput;
+export type MutationDeleteProjectArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteUserArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationLoginArgs = {
+  password: Scalars['String'];
+  username: Scalars['String'];
+};
+
+
+export type MutationLogoutArgs = {
+  id?: InputMaybe<Scalars['ID']>;
+};
+
+
+export type MutationUpdateLabelArgs = {
+  label: UpdateLabelInput;
+};
+
+
+export type MutationUpdateProfileArgs = {
+  user: UpdateProfileInput;
+};
+
+
+export type MutationUpdateProjectArgs = {
+  project: UpdateProjectInput;
+};
+
+
+export type MutationUpdateTaskArgs = {
+  task: UpdateTaskInput;
+};
+
+
+export type MutationUpdateUserArgs = {
+  user?: InputMaybe<UpdateUserInput>;
 };
 
 export type Profile = {
@@ -196,17 +197,17 @@ export type Profile = {
 
 export type Project = {
   __typename?: 'Project';
+  created: Scalars['DateTime'];
+  icon?: Maybe<File>;
   id: Scalars['ID'];
   name: Scalars['String'];
-  created: Scalars['DateTime'];
-  tasks: Array<Task>;
   status: ProjectStatusEnum;
-  icon?: Maybe<File>;
+  tasks: Array<Task>;
 };
 
 
 export type ProjectTasksArgs = {
-  status?: Maybe<TaskStatusEnum>;
+  status?: InputMaybe<TaskStatusEnum>;
 };
 
 export enum ProjectStatusEnum {
@@ -217,6 +218,7 @@ export enum ProjectStatusEnum {
 export type Query = {
   __typename?: 'Query';
   board?: Maybe<Board>;
+  comments: Array<Comment>;
   isLoggedIn?: Maybe<Scalars['Boolean']>;
   label?: Maybe<Label>;
   labels: Array<Label>;
@@ -226,12 +228,16 @@ export type Query = {
   tasks: Array<Task>;
   user?: Maybe<User>;
   users: Array<User>;
-  comments: Array<Comment>;
 };
 
 
 export type QueryBoardArgs = {
   parentId: Scalars['ID'];
+};
+
+
+export type QueryCommentsArgs = {
+  parentId: Scalars['String'];
 };
 
 
@@ -251,12 +257,7 @@ export type QueryTasksArgs = {
 
 
 export type QueryUserArgs = {
-  id?: Maybe<Scalars['ID']>;
-};
-
-
-export type QueryCommentsArgs = {
-  parentId: Scalars['String'];
+  id?: InputMaybe<Scalars['ID']>;
 };
 
 export type Subscription = {
@@ -271,66 +272,66 @@ export type SubscriptionCommentCreatedArgs = {
 
 export type Task = {
   __typename?: 'Task';
-  id: Scalars['ID'];
-  title: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
-  created: Scalars['DateTime'];
-  parentId: Scalars['String'];
   assignees: Array<User>;
+  created: Scalars['DateTime'];
   creator: User;
+  description?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
   labels: Array<Label>;
+  parentId: Scalars['String'];
   status: TaskStatusEnum;
+  title: Scalars['String'];
 };
 
 export enum TaskStatusEnum {
-  Open = 'OPEN',
   Closed = 'CLOSED',
-  Deleted = 'DELETED'
+  Deleted = 'DELETED',
+  Open = 'OPEN'
 }
 
 export type UpdateLabelInput = {
+  backgroundColor?: InputMaybe<Scalars['HexColorCode']>;
   id: Scalars['ID'];
-  title?: Maybe<Scalars['String']>;
-  backgroundColor?: Maybe<Scalars['HexColorCode']>;
+  title?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateProfileInput = {
+  avatar?: InputMaybe<Scalars['Upload']>;
+  email?: InputMaybe<Scalars['String']>;
+  firstName?: InputMaybe<Scalars['String']>;
   id: Scalars['ID'];
-  email?: Maybe<Scalars['String']>;
-  firstName?: Maybe<Scalars['String']>;
-  lastName?: Maybe<Scalars['String']>;
-  avatar?: Maybe<Scalars['Upload']>;
+  lastName?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateProjectInput = {
+  icon?: InputMaybe<Scalars['Upload']>;
   id: Scalars['ID'];
-  name?: Maybe<Scalars['String']>;
-  icon?: Maybe<Scalars['Upload']>;
+  name?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateTaskInput = {
+  assignees?: InputMaybe<Array<Scalars['String']>>;
+  description?: InputMaybe<Scalars['String']>;
   id: Scalars['ID'];
-  title?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  assignees?: Maybe<Array<Scalars['String']>>;
-  labels?: Maybe<Array<Scalars['String']>>;
+  labels?: InputMaybe<Array<Scalars['String']>>;
+  title?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateUserInput = {
+  email?: InputMaybe<Scalars['String']>;
+  firstName?: InputMaybe<Scalars['String']>;
   id: Scalars['ID'];
-  email?: Maybe<Scalars['String']>;
-  firstName?: Maybe<Scalars['String']>;
-  lastName?: Maybe<Scalars['String']>;
+  lastName?: InputMaybe<Scalars['String']>;
 };
 
 export type User = {
   __typename?: 'User';
-  id: Scalars['ID'];
-  username: Scalars['String'];
   email: Scalars['String'];
   firstName: Scalars['String'];
-  lastName: Scalars['String'];
   fullName: Scalars['String'];
-  trashed: Scalars['Boolean'];
+  id: Scalars['ID'];
+  lastName: Scalars['String'];
   profile: Profile;
+  trashed: Scalars['Boolean'];
+  username: Scalars['String'];
 };

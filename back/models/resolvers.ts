@@ -12,6 +12,7 @@ import subscriptionsService from '../services/subscriptions.service';
 import taskService from '../services/task.service';
 import userService from '../services/user.service';
 
+import { TaskStatusEnum } from './enums/task-status.enum';
 import { ContextPayload } from './interfaces/context-payload.interface';
 
 export const resolvers: IResolvers<unknown, ContextPayload> = {
@@ -32,7 +33,10 @@ export const resolvers: IResolvers<unknown, ContextPayload> = {
       authService.operationGuard(context, () => projectService.getProjects()),
     project: (_, args, context, { variableValues }) =>
       authService.operationGuard(context, () =>
-        projectService.getProject(args.id, variableValues.tasksStatus),
+        projectService.getProject(
+          args.id,
+          variableValues.tasksStatus as TaskStatusEnum,
+        ),
       ),
     tasks: (_, args, context) =>
       authService.operationGuard(context, () =>
