@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { ApolloClientOptions, split, InMemoryCache } from '@apollo/client/core';
-import { WebSocketLink } from '@apollo/client/link/ws';
+import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { APOLLO_OPTIONS, ApolloModule } from 'apollo-angular';
 import { HttpLink } from 'apollo-angular/http';
 import { extractFiles } from 'extract-files';
+import { createClient } from 'graphql-ws';
 
 import { environment } from '../../../environments/environment';
 
@@ -21,12 +22,13 @@ import { typePolicies } from './typePolicies';
           withCredentials: true,
           extractFiles,
         });
-        const ws = new WebSocketLink({
-          uri: environment.WS_URI,
-          options: {
-            reconnect: true,
-          },
-        });
+        const ws = new GraphQLWsLink(
+          createClient({
+            url: environment.WS_URI,
+            lazy: true,
+            shouldRetry: () => true,
+          }),
+        );
         const link = split(
           ({ query }) => {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment

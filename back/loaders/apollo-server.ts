@@ -4,11 +4,11 @@ import { ApolloServer } from 'apollo-server-express';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express from 'express';
-import { execute, subscribe } from 'graphql';
 import { graphqlUploadExpress } from 'graphql-upload';
+import { useServer } from 'graphql-ws/lib/use/ws';
 import { createServer } from 'http';
 import { constants } from 'http2';
-import { SubscriptionServer } from 'subscriptions-transport-ws';
+import { WebSocketServer } from 'ws';
 
 import config from '../config';
 import { ContextPayload } from '../models/interfaces/context-payload.interface';
@@ -22,15 +22,15 @@ export default async (): Promise<void> => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const schema = makeExecutableSchema({ typeDefs, resolvers });
-  const subscriptionServer = SubscriptionServer.create(
-    {
-      schema,
-      execute,
-      subscribe,
-      onConnect: authService.checkWSConnection,
-    },
-    { server: httpServer, path: '/graphql' },
+  const wsServer = new WebSocketServer({
+    server: httpServer,
+    path: '/graphql',
+  });
+  const serverCleanup = useServer(
+    { schema, onConnect: authService.checkWSConnection },
+    wsServer,
   );
+
   const server = new ApolloServer({
     schema,
     context: async ({ req, res }): Promise<ContextPayload> => {
@@ -43,7 +43,7 @@ export default async (): Promise<void> => {
         async serverWillStart() {
           return {
             async drainServer() {
-              subscriptionServer.close();
+              await serverCleanup.dispose();
             },
           };
         },

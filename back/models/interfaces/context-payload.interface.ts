@@ -1,9 +1,9 @@
-import express from 'express';
+import { Response } from 'express';
 
 import { User } from './user.interface';
 
 export interface ContextPayload {
-  res: express.Response;
+  res: Response;
   user?: User;
   token?: string;
 }

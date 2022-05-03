@@ -1,9 +1,9 @@
 import { ApolloError, AuthenticationError } from 'apollo-server-express';
 import { DecodedToken } from 'back/models/interfaces/decoded-token.interface';
 import bcrypt from 'bcrypt';
-import express from 'express';
+import { Request, Response } from 'express';
+import { Context } from 'graphql-ws';
 import jsonwebtoken from 'jsonwebtoken';
-import { ConnectionContext } from 'subscriptions-transport-ws';
 import { v4 as uuidv4 } from 'uuid';
 
 import config from '../config';
@@ -19,7 +19,7 @@ class AuthService {
   async login(
     username: string,
     password: string,
-    res: express.Response | undefined,
+    res: Response,
   ): Promise<string | null> {
     const user = await userService.getUserByName(username);
 
@@ -34,7 +34,7 @@ class AuthService {
             expiresIn: config.tokenExpireTime,
           },
         );
-        res?.cookie(JWT_COOKIE_NAME, token, { httpOnly: true });
+        res.cookie(JWT_COOKIE_NAME, token, { httpOnly: true });
         return token;
       }
     }
@@ -45,7 +45,7 @@ class AuthService {
   async logout(
     id: string,
     token: string | undefined,
-    res: express.Response | undefined,
+    res: Response,
   ): Promise<boolean> {
     if (!token) {
       return false;
@@ -54,15 +54,13 @@ class AuthService {
     const user = await userService.getUser(id);
     if (user) {
       await redisService.saveRevokedToken(token);
-      res?.clearCookie(JWT_COOKIE_NAME);
+      res.clearCookie(JWT_COOKIE_NAME);
     }
 
     return !!user;
   }
 
-  async createContext(
-    req: express.Request,
-  ): Promise<{ user?: User; token?: string }> {
+  async createContext(req: Request): Promise<{ user?: User; token?: string }> {
     let user: User | undefined;
     let token: string | undefined;
 
@@ -104,13 +102,18 @@ class AuthService {
   }
 
   async checkWSConnection(
-    ...args: [unknown, unknown, ConnectionContext]
+    ctx: Context<Record<string, unknown>, Record<string, unknown>>,
   ): Promise<boolean> {
-    const connectionContext = args[2];
+    const { extra, connectionParams } = ctx;
+    const authorization: string | undefined =
+      connectionParams?.authorization as string;
     const payload =
-      connectionContext.request.headers.cookie?.split(`${JWT_COOKIE_NAME}=`) ||
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      extra.request.headers.cookie?.split(`${JWT_COOKIE_NAME}=`) ||
+      authorization?.split('Bearer ') ||
       [];
-    const token = payload[1];
+    const token: string | undefined = payload[1];
     let allChecksPassed = false;
 
     if (token) {
