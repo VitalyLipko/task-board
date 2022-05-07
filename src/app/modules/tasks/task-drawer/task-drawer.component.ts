@@ -7,13 +7,13 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import isEmpty from 'lodash/isEmpty';
 import { NzDrawerRef } from 'ng-zorro-antd/drawer';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { iif, of, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { Task } from '../../../core/graphql/graphql';
+import { FormAbstractClass } from '../../../shared/abstract-classes/form.abstract-class';
 import { TasksService } from '../tasks.service';
 
 @Component({
@@ -21,34 +21,13 @@ import { TasksService } from '../tasks.service';
   templateUrl: './task-drawer.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TaskDrawerComponent implements OnInit, OnDestroy {
-  form!: FormGroup;
+export class TaskDrawerComponent
+  extends FormAbstractClass
+  implements OnInit, OnDestroy
+{
   task: Task | undefined;
 
   private unsubscribe = new Subject<void>();
-
-  get disabled(): boolean {
-    return this.tbId
-      ? this.form?.invalid || isEmpty(this.result)
-      : this.form.invalid;
-  }
-
-  get result(): Record<string, unknown> | null {
-    if (!this.form) {
-      return null;
-    }
-
-    const result: Record<string, unknown> = {};
-    Object.entries(this.form.value).forEach(([key, value]) => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      if (value !== this.task[key]) {
-        result[key] = value;
-      }
-    });
-
-    return result;
-  }
 
   @Input() tbId: string | undefined;
 
@@ -57,23 +36,28 @@ export class TaskDrawerComponent implements OnInit, OnDestroy {
     private drawerRef: NzDrawerRef<TaskDrawerComponent>,
     private messageService: NzMessageService,
     private cdr: ChangeDetectorRef,
-  ) {}
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
+    if (this.tbId) {
+      this.type = 'edit';
+    }
     iif(
       () => !!this.tbId,
       this.tasksService.getTaskDrawerData(this.tbId as string),
       of(undefined),
     )
       .pipe(takeUntil(this.unsubscribe))
-      .subscribe(
-        (task) => {
+      .subscribe({
+        next: (task) => {
           this.task = task;
           this.createForm();
           this.cdr.markForCheck();
         },
-        (err) => this.messageService.error(err.message),
-      );
+        error: (err) => this.messageService.error(err.message),
+      });
   }
 
   ngOnDestroy(): void {
@@ -83,7 +67,7 @@ export class TaskDrawerComponent implements OnInit, OnDestroy {
 
   onSubmit(): void {
     if (this.tbId) {
-      this.drawerRef.close({ ...this.result, id: this.tbId });
+      this.drawerRef.close({ ...this.changedValue, id: this.tbId });
     } else {
       const values: Record<string, unknown> = {};
       Object.entries(this.form.value).forEach(([key, value]) => {
@@ -106,6 +90,7 @@ export class TaskDrawerComponent implements OnInit, OnDestroy {
         title: this.task.title,
         description: this.task.description,
       });
+      this.initialValues = { ...this.form.value };
     } else {
       this.form.addControl('assignees', new FormControl());
       this.form.addControl('labels', new FormControl());

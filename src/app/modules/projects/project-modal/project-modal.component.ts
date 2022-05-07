@@ -14,6 +14,7 @@ import { iif, of, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { Project } from '../../../core/graphql/graphql';
+import { FormAbstractClass } from '../../../shared/abstract-classes/form.abstract-class';
 import { ProjectsService } from '../projects.service';
 
 @Component({
@@ -21,8 +22,10 @@ import { ProjectsService } from '../projects.service';
   templateUrl: './project-modal.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProjectModalComponent implements OnInit, OnDestroy {
-  form!: FormGroup;
+export class ProjectModalComponent
+  extends FormAbstractClass
+  implements OnInit, OnDestroy
+{
   project: Project | undefined;
 
   private unsubscribe = new Subject<void>();
@@ -57,23 +60,28 @@ export class ProjectModalComponent implements OnInit, OnDestroy {
     private projectsService: ProjectsService,
     private cdr: ChangeDetectorRef,
     private messageService: NzMessageService,
-  ) {}
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
+    if (this.tbId) {
+      this.type = 'edit';
+    }
     iif(
       () => !!this.tbId,
       this.projectsService.getProject(this.tbId as string),
       of(undefined),
     )
       .pipe(takeUntil(this.unsubscribe))
-      .subscribe(
-        (project) => {
+      .subscribe({
+        next: (project) => {
           this.project = project;
           this.createForm();
           this.cdr.markForCheck();
         },
-        (err) => this.messageService.error(err.message),
-      );
+        error: (err) => this.messageService.error(err.message),
+      });
   }
 
   ngOnDestroy(): void {
@@ -83,7 +91,7 @@ export class ProjectModalComponent implements OnInit, OnDestroy {
 
   onSubmit(): void {
     if (this.project) {
-      this.modalRef.close({ ...this.result, id: this.tbId });
+      this.modalRef.close({ ...this.changedValue, id: this.tbId });
     } else {
       const values: Record<string, unknown> = {};
       Object.entries(this.form.value).forEach(([key, value]) => {
@@ -103,6 +111,7 @@ export class ProjectModalComponent implements OnInit, OnDestroy {
 
     if (this.project) {
       this.form.setValue({ name: this.project.name, icon: this.project.icon });
+      this.initialValues = { ...this.form.value };
     }
   }
 }

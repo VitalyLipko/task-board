@@ -12,6 +12,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { AuthService } from '../../core/services/auth.service';
+import { FormAbstractClass } from '../../shared/abstract-classes/form.abstract-class';
 
 @Component({
   selector: 'tb-login',
@@ -19,11 +20,7 @@ import { AuthService } from '../../core/services/auth.service';
   styleUrls: ['./login.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LoginComponent implements OnDestroy {
-  form = new FormGroup({
-    username: new FormControl(null, Validators.required),
-    password: new FormControl(null, Validators.required),
-  });
+export class LoginComponent extends FormAbstractClass implements OnDestroy {
   loading = false;
 
   private unsubscribe = new Subject<void>();
@@ -34,7 +31,13 @@ export class LoginComponent implements OnDestroy {
     private messageService: NzMessageService,
     private cdr: ChangeDetectorRef,
     private authService: AuthService,
-  ) {}
+  ) {
+    super();
+    this.form = new FormGroup({
+      username: new FormControl(null, Validators.required),
+      password: new FormControl(null, Validators.required),
+    });
+  }
 
   ngOnDestroy(): void {
     this.unsubscribe.next();

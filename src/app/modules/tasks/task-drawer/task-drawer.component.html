@@ -45,14 +45,14 @@
       <button
         class="submit-button"
         type="submit"
-        [disabled]="form.invalid"
+        [disabled]="!canSubmit"
       ></button>
     </form>
     <span nz-row nzJustify="end">
       <button
         nz-button
         nzType="primary"
-        [disabled]="disabled"
+        [disabled]="!canSubmit"
         (click)="onSubmit()"
       >
         {{ t(tbId ? 'common.save' : 'common.create') }}

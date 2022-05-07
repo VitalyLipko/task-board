@@ -40,7 +40,7 @@
           <button
             type="submit"
             class="submit-button"
-            [disabled]="form.invalid"
+            [disabled]="!canSubmit"
           ></button>
         </form>
         <button
@@ -50,7 +50,7 @@
           nzSize="large"
           (click)="handleSubmit()"
           [nzLoading]="loading"
-          [disabled]="form.invalid"
+          [disabled]="!canSubmit"
         >
           {{ t('login.log_in') }}
         </button>

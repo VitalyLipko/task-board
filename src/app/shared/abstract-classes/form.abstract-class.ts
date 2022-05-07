@@ -5,8 +5,8 @@ import isEqual from 'lodash/isEqual';
 export type FormType = 'create' | 'edit';
 export abstract class FormAbstractClass {
   form!: FormGroup;
-  initialValues!: Record<string, unknown>;
-  type!: FormType;
+  initialValues: Record<string, unknown> = {};
+  type: FormType = 'create';
 
   get hasChanges(): boolean {
     if (this.type === 'create') {
@@ -29,9 +29,5 @@ export abstract class FormAbstractClass {
       }
       return acc;
     }, {});
-  }
-
-  protected constructor(type: FormType = 'create') {
-    this.type = type;
   }
 }

@@ -38,8 +38,8 @@ export class ProfileComponent
     private cdr: ChangeDetectorRef,
     private messageService: NzMessageService,
   ) {
-    super('edit');
-
+    super();
+    this.type = 'edit';
     this.layoutService.pageHeaderExtra = null;
     this.layoutService.title =
       this.translocoService.translate('profile.profile');
@@ -60,7 +60,10 @@ export class ProfileComponent
             lastName: new FormControl(this.user.lastName, [
               Validators.required,
             ]),
-            email: new FormControl(this.user.email, [Validators.email]),
+            email: new FormControl(this.user.email, [
+              Validators.email,
+              Validators.required,
+            ]),
           });
           this.initialValues = { ...this.form.value };
           this.cdr.markForCheck();

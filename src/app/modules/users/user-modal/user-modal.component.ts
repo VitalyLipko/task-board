@@ -13,13 +13,13 @@ import {
   ValidationErrors,
   Validators,
 } from '@angular/forms';
-import isEmpty from 'lodash/isEmpty';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { iif, of, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { User } from '../../../core/graphql/graphql';
+import { FormAbstractClass } from '../../../shared/abstract-classes/form.abstract-class';
 import { UsersService } from '../users.service';
 
 @Component({
@@ -27,34 +27,13 @@ import { UsersService } from '../users.service';
   templateUrl: './user-modal.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UserModalComponent implements OnInit, OnDestroy {
-  form!: FormGroup;
+export class UserModalComponent
+  extends FormAbstractClass
+  implements OnInit, OnDestroy
+{
   user: User | undefined;
 
   private unsubscribe = new Subject<void>();
-
-  get disabled(): boolean {
-    return this.tbId
-      ? this.form?.invalid || isEmpty(this.result)
-      : this.form.invalid;
-  }
-
-  get result(): Record<string, unknown> | null {
-    if (!this.form) {
-      return null;
-    }
-
-    const result: Record<string, unknown> = {};
-    Object.entries(this.form.value).forEach(([key, value]) => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      if (value !== this.user[key]) {
-        result[key] = value;
-      }
-    });
-
-    return result;
-  }
 
   @Input() tbId: string | undefined;
 
@@ -63,9 +42,14 @@ export class UserModalComponent implements OnInit, OnDestroy {
     public modalRef: NzModalRef,
     private cdr: ChangeDetectorRef,
     private messageService: NzMessageService,
-  ) {}
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
+    if (this.tbId) {
+      this.type = 'edit';
+    }
     iif(
       () => !!this.tbId,
       this.usersService.getUserModalData(this.tbId as string),
@@ -89,7 +73,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
 
   onSubmit(): void {
     if (this.user) {
-      this.modalRef.close({ ...this.result, id: this.tbId });
+      this.modalRef.close({ ...this.changedValue, id: this.tbId });
     } else {
       const values = { ...this.form.value };
       delete values.confirmPassword;
@@ -112,6 +96,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
         value[key] = this.user[key];
       });
       this.form.setValue(value);
+      this.initialValues = { ...value };
     } else {
       this.form = new FormGroup({
         username: new FormControl(null, Validators.required),

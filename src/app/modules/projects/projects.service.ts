@@ -79,7 +79,7 @@ export class ProjectsService {
           label: this.translations.create,
           type: 'primary',
           disabled: (contentComponentInstance) =>
-            !!contentComponentInstance?.form.invalid,
+            !contentComponentInstance?.canSubmit,
           onClick(contentComponentInstance?: ProjectModalComponent) {
             contentComponentInstance?.onSubmit();
           },

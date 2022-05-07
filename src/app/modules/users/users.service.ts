@@ -142,7 +142,8 @@ export class UsersService {
           label: this.translations.save,
           type: 'primary',
           disabled: (contentComponentInstance) =>
-            !!contentComponentInstance?.disabled,
+            !contentComponentInstance?.form ||
+            !contentComponentInstance?.canSubmit,
           onClick(contentComponentInstance: UserModalComponent) {
             contentComponentInstance.onSubmit();
           },
