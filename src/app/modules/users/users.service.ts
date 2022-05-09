@@ -105,7 +105,7 @@ export class UsersService {
 
               if (newUser && existingUsers) {
                 const users = [...existingUsers.users, newUser].sort((a, b) =>
-                  a.fullName.localeCompare(b.fullName),
+                  a.profile.fullName.localeCompare(b.profile.fullName),
                 );
                 cache.writeQuery<{
                   users: Array<User>;
@@ -169,7 +169,7 @@ export class UsersService {
     return this.modalService
       .confirm({
         nzTitle: this.translocoService.translate('common.delete_entity', {
-          entity: user.fullName,
+          entity: user.profile.fullName,
         }),
         nzMaskClosable: false,
         nzOkDanger: true,

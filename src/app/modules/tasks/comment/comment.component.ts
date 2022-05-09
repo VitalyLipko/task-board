@@ -14,11 +14,11 @@ export class CommentComponent {
   @Input() tbComment!: Comment;
 
   get backgroundColor(): string {
-    return stringToColor(this.tbComment.creator.fullName);
+    return stringToColor(this.tbComment.creator.profile.fullName);
   }
 
   get initials(): string {
-    return fullNameToInitials(this.tbComment.creator.fullName);
+    return fullNameToInitials(this.tbComment.creator.profile.fullName);
   }
 
   get created(): string {

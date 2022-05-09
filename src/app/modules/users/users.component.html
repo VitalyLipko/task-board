@@ -18,12 +18,12 @@
         <td>
           <div class="tb-users-name">
             <span nz-typography>
-              <strong>{{ user.fullName }}</strong>
+              <strong>{{ user.profile.fullName }}</strong>
             </span>
             <span nz-typography nzType="secondary">{{ user.username }}</span>
           </div>
         </td>
-        <td>{{ user.email }}</td>
+        <td>{{ user.profile.email }}</td>
         <td nzRight nzAlign="right">
           <tb-dropdown-actions
             *ngIf="user"

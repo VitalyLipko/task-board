@@ -1,0 +1,7 @@
+fragment CreatorFields on User {
+  id
+  username
+  profile {
+    fullName
+  }
+}

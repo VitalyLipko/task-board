@@ -1,3 +1,5 @@
+#import "./creator-fields.fragment.graphql"
+
 query GetProjectPageInfo($id: ID!, $tasksStatus: TaskStatusEnum) {
   project(id: $id) {
     id
@@ -7,9 +9,7 @@ query GetProjectPageInfo($id: ID!, $tasksStatus: TaskStatusEnum) {
       title
       created
       creator {
-        id
-        username
-        fullName
+        ...CreatorFields
       }
       labels {
         id
@@ -18,7 +18,9 @@ query GetProjectPageInfo($id: ID!, $tasksStatus: TaskStatusEnum) {
       }
       assignees {
         id
-        fullName
+        profile {
+          fullName
+        }
       }
       status
     }

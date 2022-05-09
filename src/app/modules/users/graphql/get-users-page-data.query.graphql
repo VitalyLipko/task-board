@@ -2,8 +2,10 @@ query GetUsersPageData {
   users {
     id
     username
-    fullName
-    email
+    profile {
+      fullName
+      email
+    }
   }
   user {
     id

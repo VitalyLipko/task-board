@@ -1,16 +1,16 @@
 <a nz-popover [nzPopoverContent]="additionalInfoTemplate">
-  {{ tbUser.fullName }}
+  {{ tbUser.profile.fullName }}
 </a>
 <ng-template #additionalInfoTemplate>
   <div nz-row nzAlign="middle" class="tb-user-additional-info">
     <tb-avatar
       nz-col
       [tbSize]="36"
-      [tbFullName]="tbUser.fullName"
+      [tbFullName]="tbUser.profile.fullName"
       [tbShowTooltip]="false"
     ></tb-avatar>
     <div nz-col class="tb-user-additional-info-name">
-      <span nz-typography nz-row nzEllipsis>{{ tbUser.fullName }}</span>
+      <span nz-typography nz-row nzEllipsis>{{ tbUser.profile.fullName }}</span>
       <span nz-row nz-typography nzType="secondary" nzEllipsis>
         {{ tbUser.username }}
       </span>

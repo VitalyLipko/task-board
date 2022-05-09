@@ -51,9 +51,13 @@ export type MutationFieldPolicy = {
 	updateTask?: FieldPolicy<any> | FieldReadFunction<any>,
 	updateUser?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type ProfileKeySpecifier = ('avatar' | ProfileKeySpecifier)[];
+export type ProfileKeySpecifier = ('avatar' | 'email' | 'firstName' | 'fullName' | 'lastName' | ProfileKeySpecifier)[];
 export type ProfileFieldPolicy = {
-	avatar?: FieldPolicy<any> | FieldReadFunction<any>
+	avatar?: FieldPolicy<any> | FieldReadFunction<any>,
+	email?: FieldPolicy<any> | FieldReadFunction<any>,
+	firstName?: FieldPolicy<any> | FieldReadFunction<any>,
+	fullName?: FieldPolicy<any> | FieldReadFunction<any>,
+	lastName?: FieldPolicy<any> | FieldReadFunction<any>
 };
 export type ProjectKeySpecifier = ('created' | 'icon' | 'id' | 'name' | 'status' | 'tasks' | ProjectKeySpecifier)[];
 export type ProjectFieldPolicy = {
@@ -94,13 +98,9 @@ export type TaskFieldPolicy = {
 	status?: FieldPolicy<any> | FieldReadFunction<any>,
 	title?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type UserKeySpecifier = ('email' | 'firstName' | 'fullName' | 'id' | 'lastName' | 'profile' | 'trashed' | 'username' | UserKeySpecifier)[];
+export type UserKeySpecifier = ('id' | 'profile' | 'trashed' | 'username' | UserKeySpecifier)[];
 export type UserFieldPolicy = {
-	email?: FieldPolicy<any> | FieldReadFunction<any>,
-	firstName?: FieldPolicy<any> | FieldReadFunction<any>,
-	fullName?: FieldPolicy<any> | FieldReadFunction<any>,
 	id?: FieldPolicy<any> | FieldReadFunction<any>,
-	lastName?: FieldPolicy<any> | FieldReadFunction<any>,
 	profile?: FieldPolicy<any> | FieldReadFunction<any>,
 	trashed?: FieldPolicy<any> | FieldReadFunction<any>,
 	username?: FieldPolicy<any> | FieldReadFunction<any>

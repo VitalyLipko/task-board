@@ -1,7 +1,7 @@
+#import "./creator-fields.fragment.graphql"
+
 query GetAvailableUsers {
   users {
-    id
-    username
-    fullName
+    ...CreatorFields
   }
 }

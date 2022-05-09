@@ -28,4 +28,11 @@ export const typePolicies: TypedTypePolicies = {
       },
     },
   },
+  User: {
+    fields: {
+      profile: {
+        merge: false,
+      },
+    },
+  },
 };

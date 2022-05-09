@@ -11,7 +11,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { User } from '../../core/graphql/graphql';
+import { Profile, User } from '../../core/graphql/graphql';
 import { LayoutService } from '../../core/layout/layout.service';
 import { FormAbstractClass } from '../../shared/abstract-classes/form.abstract-class';
 
@@ -27,6 +27,7 @@ export class ProfileComponent
   implements OnInit, OnDestroy
 {
   user: User | undefined;
+  profile: Profile | undefined;
   loading = false;
 
   private unsubscribe = new Subject<void>();
@@ -51,16 +52,18 @@ export class ProfileComponent
       .pipe(takeUntil(this.unsubscribe))
       .subscribe({
         next: (user) => {
+          const { profile } = user;
           this.user = user;
+          this.profile = profile;
           this.form = new FormGroup({
-            avatar: new FormControl(this.user.profile.avatar),
-            firstName: new FormControl(this.user.firstName, [
+            avatar: new FormControl(this.profile.avatar),
+            firstName: new FormControl(this.profile.firstName, [
               Validators.required,
             ]),
-            lastName: new FormControl(this.user.lastName, [
+            lastName: new FormControl(this.profile.lastName, [
               Validators.required,
             ]),
-            email: new FormControl(this.user.email, [
+            email: new FormControl(this.profile.email, [
               Validators.email,
               Validators.required,
             ]),
@@ -102,12 +105,12 @@ export class ProfileComponent
   }
 
   handleReset(): void {
-    if (this.user) {
+    if (this.profile) {
       this.form.reset({
-        avatar: this.user.profile.avatar,
-        firstName: this.user.firstName,
-        lastName: this.user.lastName,
-        email: this.user.email,
+        avatar: this.profile.avatar,
+        firstName: this.profile.firstName,
+        lastName: this.profile.lastName,
+        email: this.profile.email,
       });
     }
   }

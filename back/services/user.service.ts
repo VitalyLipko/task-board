@@ -36,8 +36,12 @@ class UserService {
   }
 
   async createUser(user: CreateUserInput): Promise<User> {
-    user.password = await bcrypt.hash(user.password, 10);
-    return userModel.create({ ...user, profile: {} });
+    const { firstName, lastName, email, ...rest } = user;
+    rest.password = await bcrypt.hash(rest.password, 10);
+    return userModel.create({
+      ...rest,
+      profile: { firstName, lastName, email },
+    });
   }
 
   async updateUser(
@@ -46,9 +50,11 @@ class UserService {
     const document = await userModel.findById(user.id);
 
     if (document) {
+      const { profile } = document;
       Object.entries(user).forEach(([key, value]) => {
-        if (key !== 'id' && value) {
-          document.set(key, value);
+        const k = key as keyof UpdateUserInput;
+        if (k !== 'id' && value) {
+          profile[k] = value;
         }
       });
       const res = await document.save();
@@ -77,9 +83,12 @@ class UserService {
         document.profile.avatar = await fileStorageService.save(user.avatar);
       }
     }
+    const { profile } = document;
     Object.entries(user).forEach(([key, value]) => {
       if (!['id', 'avatar'].includes(key) && value) {
-        document.set(key, value);
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        profile[key] = value;
       }
     });
 

@@ -5,7 +5,9 @@ mutation UpdateTask($task: UpdateTaskInput!) {
     description
     assignees {
       id
-      fullName
+      profile {
+        fullName
+      }
     }
     labels {
       id

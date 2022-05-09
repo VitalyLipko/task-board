@@ -18,7 +18,7 @@
         *ngIf="user"
         [tbShowTooltip]="false"
         [tbClickable]="true"
-        [tbFullName]="user.fullName"
+        [tbFullName]="user.profile.fullName"
         [tbUrl]="user.profile.avatar?.url"
         nz-dropdown
         nzPlacement="bottomRight"
@@ -74,7 +74,7 @@
     <ul nz-menu>
       <li class="tb-layout-header-dropdown-menu-fullname">
         <span nz-typography nzEllipsis>
-          {{ user?.fullName }}
+          {{ user?.profile?.fullName }}
         </span>
       </li>
       <li

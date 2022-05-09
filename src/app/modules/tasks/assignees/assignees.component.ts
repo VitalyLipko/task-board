@@ -15,7 +15,7 @@ import { User } from '../../../core/graphql/graphql';
     <div *ngIf="tbAssignees.length; else emptyTemplate">
       <tb-avatar
         *ngFor="let assignee of tbAssignees; trackBy: trackByFn"
-        [tbFullName]="assignee.fullName"
+        [tbFullName]="assignee.profile.fullName"
         [tbSize]="tbSize"
         class="tb-assignees-avatar"
       ></tb-avatar>

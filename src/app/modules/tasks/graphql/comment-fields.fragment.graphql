@@ -5,6 +5,8 @@ fragment CommentFields on Comment {
   creator {
     id
     username
-    fullName
+    profile {
+      fullName
+    }
   }
 }

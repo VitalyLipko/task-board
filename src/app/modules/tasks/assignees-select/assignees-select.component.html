@@ -23,7 +23,7 @@
       <nz-option
         *ngFor="let user of users; trackBy: trackByFn"
         nzCustomContent
-        [nzLabel]="user.fullName"
+        [nzLabel]="user.profile.fullName"
         [nzValue]="user.id"
       >
         <ng-container
@@ -46,12 +46,12 @@
       <div nz-col nzFlex="36px" class="tb-assignees-select-option-avatar">
         <tb-avatar
           [tbSize]="36"
-          [tbFullName]="user.fullName"
+          [tbFullName]="user.profile.fullName"
           [tbShowTooltip]="false"
         ></tb-avatar>
       </div>
       <div nz-col nzFlex="1" class="tb-assignees-select-option-info">
-        <span nz-typography nz-row nzEllipsis>{{ user.fullName }}</span>
+        <span nz-typography nz-row nzEllipsis>{{ user.profile.fullName }}</span>
         <span nz-typography nzType="secondary" nz-row nzEllipsis>
           {{ user.username }}
         </span>

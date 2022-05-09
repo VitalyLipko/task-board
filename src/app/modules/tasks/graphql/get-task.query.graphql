@@ -1,3 +1,5 @@
+#import "./creator-fields.fragment.graphql"
+
 query GetTask($id: ID!) {
   task(id: $id) {
     id
@@ -5,13 +7,13 @@ query GetTask($id: ID!) {
     description
     assignees {
       id
-      fullName
+      profile {
+        fullName
+      }
     }
     created
     creator {
-      id
-      username
-      fullName
+      ...CreatorFields
     }
     status
     labels {

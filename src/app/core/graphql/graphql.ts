@@ -193,6 +193,10 @@ export type MutationUpdateUserArgs = {
 export type Profile = {
   __typename?: 'Profile';
   avatar?: Maybe<File>;
+  email: Scalars['String'];
+  firstName: Scalars['String'];
+  fullName: Scalars['String'];
+  lastName: Scalars['String'];
 };
 
 export type Project = {
@@ -326,11 +330,7 @@ export type UpdateUserInput = {
 
 export type User = {
   __typename?: 'User';
-  email: Scalars['String'];
-  firstName: Scalars['String'];
-  fullName: Scalars['String'];
   id: Scalars['ID'];
-  lastName: Scalars['String'];
   profile: Profile;
   trashed: Scalars['Boolean'];
   username: Scalars['String'];

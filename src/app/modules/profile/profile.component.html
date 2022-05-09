@@ -1,6 +1,6 @@
 <ng-container *transloco="let t">
   <nz-card>
-    <ng-container *ngIf="user; else spinTemplate">
+    <ng-container *ngIf="user && profile; else spinTemplate">
       <form nz-form nzLayout="vertical" [formGroup]="form">
         <div nz-row nzGutter="16">
           <div nz-col nzFlex="150px">
@@ -8,7 +8,7 @@
               <nz-form-control>
                 <tb-profile-avatar
                   formControlName="avatar"
-                  [tbFullName]="user.fullName"
+                  [tbFullName]="profile.fullName"
                 ></tb-profile-avatar>
               </nz-form-control>
             </nz-form-item>

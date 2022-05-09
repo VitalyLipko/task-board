@@ -1,4 +1,7 @@
-<nz-comment [nzAuthor]="tbComment.creator.fullName" [nzDatetime]="created">
+<nz-comment
+  [nzAuthor]="tbComment.creator.profile.fullName"
+  [nzDatetime]="created"
+>
   <nz-avatar
     nz-comment-avatar
     [nzText]="initials"

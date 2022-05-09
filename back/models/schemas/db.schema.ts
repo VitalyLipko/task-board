@@ -25,9 +25,27 @@ const fileSchema = new Schema<File, Model<File>, File>({
   url: { type: String, required: true },
   mimeType: { type: String, required: true },
 });
-const profileSchema = new Schema<Profile, Model<Profile>, Profile>({
-  avatar: fileSchema,
-});
+const profileSchema = new Schema<Profile, Model<Profile>, Profile>(
+  {
+    email: { type: String, required: true },
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
+    avatar: fileSchema,
+  },
+  {
+    toObject: {
+      virtuals: true,
+    },
+    toJSON: {
+      virtuals: true,
+    },
+  },
+);
+profileSchema
+  .virtual('fullName')
+  .get(function (_: unknown, __: unknown, doc: Document) {
+    return `${doc.get('firstName')} ${doc.get('lastName')}`;
+  });
 
 const taskSchema = new Schema<Task, Model<Task>, Task>(
   {
@@ -74,9 +92,6 @@ const userSchema = new Schema<User, Model<User>, User>(
   {
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    email: { type: String, required: true },
-    firstName: { type: String, required: true },
-    lastName: { type: String, required: true },
     trashed: { type: Boolean, default: false },
     profile: profileSchema,
   },
@@ -90,11 +105,6 @@ const userSchema = new Schema<User, Model<User>, User>(
   },
 );
 userSchema.virtual('id').get(idToString);
-userSchema
-  .virtual('fullName')
-  .get(function (_: unknown, __: unknown, doc: Document) {
-    return `${doc.get('firstName')} ${doc.get('lastName')}`;
-  });
 
 const labelSchema = new Schema<Label, Model<Label>, Label>(
   {

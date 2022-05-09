@@ -71,16 +71,16 @@ export default gql`
   }
 
   type Profile {
+    email: String!
+    firstName: String!
+    lastName: String!
+    fullName: String!
     avatar: File
   }
 
   type User {
     id: ID!
     username: String!
-    email: String!
-    firstName: String!
-    lastName: String!
-    fullName: String!
     trashed: Boolean!
     profile: Profile!
   }

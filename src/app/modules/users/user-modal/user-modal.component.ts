@@ -93,7 +93,7 @@ export class UserModalComponent
       Object.keys(this.form.controls).forEach((key) => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        value[key] = this.user[key];
+        value[key] = this.user.profile[key];
       });
       this.form.setValue(value);
       this.initialValues = { ...value };
