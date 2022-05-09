@@ -1,6 +1,5 @@
-fragment CreatorFields on User {
+fragment AssigneeFields on User {
   id
-  username
   profile {
     fullName
     avatar {

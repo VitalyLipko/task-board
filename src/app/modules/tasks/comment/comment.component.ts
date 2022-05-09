@@ -9,6 +9,13 @@ import { stringToColor } from '../../../shared/utils/string-to-color';
   selector: 'tb-comment',
   templateUrl: './comment.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  styles: [
+    `
+      .ant-avatar {
+        cursor: default;
+      }
+    `,
+  ],
 })
 export class CommentComponent {
   @Input() tbComment!: Comment;

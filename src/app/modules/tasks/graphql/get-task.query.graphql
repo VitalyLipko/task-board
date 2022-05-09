@@ -1,4 +1,5 @@
 #import "./creator-fields.fragment.graphql"
+#import "./assignee-fields.fragment.graphql"
 
 query GetTask($id: ID!) {
   task(id: $id) {
@@ -6,10 +7,7 @@ query GetTask($id: ID!) {
     title
     description
     assignees {
-      id
-      profile {
-        fullName
-      }
+      ...AssigneeFields
     }
     created
     creator {

@@ -7,6 +7,9 @@ fragment CommentFields on Comment {
     username
     profile {
       fullName
+      avatar {
+        url
+      }
     }
   }
 }

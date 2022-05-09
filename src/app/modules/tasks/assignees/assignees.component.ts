@@ -16,6 +16,7 @@ import { User } from '../../../core/graphql/graphql';
       <tb-avatar
         *ngFor="let assignee of tbAssignees; trackBy: trackByFn"
         [tbFullName]="assignee.profile.fullName"
+        [tbUrl]="assignee.profile.avatar?.url"
         [tbSize]="tbSize"
         class="tb-assignees-avatar"
       ></tb-avatar>

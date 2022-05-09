@@ -1,3 +1,5 @@
+#import "./assignee-fields.fragment.graphql"
+
 query GetBoard($parentId: ID!) {
   board(parentId: $parentId) {
     parentId
@@ -16,10 +18,7 @@ query GetBoard($parentId: ID!) {
           title
         }
         assignees {
-          id
-          profile {
-            fullName
-          }
+          ...AssigneeFields
         }
       }
     }
