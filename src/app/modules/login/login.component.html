@@ -26,15 +26,14 @@
           </nz-form-item>
           <nz-form-item>
             <nz-form-control>
-              <nz-input-group nzPrefixIcon="lock" nzSize="large">
-                <input
-                  formControlName="password"
-                  type="password"
-                  nz-input
-                  [placeholder]="t('login.password')"
-                  autocomplete="current-password"
-                />
-              </nz-input-group>
+              <tb-password-input
+                formControlName="password"
+                [tbPlaceholder]="t('login.password')"
+                tbPrefixIcon="lock"
+                tbId="password"
+                tbSize="large"
+                tbAutoComplete="current-password"
+              ></tb-password-input>
             </nz-form-control>
           </nz-form-item>
           <button

@@ -1,5 +1,6 @@
 import { Component, forwardRef, Input } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
 
 @Component({
   selector: 'tb-password-input',
@@ -28,6 +29,9 @@ export class PasswordInputComponent implements ControlValueAccessor {
 
   @Input() tbId!: string;
   @Input() tbPlaceholder!: string;
+  @Input() tbPrefixIcon: string | undefined;
+  @Input() tbSize: NzSizeLDSType = 'default';
+  @Input() tbAutoComplete = 'off';
 
   writeValue(value: string): void {
     this.value = value;

@@ -13,6 +13,7 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
 
 import { LayoutModule } from '../../core/layout/layout.module';
 import { DropdownActionsModule } from '../../shared/dropdown-actions/dropdown-actions.module';
+import { PasswordInputModule } from '../../shared/password-input/password-input.module';
 
 import { UserModalComponent } from './user-modal/user-modal.component';
 import { UsersRoutingModule } from './users-routing.module';
@@ -36,6 +37,7 @@ import { UsersService } from './users.service';
     NzSpinModule,
     NzInputModule,
     TranslocoModule,
+    PasswordInputModule,
   ],
   providers: [UsersService],
 })

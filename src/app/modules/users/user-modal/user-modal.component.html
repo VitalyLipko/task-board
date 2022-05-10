@@ -55,14 +55,12 @@
             {{ t('login.password') }}
           </nz-form-label>
           <nz-form-control>
-            <input
+            <tb-password-input
               formControlName="password"
-              type="password"
-              [placeholder]="t('login.password')"
-              autocomplete="new-password"
-              nz-input
-              id="password"
-            />
+              tbId="password"
+              tbAutoComplete="new-password"
+              [tbPlaceholder]="t('login.password')"
+            ></tb-password-input>
           </nz-form-control>
         </nz-form-item>
         <nz-form-item>
@@ -70,13 +68,11 @@
             {{ t('user.confirm_password') }}
           </nz-form-label>
           <nz-form-control [nzErrorTip]="confirmPasswordTemplate">
-            <input
+            <tb-password-input
               formControlName="confirmPassword"
-              type="password"
-              [placeholder]="t('user.confirm_password')"
-              nz-input
-              id="confirm-password"
-            />
+              tbId="confirm-password"
+              [tbPlaceholder]="t('user.confirm_password')"
+            ></tb-password-input>
             <ng-template #confirmPasswordTemplate let-control>
               <ng-container *ngIf="control.hasError('confirmPassword')">
                 {{ t('user.password_dont_match') }}
