@@ -79,6 +79,10 @@
   },
   "profile": {
     "profile": "Profile",
-    "profile_updated": "Profile updated"
+    "profile_updated": "Profile updated",
+    "change_password": "Change password",
+    "current_password": "Current password",
+    "new_password": "New password",
+    "password_changed": "Password changed"
   }
 }

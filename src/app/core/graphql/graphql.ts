@@ -90,6 +90,7 @@ export type Label = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  changePassword?: Maybe<Scalars['Boolean']>;
   changeTaskStatus?: Maybe<Scalars['Boolean']>;
   createComment: Comment;
   createLabel: Label;
@@ -106,6 +107,12 @@ export type Mutation = {
   updateProject?: Maybe<Project>;
   updateTask?: Maybe<Task>;
   updateUser: User;
+};
+
+
+export type MutationChangePasswordArgs = {
+  currentPassword: Scalars['String'];
+  newPassword: Scalars['String'];
 };
 
 

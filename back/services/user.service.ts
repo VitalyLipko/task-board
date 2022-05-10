@@ -1,5 +1,4 @@
 import { ApolloError } from 'apollo-server-express';
-import bcrypt from 'bcrypt';
 import isUndefined from 'lodash/isUndefined';
 import { LeanDocument } from 'mongoose';
 
@@ -12,6 +11,7 @@ import {
 import { UserModel, userModel } from '../models/schemas/db.schema';
 
 import fileStorageService from './file-storage.service';
+import passwordService from './password.service';
 
 class UserService {
   async getUsers(): Promise<Array<LeanDocument<UserModel>>> {
@@ -26,6 +26,10 @@ class UserService {
     return user ? user.toJSON() : null;
   }
 
+  async getUserDocument(id: string) {
+    return userModel.findById(id);
+  }
+
   async getUserByName(
     username: string,
   ): Promise<LeanDocument<UserModel> | null> {
@@ -37,7 +41,7 @@ class UserService {
 
   async createUser(user: CreateUserInput): Promise<User> {
     const { firstName, lastName, email, ...rest } = user;
-    rest.password = await bcrypt.hash(rest.password, 10);
+    rest.password = await passwordService.encrypt(rest.password);
     return userModel.create({
       ...rest,
       profile: { firstName, lastName, email },

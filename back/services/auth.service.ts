@@ -1,6 +1,5 @@
 import { ApolloError, AuthenticationError } from 'apollo-server-express';
 import { DecodedToken } from 'back/models/interfaces/decoded-token.interface';
-import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
 import { Context } from 'graphql-ws';
 import jsonwebtoken from 'jsonwebtoken';
@@ -10,6 +9,7 @@ import config from '../config';
 import { ContextPayload } from '../models/interfaces/context-payload.interface';
 import { User } from '../models/interfaces/user.interface';
 
+import passwordService from './password.service';
 import redisService from './redis.service';
 import userService from './user.service';
 
@@ -24,7 +24,10 @@ class AuthService {
     const user = await userService.getUserByName(username);
 
     if (user) {
-      const isPasswordCorrect = await bcrypt.compare(password, user.password);
+      const isPasswordCorrect = await passwordService.compare(
+        password,
+        user.password,
+      );
 
       if (isPasswordCorrect) {
         const token = jsonwebtoken.sign(

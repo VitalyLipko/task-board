@@ -6,13 +6,7 @@ import {
   OnDestroy,
   ChangeDetectorRef,
 } from '@angular/core';
-import {
-  AbstractControl,
-  FormControl,
-  FormGroup,
-  ValidationErrors,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { iif, of, Subject } from 'rxjs';
@@ -20,6 +14,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { User } from '../../../core/graphql/graphql';
 import { FormAbstractClass } from '../../../shared/abstract-classes/form.abstract-class';
+import { confirmPasswordValidation } from '../../../shared/utils/confirm-password-validation';
 import { UsersService } from '../users.service';
 
 @Component({
@@ -106,22 +101,7 @@ export class UserModalComponent
         confirmPassword: new FormControl(null, Validators.required),
         email: new FormControl(null, [Validators.required, Validators.email]),
       });
-      this.form.addValidators(UserModalComponent.confirmPasswordValidation);
-    }
-  }
-
-  private static confirmPasswordValidation(
-    control: AbstractControl,
-  ): ValidationErrors | null {
-    const password = control.get('password');
-    const confirmPassword = control.get('confirmPassword');
-
-    if (password?.value !== confirmPassword?.value) {
-      confirmPassword?.setErrors({ confirmPassword: true });
-      return { confirmPassword: true };
-    } else {
-      confirmPassword?.setErrors(null);
-      return null;
+      this.form.addValidators(confirmPasswordValidation);
     }
   }
 }

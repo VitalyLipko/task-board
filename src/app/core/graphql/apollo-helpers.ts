@@ -32,8 +32,9 @@ export type LabelFieldPolicy = {
 	isSystem?: FieldPolicy<any> | FieldReadFunction<any>,
 	title?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type MutationKeySpecifier = ('changeTaskStatus' | 'createComment' | 'createLabel' | 'createProject' | 'createTask' | 'createUser' | 'deleteLabel' | 'deleteProject' | 'deleteUser' | 'login' | 'logout' | 'updateLabel' | 'updateProfile' | 'updateProject' | 'updateTask' | 'updateUser' | MutationKeySpecifier)[];
+export type MutationKeySpecifier = ('changePassword' | 'changeTaskStatus' | 'createComment' | 'createLabel' | 'createProject' | 'createTask' | 'createUser' | 'deleteLabel' | 'deleteProject' | 'deleteUser' | 'login' | 'logout' | 'updateLabel' | 'updateProfile' | 'updateProject' | 'updateTask' | 'updateUser' | MutationKeySpecifier)[];
 export type MutationFieldPolicy = {
+	changePassword?: FieldPolicy<any> | FieldReadFunction<any>,
 	changeTaskStatus?: FieldPolicy<any> | FieldReadFunction<any>,
 	createComment?: FieldPolicy<any> | FieldReadFunction<any>,
 	createLabel?: FieldPolicy<any> | FieldReadFunction<any>,

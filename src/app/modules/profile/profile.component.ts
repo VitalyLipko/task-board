@@ -21,6 +21,13 @@ import { ProfileService } from './profile.service';
   selector: 'tb-profile',
   templateUrl: './profile.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  styles: [
+    `
+      .tb-profile-container {
+        width: 100%;
+      }
+    `,
+  ],
 })
 export class ProfileComponent
   extends FormAbstractClass
@@ -92,9 +99,6 @@ export class ProfileComponent
             this.loading = false;
             this.initialValues = { ...this.form.value };
             this.form.reset(this.form.value);
-            this.messageService.success(
-              this.translocoService.translate('profile.profile_updated'),
-            );
           },
           error: (err) => {
             this.messageService.error(err.message);
@@ -113,5 +117,9 @@ export class ProfileComponent
         email: this.profile.email,
       });
     }
+  }
+
+  onChangePassword(): void {
+    this.profileService.changePasswordModal();
   }
 }

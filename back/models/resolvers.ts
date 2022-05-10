@@ -7,6 +7,7 @@ import authService from '../services/auth.service';
 import boardService from '../services/board.service';
 import commentService from '../services/comment.service';
 import labelService from '../services/label.service';
+import passwordService from '../services/password.service';
 import projectService from '../services/project.service';
 import subscriptionsService from '../services/subscriptions.service';
 import taskService from '../services/task.service';
@@ -113,6 +114,16 @@ export const resolvers: IResolvers<unknown, ContextPayload> = {
     createComment: (_, args, context) =>
       authService.operationGuard(context, () =>
         commentService.createComment(args.comment, context.user),
+      ),
+    changePassword: (_, args, context) =>
+      authService.operationGuard(context, () =>
+        passwordService.changePassword(
+          args.currentPassword,
+          args.newPassword,
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          //@ts-ignore
+          context.user.id,
+        ),
       ),
   },
   Subscription: {

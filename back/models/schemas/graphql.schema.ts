@@ -116,6 +116,7 @@ export default gql`
     updateLabel(label: UpdateLabelInput!): Label
     deleteLabel(id: ID!): Boolean
     createComment(comment: CreateCommentInput!): Comment!
+    changePassword(currentPassword: String!, newPassword: String!): Boolean
   }
 
   type Subscription {
