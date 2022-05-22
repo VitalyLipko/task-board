@@ -1,4 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
+import { TranslocoService } from '@ngneat/transloco';
 
 import { User } from '../../core/graphql/graphql';
 
@@ -10,4 +11,15 @@ import { User } from '../../core/graphql/graphql';
 })
 export class UserInlineInfoComponent {
   @Input() tbUser!: User;
+
+  get fullName(): string {
+    const { trashed, profile } = this.tbUser;
+    return trashed
+      ? this.translocoService.translate('common.deleted_user', {
+          user: profile.fullName,
+        })
+      : profile.fullName;
+  }
+
+  constructor(private translocoService: TranslocoService) {}
 }

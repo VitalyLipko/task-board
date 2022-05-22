@@ -18,7 +18,7 @@ class PasswordService {
     newPassword: string,
     userId: string,
   ): Promise<boolean> {
-    const user = await userService.getUserDocument(userId);
+    const user = await userService.findActiveUser(userId);
     if (!user) {
       throw new ApolloError(`User ${userId} not found`);
     }

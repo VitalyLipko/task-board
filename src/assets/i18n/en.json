@@ -10,7 +10,8 @@
     "delete_entity": "Delete {{entity}}?",
     "edit": "Edit",
     "upload_placeholder": "Click or drag file to this area to upload",
-    "reset": "Reset"
+    "reset": "Reset",
+    "deleted_user": "{{user}} (deleted)"
   },
   "login": {
     "log_in": "Log in",

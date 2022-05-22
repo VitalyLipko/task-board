@@ -24,8 +24,11 @@ export class CommentComponent {
     return stringToColor(this.tbComment.creator.profile.fullName);
   }
 
-  get initials(): string {
-    return fullNameToInitials(this.tbComment.creator.profile.fullName);
+  get initials(): string | undefined {
+    const {
+      creator: { trashed, profile },
+    } = this.tbComment;
+    return trashed ? undefined : fullNameToInitials(profile.fullName);
   }
 
   get created(): string {

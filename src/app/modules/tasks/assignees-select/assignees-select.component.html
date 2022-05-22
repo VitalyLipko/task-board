@@ -39,20 +39,29 @@
       [ngClass]="{
         'tb-assignees-select-inline-option': tbInline,
         'tb-assignees-select-inline-option-selected':
-          tbInline && hasSelected(user.id)
+          tbInline && hasSelected(user.id),
+        'tb-assignees-select-inline-option-disabled':
+          tbInline && user.trashed && !hasSelected(user.id)
       }"
-      (click)="handleClick(user.id)"
+      (click)="handleClick(user)"
     >
       <div nz-col nzFlex="36px" class="tb-assignees-select-option-avatar">
         <tb-avatar
           [tbSize]="36"
           [tbFullName]="user.profile.fullName"
           [tbUrl]="user.profile.avatar?.url"
+          [tbIsUserTrashed]="user.trashed"
           [tbShowTooltip]="false"
         ></tb-avatar>
       </div>
       <div nz-col nzFlex="1" class="tb-assignees-select-option-info">
-        <span nz-typography nz-row nzEllipsis>{{ user.profile.fullName }}</span>
+        <span nz-typography nz-row nzEllipsis>
+          {{
+            user.trashed
+              ? t('common.deleted_user', { user: user.profile.fullName })
+              : user.profile.fullName
+          }}
+        </span>
         <span nz-typography nzType="secondary" nz-row nzEllipsis>
           {{ user.username }}
         </span>

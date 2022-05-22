@@ -12,11 +12,12 @@ import { User } from '../../../core/graphql/graphql';
 @Component({
   selector: 'tb-assignees',
   template: `
-    <div *ngIf="tbAssignees.length; else emptyTemplate">
+    <div *ngIf="tbAssignees.length; else emptyTemplate" class="tb-assignees">
       <tb-avatar
         *ngFor="let assignee of tbAssignees; trackBy: trackByFn"
         [tbFullName]="assignee.profile.fullName"
         [tbUrl]="assignee.profile.avatar?.url"
+        [tbIsUserTrashed]="assignee.trashed"
         [tbSize]="tbSize"
         class="tb-assignees-avatar"
       ></tb-avatar>
@@ -27,13 +28,17 @@ import { User } from '../../../core/graphql/graphql';
     `
       @use 'variables' as *;
 
-      tb-avatar.tb-assignees-avatar {
-        .ant-avatar {
-          box-shadow: 0 0 0 2px white;
-        }
+      .tb-assignees {
+        display: inline-flex;
 
-        &:not(:last-of-type) {
-          margin-right: -1 * $indent-xs;
+        &-avatar {
+          .ant-avatar {
+            box-shadow: 0 0 0 2px white;
+          }
+
+          &:not(:last-of-type) {
+            margin-right: -1 * $indent-xs;
+          }
         }
       }
     `,

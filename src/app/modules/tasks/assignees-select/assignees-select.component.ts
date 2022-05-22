@@ -31,11 +31,11 @@ import GetAvailableUsers from '../graphql/get-available-users.query.graphql';
 export class AssigneesSelectComponent
   implements ControlValueAccessor, OnInit, OnDestroy
 {
-  value: Array<string> = [];
+  value: Array<User> = [];
   users: Array<User> | undefined;
   loading = false;
 
-  private onChange!: (value: Array<string>) => void;
+  private onChange!: (value: Array<User>) => void;
   private onTouched!: () => void;
   private unsubscribe = new Subject<void>();
 
@@ -54,11 +54,14 @@ export class AssigneesSelectComponent
     this.unsubscribe.complete();
   }
 
-  writeValue(value: Array<string>): void {
+  writeValue(value: Array<User>): void {
     this.value = value;
+    if (this.value && this.tbInline) {
+      this.updateUsers(true);
+    }
   }
 
-  registerOnChange(fn: (value: Array<string>) => void): void {
+  registerOnChange(fn: (value: Array<User>) => void): void {
     this.onChange = fn;
   }
 
@@ -66,7 +69,7 @@ export class AssigneesSelectComponent
     this.onTouched = fn;
   }
 
-  handleValueChange(value: Array<string>): void {
+  handleValueChange(value: Array<User>): void {
     this.value = value;
     this.onChange(this.value);
     this.onTouched();
@@ -78,6 +81,9 @@ export class AssigneesSelectComponent
         .pipe(takeUntil(this.unsubscribe))
         .subscribe((res) => {
           this.users = res;
+          if (this.tbInline) {
+            this.updateUsers();
+          }
           this.loading = false;
           this.cdr.markForCheck();
         });
@@ -85,19 +91,17 @@ export class AssigneesSelectComponent
   }
 
   hasSelected(value: string): boolean {
-    return this.value.includes(value);
+    return !!this.value.find(({ id }) => id == value);
   }
 
-  handleClick(value: string): void {
+  handleClick(value: User): void {
     if (!this.tbInline) {
       return;
     }
-
-    this.handleValueChange(
-      this.hasSelected(value)
-        ? this.value.filter((item) => item !== value)
-        : [...this.value, value],
-    );
+    const newValue = this.hasSelected(value.id)
+      ? this.value.filter(({ id }) => id !== value.id)
+      : [...this.value, value];
+    this.handleValueChange(newValue);
   }
 
   trackByFn(_: number, item: User): string {
@@ -108,5 +112,16 @@ export class AssigneesSelectComponent
     return this.apollo
       .query<{ users: Array<User> }>({ query: GetAvailableUsers })
       .pipe(map(({ data }) => data.users));
+  }
+
+  private updateUsers(filter = false): void {
+    this.value.forEach((user) => {
+      if (this.users && !this.users.find(({ id }) => id === user.id)) {
+        this.users = [...this.users, user];
+      }
+    });
+    if (filter && this.users) {
+      this.users = this.users.filter(({ trashed }) => !trashed);
+    }
   }
 }

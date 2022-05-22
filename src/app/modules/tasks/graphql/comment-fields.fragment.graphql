@@ -5,6 +5,7 @@ fragment CommentFields on Comment {
   creator {
     id
     username
+    trashed
     profile {
       fullName
       avatar {

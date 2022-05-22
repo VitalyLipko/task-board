@@ -34,7 +34,7 @@ const systemLabels: Array<CreateLabelInput> = [
 ];
 
 export default async (): Promise<void> => {
-  const adminUser = await userService.getUserByName(admin.username);
+  const adminUser = await userService.getUserByName(admin.username, false);
   if (!adminUser) {
     await userService.createUser(admin);
   }

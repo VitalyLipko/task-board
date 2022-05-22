@@ -28,6 +28,11 @@ $option-height: 54px;
           color: #1890ff;
         }
       }
+
+      &-disabled:not(&-selected) {
+        pointer-events: none;
+        cursor: not-allowed;
+      }
     }
   }
 

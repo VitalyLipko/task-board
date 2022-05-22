@@ -22,18 +22,25 @@ class UserService {
   }
 
   async getUser(id: string): Promise<LeanDocument<UserModel> | null> {
-    const user = await userModel.findById(id);
-    return user ? user.toJSON() : null;
+    const user = await this.findActiveUser(id);
+    if (!user) {
+      throw new ApolloError(`User ${id} not found`);
+    }
+    return user.toJSON();
   }
 
-  async getUserDocument(id: string) {
-    return userModel.findById(id);
+  async findActiveUser(id: string) {
+    return userModel.findOne({ _id: id, trashed: false });
   }
 
   async getUserByName(
     username: string,
+    onlyActive = true,
   ): Promise<LeanDocument<UserModel> | null> {
-    const getUser = async () => userModel.findOne({ username }).exec();
+    const getUser = async () =>
+      userModel
+        .findOne({ username, ...(onlyActive && { trashed: false }) })
+        .exec();
     const user = await getUser();
 
     return user ? user.toJSON() : null;
@@ -51,26 +58,26 @@ class UserService {
   async updateUser(
     user: UpdateUserInput,
   ): Promise<LeanDocument<UserModel> | null> {
-    const document = await userModel.findById(user.id);
+    const document = await this.findActiveUser(user.id);
 
-    if (document) {
-      const { profile } = document;
-      Object.entries(user).forEach(([key, value]) => {
-        const k = key as keyof UpdateUserInput;
-        if (k !== 'id' && value) {
-          profile[k] = value;
-        }
-      });
-      const res = await document.save();
-
-      return res.toJSON();
+    if (!document) {
+      throw new ApolloError(`User ${user.id} not found`);
     }
 
-    return null;
+    const { profile } = document;
+    Object.entries(user).forEach(([key, value]) => {
+      const k = key as keyof UpdateUserInput;
+      if (k !== 'id' && value) {
+        profile[k] = value;
+      }
+    });
+    const res = await document.save();
+
+    return res.toJSON();
   }
 
   async updateProfile(user: UpdateProfileInput): Promise<User> {
-    const document = await userModel.findById(user.id);
+    const document = await this.findActiveUser(user.id);
 
     if (!document) {
       throw new ApolloError(`User ${user.id} not found`);
@@ -107,14 +114,14 @@ class UserService {
       throw new ApolloError('Can not delete current user');
     }
 
-    const user = await userModel.findOne({ _id: id, trashed: false });
-    if (user) {
-      user.trashed = true;
-      await user.save();
-      return true;
+    const user = await this.findActiveUser(id);
+    if (!user) {
+      throw new ApolloError(`User ${id} not found`);
     }
 
-    return false;
+    user.trashed = true;
+    await user.save();
+    return true;
   }
 
   async getUsersForAssignees(

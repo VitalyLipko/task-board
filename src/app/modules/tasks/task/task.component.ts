@@ -13,7 +13,12 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
 
-import { Label, Task, TaskStatusEnum } from '../../../core/graphql/graphql';
+import {
+  Label,
+  Task,
+  TaskStatusEnum,
+  User,
+} from '../../../core/graphql/graphql';
 import { LayoutService } from '../../../core/layout/layout.service';
 import { DropdownAction } from '../../../shared/dropdown-actions/dropdown-action.interface';
 import { TasksService } from '../tasks.service';
@@ -57,11 +62,11 @@ export class TaskComponent implements OnInit, OnDestroy {
       danger: true,
     },
   ];
-  assignees!: Array<string>;
+  assignees!: Array<User>;
   labels!: Array<string>;
 
   private unsubscribe = new Subject<void>();
-  private initialAssignees!: Array<string>;
+  private initialAssignees!: Array<User>;
   private initialLabels!: Array<string>;
 
   get color(): string | undefined {
@@ -109,7 +114,7 @@ export class TaskComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (task) => {
           this.task = task;
-          this.assignees = this.task.assignees.map(({ id }) => id);
+          this.assignees = [...this.task.assignees];
           this.labels = this.task.labels.map(({ id }) => id);
           this.initialAssignees = [...this.assignees];
           this.initialLabels = [...this.labels];
@@ -137,8 +142,9 @@ export class TaskComponent implements OnInit, OnDestroy {
       !value &&
       !isEqual(this.assignees.sort(), this.initialAssignees.sort())
     ) {
+      const ids = this.assignees.map(({ id }) => id);
       this.tasksService
-        .updateAssignees(this.task.id, this.assignees)
+        .updateAssignees(this.task.id, ids)
         .pipe(takeUntil(this.unsubscribe))
         .subscribe({ error: (err) => this.messageService.error(err.message) });
     }

@@ -1,5 +1,6 @@
 fragment AssigneeFields on User {
   id
+  trashed
   profile {
     fullName
     avatar {

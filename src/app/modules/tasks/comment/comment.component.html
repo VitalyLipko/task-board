@@ -1,16 +1,23 @@
-<nz-comment
-  [nzAuthor]="tbComment.creator.profile.fullName"
-  [nzDatetime]="created"
->
-  <nz-avatar
-    nz-comment-avatar
-    [nzText]="initials"
-    [nzSrc]="tbComment.creator.profile.avatar?.url"
-    [style.backgroundColor]="backgroundColor"
-  ></nz-avatar>
-  <nz-comment-content>
-    <p nz-typography nzEllipsis nzExpandable [nzEllipsisRows]="3">
-      {{ tbComment.message }}
-    </p>
-  </nz-comment-content>
-</nz-comment>
+<ng-container *transloco="let t">
+  <nz-comment
+    [nzAuthor]="
+      tbComment.creator.trashed
+        ? t('common.deleted_user', { user: tbComment.creator.profile.fullName })
+        : tbComment.creator.profile.fullName
+    "
+    [nzDatetime]="created"
+  >
+    <nz-avatar
+      nz-comment-avatar
+      [nzIcon]="tbComment.creator.trashed ? 'user' : undefined"
+      [nzText]="initials"
+      [nzSrc]="tbComment.creator.profile.avatar?.url"
+      [style.backgroundColor]="backgroundColor"
+    ></nz-avatar>
+    <nz-comment-content>
+      <p nz-typography nzEllipsis nzExpandable [nzEllipsisRows]="3">
+        {{ tbComment.message }}
+      </p>
+    </nz-comment-content>
+  </nz-comment>
+</ng-container>
