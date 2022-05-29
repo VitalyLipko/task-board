@@ -1,27 +1,35 @@
-# TodoApp
+# Task board
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.7.
+## Introduction
 
-## Development server
+It is a task management application developed on [MEAN](<https://en.wikipedia.org/wiki/MEAN_(solution_stack)>) stack.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+There are next features:
 
-## Code scaffolding
+- [GraphQL](https://graphql.org)-designed API;
+- Authorization (via JWT) and authentication;
+- User and profile management;
+- Project management;
+- Task management;
+- Kanban board;
+- Comments.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Requirements
 
-## Build
+Install [Node.js](https://nodejs.org/en/), [MongoDB](https://www.mongodb.com/) and [Redis](https://redis.io) client (used as storage for expired tokens).
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+Create `.env` file in root directory with next fields:
 
-## Running unit tests
+`HOST` - host for backend server;  
+`PORT` - port for backend server;  
+`DATABASE_URI` - uri for database instance;  
+`TOKEN_SECRET` - JWT secret key;  
+`TOKEN_EXPIRE_TIME` - JWT expiration time (in seconds);  
+`APP_DATA_PATH` - path to application data;  
+`FILE_STORAGE_PATH` - path to file storage (`${APP_DATA_PATH}/path/to/file/storage`).
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Scripts
 
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+- `start:back:dev` - start backend development server;
+- `start:front` - start frontend server;
+- `graphql-codegen` - fetch GraphQL schema and generate clients files.
