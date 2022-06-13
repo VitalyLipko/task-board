@@ -9,8 +9,8 @@ import userService from '../services/user.service';
 import config from './index';
 
 const admin: CreateUserInput = {
-  username: 'admin',
-  password: 'admin',
+  username: config.dbAdminUsername,
+  password: config.dbAdminPassword,
   email: 'admin@example.ru',
   firstName: 'Admin',
   lastName: 'Admin',

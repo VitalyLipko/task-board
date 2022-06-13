@@ -22,7 +22,9 @@ Create `.env` file in root directory with next fields:
 
 `HOST` - host for backend server;  
 `PORT` - port for backend server;  
-`DATABASE_URI` - uri for database instance;  
+`DB_ADMIN_USERNAME` - database admin username;  
+`DB_ADMIN_PASSWORD` - database admin password;  
+`DB_URI` - uri for database instance;  
 `TOKEN_SECRET` - JWT secret key;  
 `TOKEN_EXPIRE_TIME` - JWT expiration time (in seconds);  
 `APP_DATA_PATH` - path to application data;  
