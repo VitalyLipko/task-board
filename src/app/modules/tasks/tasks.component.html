@@ -22,33 +22,35 @@
       >
         <tb-task-board *ngIf="isBoard; else listTemplate"></tb-task-board>
         <ng-template #listTemplate>
-          <nz-tabset nzLinkRouter nzSize="small">
-            <nz-tab>
-              <a
-                *nzTabLink
-                nz-tab-link
-                routerLink="."
-                [queryParams]="{ status: tasksStatusEnum.Open }"
-              >
-                {{ t('task.open') }}
-              </a>
-            </nz-tab>
-            <nz-tab>
-              <a
-                *nzTabLink
-                nz-tab-link
-                routerLink="."
-                [queryParams]="{ status: tasksStatusEnum.Closed }"
-              >
-                {{ t('task.closed') }}
-              </a>
-            </nz-tab>
-            <nz-tab>
-              <a *nzTabLink nz-tab-link routerLink=".">
-                {{ t('task.all') }}
-              </a>
-            </nz-tab>
-          </nz-tabset>
+          <nz-card-tab>
+            <nz-tabset nzLinkRouter nzSize="large">
+              <nz-tab>
+                <a
+                  *nzTabLink
+                  nz-tab-link
+                  routerLink="."
+                  [queryParams]="{ status: tasksStatusEnum.Open }"
+                >
+                  {{ t('task.open') }}
+                </a>
+              </nz-tab>
+              <nz-tab>
+                <a
+                  *nzTabLink
+                  nz-tab-link
+                  routerLink="."
+                  [queryParams]="{ status: tasksStatusEnum.Closed }"
+                >
+                  {{ t('task.closed') }}
+                </a>
+              </nz-tab>
+              <nz-tab>
+                <a *nzTabLink nz-tab-link routerLink=".">
+                  {{ t('task.all') }}
+                </a>
+              </nz-tab>
+            </nz-tabset>
+          </nz-card-tab>
           <tb-tasks-list
             [tbTasks]="tasks"
             [tbSkipTagClosed]="isClosedTasks"
