@@ -68,6 +68,7 @@ export default gql`
     creator: User!
     labels: [Label!]!
     status: TaskStatusEnum!
+    commentCount: Int!
   }
 
   type Profile {

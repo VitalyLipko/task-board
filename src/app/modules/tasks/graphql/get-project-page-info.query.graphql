@@ -21,6 +21,7 @@ query GetProjectPageInfo($id: ID!, $tasksStatus: TaskStatusEnum) {
         ...AssigneeFields
       }
       status
+      commentCount
     }
   }
 }

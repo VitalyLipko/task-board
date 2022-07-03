@@ -12,14 +12,27 @@ import { Label, Task, TaskStatusEnum } from '../../../core/graphql/graphql';
   templateUrl: './tasks-list.component.html',
   styles: [
     `
-      .tb-tasks-list-item-title {
-        & > .ant-list-item-meta-title {
-          display: flex;
-          justify-content: space-between;
+      @import 'variables';
+
+      .tb-tasks-list-item {
+        &-title {
+          & > .ant-list-item-meta-title {
+            display: flex;
+            justify-content: space-between;
+          }
+
+          & a:not(:hover) {
+            color: unset;
+          }
         }
 
-        & a:not(:hover) {
-          color: unset;
+        &-extra {
+          display: flex;
+          align-items: center;
+
+          tb-assignees {
+            margin-right: $indent-xs;
+          }
         }
       }
     `,

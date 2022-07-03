@@ -20,12 +20,16 @@
           ></tb-label>
         </nz-list-item-meta-description>
       </nz-list-item-meta>
-      <nz-list-item-extra>
+      <nz-list-item-extra class="tb-tasks-list-item-extra">
         <tb-assignees
           [tbAssignees]="task.assignees"
           [tbEmptyPlaceholder]="null"
           tbSize="small"
         ></tb-assignees>
+        <span nz-typography nzType="secondary">
+          <i nz-icon nzType="comment"></i>
+          {{ task.commentCount }}
+        </span>
       </nz-list-item-extra>
     </nz-list-item>
   </nz-list>

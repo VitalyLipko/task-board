@@ -15,6 +15,7 @@ export interface Task {
   creator: PopulatedDoc<User>;
   labels: Array<PopulatedDoc<Label>>;
   status: TaskStatusEnum;
+  commentCount: number;
 }
 
 export interface CreateTaskInput {

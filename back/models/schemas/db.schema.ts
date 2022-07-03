@@ -16,7 +16,7 @@ export type LabelModel = Label & Document;
 
 const { Schema, model } = mongoose;
 
-function idToString(_: unknown, __: unknown, doc: Document) {
+function idToString(_: unknown, __: unknown, doc: Document): string {
   return doc._id.toString();
 }
 
@@ -68,6 +68,12 @@ const taskSchema = new Schema<Task, Model<Task>, Task>(
   },
 );
 taskSchema.virtual('id').get(idToString);
+taskSchema
+  .virtual('commentCount')
+  .get(async function (_: unknown, __: unknown, doc: Document) {
+    const comments = await commentModel.find({ parentId: doc._id });
+    return comments?.length || 0;
+  });
 
 const projectSchema = new Schema<Project, Model<Project>, Project>(
   {

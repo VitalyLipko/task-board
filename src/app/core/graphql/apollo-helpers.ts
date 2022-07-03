@@ -87,9 +87,10 @@ export type SubscriptionKeySpecifier = ('commentCreated' | SubscriptionKeySpecif
 export type SubscriptionFieldPolicy = {
 	commentCreated?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type TaskKeySpecifier = ('assignees' | 'created' | 'creator' | 'description' | 'id' | 'labels' | 'parentId' | 'status' | 'title' | TaskKeySpecifier)[];
+export type TaskKeySpecifier = ('assignees' | 'commentCount' | 'created' | 'creator' | 'description' | 'id' | 'labels' | 'parentId' | 'status' | 'title' | TaskKeySpecifier)[];
 export type TaskFieldPolicy = {
 	assignees?: FieldPolicy<any> | FieldReadFunction<any>,
+	commentCount?: FieldPolicy<any> | FieldReadFunction<any>,
 	created?: FieldPolicy<any> | FieldReadFunction<any>,
 	creator?: FieldPolicy<any> | FieldReadFunction<any>,
 	description?: FieldPolicy<any> | FieldReadFunction<any>,

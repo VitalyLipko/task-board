@@ -284,6 +284,7 @@ export type SubscriptionCommentCreatedArgs = {
 export type Task = {
   __typename?: 'Task';
   assignees: Array<User>;
+  commentCount: Scalars['Int'];
   created: Scalars['DateTime'];
   creator: User;
   description?: Maybe<Scalars['String']>;
