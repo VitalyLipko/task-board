@@ -1,0 +1,7 @@
+<ng-container *transloco="let t">
+  <tb-user-inline-info [tbUser]="tbHistoryEntry.user"></tb-user-inline-info>
+  <span nz-typography>{{ t(eventKey) }}</span>
+  <span nz-typography nzType="secondary">
+    {{ tbHistoryEntry.created | date: 'short' }}
+  </span>
+</ng-container>

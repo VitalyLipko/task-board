@@ -4,6 +4,7 @@ import { ProjectStatusEnum } from '../enums/project-status.enum';
 import { TaskStatusEnum } from '../enums/task-status.enum';
 import { Comment } from '../interfaces/comment.interface';
 import { File } from '../interfaces/file.interface';
+import { HistoryEntry } from '../interfaces/history-entry.interface';
 import { Label } from '../interfaces/label.interface';
 import { Project } from '../interfaces/project.interface';
 import { Task } from '../interfaces/task.interface';
@@ -147,8 +148,31 @@ const commentSchema = new Schema<Comment, Model<Comment>, Comment>(
 );
 commentSchema.virtual('id').get(idToString);
 
+const historyEntrySchema = new Schema<
+  HistoryEntry,
+  Model<HistoryEntry>,
+  HistoryEntry
+>(
+  {
+    parentId: { type: Schema.Types.ObjectId, required: true },
+    event: { type: Schema.Types.String, required: true },
+    user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+  },
+  {
+    toObject: {
+      virtuals: true,
+    },
+    toJSON: {
+      virtuals: true,
+    },
+    timestamps: { createdAt: 'created', updatedAt: 'updated' },
+  },
+);
+historyEntrySchema.virtual('id').get(idToString);
+
 export const projectModel = model('Project', projectSchema);
 export const taskModel = model('Task', taskSchema);
 export const userModel = model('User', userSchema);
 export const labelModel = model('Label', labelSchema);
 export const commentModel = model('Comment', commentSchema);
+export const historyEntryModel = model('HistoryEntry', historyEntrySchema);

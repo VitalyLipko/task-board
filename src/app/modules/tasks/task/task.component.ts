@@ -64,6 +64,7 @@ export class TaskComponent implements OnInit, OnDestroy {
   ];
   assignees!: Array<User>;
   labels!: Array<string>;
+  taskBottomMode: 'comments' | 'history' = 'comments';
 
   private unsubscribe = new Subject<void>();
   private initialAssignees!: Array<User>;

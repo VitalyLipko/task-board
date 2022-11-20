@@ -1,8 +1,9 @@
 import { PubSub } from 'graphql-subscriptions';
 
+import { SubscriptionNameEnum } from '../models/enums/subscription-name.enum';
 import { Comment } from '../models/interfaces/comment.interface';
+import { HistoryEntry } from '../models/interfaces/history-entry.interface';
 
-export const COMMENT_CREATED_EVENT = 'COMMENT_CREATED';
 class SubscriptionsService {
   private pubSub: PubSub;
 
@@ -11,11 +12,25 @@ class SubscriptionsService {
   }
 
   publishCommentCreated(comment: Comment): void {
-    this.pubSub.publish(COMMENT_CREATED_EVENT, { commentCreated: comment });
+    this.pubSub.publish(SubscriptionNameEnum.CommentCreated, {
+      commentCreated: comment,
+    });
   }
 
   commentCreatedListener() {
-    return this.pubSub.asyncIterator([COMMENT_CREATED_EVENT]);
+    return this.pubSub.asyncIterator([SubscriptionNameEnum.CommentCreated]);
+  }
+
+  publishHistoryEntryAdded(historyEntry: HistoryEntry): void {
+    this.pubSub.publish(SubscriptionNameEnum.HistoryEntryCreated, {
+      historyEntryAdded: historyEntry,
+    });
+  }
+
+  historyEntryAddedListener() {
+    return this.pubSub.asyncIterator([
+      SubscriptionNameEnum.HistoryEntryCreated,
+    ]);
   }
 }
 

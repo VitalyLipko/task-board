@@ -1,0 +1,13 @@
+<nz-timeline *ngIf="historyEntries?.length; else emptyTemplate">
+  <ng-container *ngFor="let entry of historyEntries; trackBy: trackByFn">
+    <nz-timeline-item [nzDot]="dotTemplate">
+      <tb-history-entry [tbHistoryEntry]="entry"></tb-history-entry>
+    </nz-timeline-item>
+    <ng-template #dotTemplate>
+      <i nz-icon [nzType]="entry | historyEntryIcon"></i>
+    </ng-template>
+  </ng-container>
+</nz-timeline>
+<ng-template #emptyTemplate>
+  <nz-empty></nz-empty>
+</ng-template>

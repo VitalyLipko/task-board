@@ -16,6 +16,21 @@ export default gql`
     DELETED
   }
 
+  enum HistoryEventEnum {
+    STATUS_CHANGED
+    DESCRIPTION_UPDATED
+    ASSIGNEES_CHANGED
+    LABELS_CHANGED
+  }
+
+  type HistoryEntry {
+    id: ID!
+    parentId: String!
+    created: DateTime!
+    event: HistoryEventEnum!
+    user: User!
+  }
+
   type Comment {
     id: ID!
     parentId: String!
@@ -98,6 +113,7 @@ export default gql`
     user(id: ID): User
     users: [User!]!
     comments(parentId: String!): [Comment!]!
+    historyEntries(parentId: ID!): [HistoryEntry!]!
   }
 
   type Mutation {
@@ -122,6 +138,7 @@ export default gql`
 
   type Subscription {
     commentCreated(parentId: String!): Comment!
+    historyEntryAdded(parentId: String): HistoryEntry!
   }
 
   input CreateCommentInput {

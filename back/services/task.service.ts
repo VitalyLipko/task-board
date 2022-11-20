@@ -6,6 +6,7 @@ import mongoose, {
   QuerySelector,
 } from 'mongoose';
 
+import { HistoryEventEnum } from '../models/enums/history-event.enum';
 import { TaskStatusEnum } from '../models/enums/task-status.enum';
 import {
   CreateTaskInput,
@@ -15,6 +16,7 @@ import {
 import { User } from '../models/interfaces/user.interface';
 import { TaskModel, taskModel } from '../models/schemas/db.schema';
 
+import historyService from './history.service';
 import labelService from './label.service';
 import { ProjectService } from './project.service';
 import userService from './user.service';
@@ -96,7 +98,10 @@ class TaskService {
     return document;
   }
 
-  async updateTask(task: UpdateTaskInput): Promise<LeanDocument<Task> | null> {
+  async updateTask(
+    task: UpdateTaskInput,
+    user: User,
+  ): Promise<LeanDocument<Task> | null> {
     const prevTask = await taskModel.findById(task.id).populate('assignees');
 
     if (!prevTask) {
@@ -107,10 +112,21 @@ class TaskService {
       prevTask.assignees = await userService.getUsersForAssignees(
         task.assignees,
       );
+
+      await historyService.createEntry(
+        HistoryEventEnum.AssigneesChanged,
+        task.id,
+        user,
+      );
     }
 
     if (task.labels) {
       prevTask.labels = await labelService.getTaskLabels(task.labels);
+      await historyService.createEntry(
+        HistoryEventEnum.LabelsChanged,
+        task.id,
+        user,
+      );
     }
 
     if (!isUndefined(task.title)) {
@@ -119,13 +135,22 @@ class TaskService {
 
     if (!isUndefined(task.description)) {
       prevTask.description = task.description;
+      await historyService.createEntry(
+        HistoryEventEnum.DescriptionUpdated,
+        task.id,
+        user,
+      );
     }
 
     const curTask = await prevTask.save();
     return curTask.populate(taskPopulateOptions);
   }
 
-  async changeStatus(id: string, value: TaskStatusEnum): Promise<boolean> {
+  async changeStatus(
+    id: string,
+    value: TaskStatusEnum,
+    user: User,
+  ): Promise<boolean> {
     const task = await taskModel.findById(id);
     if (!task) {
       throw new ApolloError(`Task ${id} not found`);
@@ -142,6 +167,11 @@ class TaskService {
       case TaskStatusEnum.Open:
         task.status = value;
         await task.save();
+        await historyService.createEntry(
+          HistoryEventEnum.StatusChanged,
+          id,
+          user,
+        );
         return true;
       default:
         return false;

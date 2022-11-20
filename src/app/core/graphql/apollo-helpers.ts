@@ -25,6 +25,14 @@ export type FileFieldPolicy = {
 	size?: FieldPolicy<any> | FieldReadFunction<any>,
 	url?: FieldPolicy<any> | FieldReadFunction<any>
 };
+export type HistoryEntryKeySpecifier = ('created' | 'event' | 'id' | 'parentId' | 'user' | HistoryEntryKeySpecifier)[];
+export type HistoryEntryFieldPolicy = {
+	created?: FieldPolicy<any> | FieldReadFunction<any>,
+	event?: FieldPolicy<any> | FieldReadFunction<any>,
+	id?: FieldPolicy<any> | FieldReadFunction<any>,
+	parentId?: FieldPolicy<any> | FieldReadFunction<any>,
+	user?: FieldPolicy<any> | FieldReadFunction<any>
+};
 export type LabelKeySpecifier = ('backgroundColor' | 'id' | 'isSystem' | 'title' | LabelKeySpecifier)[];
 export type LabelFieldPolicy = {
 	backgroundColor?: FieldPolicy<any> | FieldReadFunction<any>,
@@ -69,10 +77,11 @@ export type ProjectFieldPolicy = {
 	status?: FieldPolicy<any> | FieldReadFunction<any>,
 	tasks?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type QueryKeySpecifier = ('board' | 'comments' | 'isLoggedIn' | 'label' | 'labels' | 'project' | 'projects' | 'task' | 'tasks' | 'user' | 'users' | QueryKeySpecifier)[];
+export type QueryKeySpecifier = ('board' | 'comments' | 'historyEntries' | 'isLoggedIn' | 'label' | 'labels' | 'project' | 'projects' | 'task' | 'tasks' | 'user' | 'users' | QueryKeySpecifier)[];
 export type QueryFieldPolicy = {
 	board?: FieldPolicy<any> | FieldReadFunction<any>,
 	comments?: FieldPolicy<any> | FieldReadFunction<any>,
+	historyEntries?: FieldPolicy<any> | FieldReadFunction<any>,
 	isLoggedIn?: FieldPolicy<any> | FieldReadFunction<any>,
 	label?: FieldPolicy<any> | FieldReadFunction<any>,
 	labels?: FieldPolicy<any> | FieldReadFunction<any>,
@@ -83,9 +92,10 @@ export type QueryFieldPolicy = {
 	user?: FieldPolicy<any> | FieldReadFunction<any>,
 	users?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type SubscriptionKeySpecifier = ('commentCreated' | SubscriptionKeySpecifier)[];
+export type SubscriptionKeySpecifier = ('commentCreated' | 'historyEntryAdded' | SubscriptionKeySpecifier)[];
 export type SubscriptionFieldPolicy = {
-	commentCreated?: FieldPolicy<any> | FieldReadFunction<any>
+	commentCreated?: FieldPolicy<any> | FieldReadFunction<any>,
+	historyEntryAdded?: FieldPolicy<any> | FieldReadFunction<any>
 };
 export type TaskKeySpecifier = ('assignees' | 'commentCount' | 'created' | 'creator' | 'description' | 'id' | 'labels' | 'parentId' | 'status' | 'title' | TaskKeySpecifier)[];
 export type TaskFieldPolicy = {
@@ -123,6 +133,10 @@ export type StrictTypedTypePolicies = {
 	File?: Omit<TypePolicy, 'fields' | 'keyFields'> & {
 		keyFields?: false | FileKeySpecifier | (() => undefined | FileKeySpecifier),
 		fields?: FileFieldPolicy,
+	},
+	HistoryEntry?: Omit<TypePolicy, 'fields' | 'keyFields'> & {
+		keyFields?: false | HistoryEntryKeySpecifier | (() => undefined | HistoryEntryKeySpecifier),
+		fields?: HistoryEntryFieldPolicy,
 	},
 	Label?: Omit<TypePolicy, 'fields' | 'keyFields'> & {
 		keyFields?: false | LabelKeySpecifier | (() => undefined | LabelKeySpecifier),

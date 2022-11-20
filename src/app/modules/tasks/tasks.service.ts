@@ -14,6 +14,7 @@ import {
   Comment,
   CreateCommentInput,
   CreateTaskInput,
+  HistoryEntry,
   Project,
   SubscriptionCommentCreatedArgs,
   Task,
@@ -28,9 +29,11 @@ import CreateComment from './graphql/create-comment.mutation.graphql';
 import CreateTask from './graphql/create-task.mutation.graphql';
 import GetBoard from './graphql/get-board.query.graphql';
 import GetComments from './graphql/get-comments.query.graphql';
+import GetHistoryEntries from './graphql/get-history-entries.query.graphql';
 import GetProjectPageInfo from './graphql/get-project-page-info.query.graphql';
 import GetTaskDrawerData from './graphql/get-task-drawer-data.query.graphql';
 import GetTask from './graphql/get-task.query.graphql';
+import HistoryEntryAdded from './graphql/history-entry-added.subscription.graphql';
 import UpdateTask from './graphql/update-task.mutation.graphql';
 import { TaskDrawerComponent } from './task-drawer/task-drawer.component';
 
@@ -285,7 +288,7 @@ export class TasksService {
       );
   }
 
-  commentCreated(parentId: string): Observable<Comment | undefined> {
+  commentCreated(parentId: string): Observable<Comment> {
     return this.apollo
       .subscribe<{ commentCreated: Comment }, SubscriptionCommentCreatedArgs>({
         query: CommentCreated,
@@ -294,6 +297,36 @@ export class TasksService {
       .pipe(
         errorHandler(),
         map(({ data }) => data?.commentCreated),
+        filter(Boolean),
+      );
+  }
+
+  getHistoryEntries(parentId: string): Observable<Array<HistoryEntry>> {
+    return this.apollo
+      .query<{ historyEntries: Array<HistoryEntry> }>({
+        query: GetHistoryEntries,
+        variables: { parentId },
+        fetchPolicy: 'no-cache',
+      })
+      .pipe(
+        errorHandler(),
+        map(({ data }) => data.historyEntries),
+      );
+  }
+
+  historyEntryAdded(parentId: string): Observable<HistoryEntry> {
+    return this.apollo
+      .subscribe<
+        { historyEntryAdded: HistoryEntry },
+        SubscriptionCommentCreatedArgs
+      >({
+        query: HistoryEntryAdded,
+        variables: { parentId },
+      })
+      .pipe(
+        errorHandler(),
+        map(({ data }) => data?.historyEntryAdded),
+        filter(Boolean),
       );
   }
 }

@@ -1,0 +1,7 @@
+#import "./history-entry-fields.fragment.graphql"
+
+subscription HistoryEntryAdded($parentId: String!) {
+  historyEntryAdded(parentId: $parentId) {
+    ...HistoryEntryFields
+  }
+}

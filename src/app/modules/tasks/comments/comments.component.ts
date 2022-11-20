@@ -50,7 +50,7 @@ export class CommentsComponent implements OnInit {
       .pipe(takeUntil(this.unsubscribe))
       .subscribe({
         next: (comment) => {
-          if (this.comments && comment) {
+          if (this.comments) {
             this.comments = [...this.comments, comment];
             this.cdr.markForCheck();
           }

@@ -80,6 +80,22 @@ export type File = {
   url: Scalars['String'];
 };
 
+export type HistoryEntry = {
+  __typename?: 'HistoryEntry';
+  created: Scalars['DateTime'];
+  event: HistoryEventEnum;
+  id: Scalars['ID'];
+  parentId: Scalars['String'];
+  user: User;
+};
+
+export enum HistoryEventEnum {
+  AssigneesChanged = 'ASSIGNEES_CHANGED',
+  DescriptionUpdated = 'DESCRIPTION_UPDATED',
+  LabelsChanged = 'LABELS_CHANGED',
+  StatusChanged = 'STATUS_CHANGED'
+}
+
 export type Label = {
   __typename?: 'Label';
   backgroundColor?: Maybe<Scalars['HexColorCode']>;
@@ -230,6 +246,7 @@ export type Query = {
   __typename?: 'Query';
   board?: Maybe<Board>;
   comments: Array<Comment>;
+  historyEntries: Array<HistoryEntry>;
   isLoggedIn?: Maybe<Scalars['Boolean']>;
   label?: Maybe<Label>;
   labels: Array<Label>;
@@ -249,6 +266,11 @@ export type QueryBoardArgs = {
 
 export type QueryCommentsArgs = {
   parentId: Scalars['String'];
+};
+
+
+export type QueryHistoryEntriesArgs = {
+  parentId: Scalars['ID'];
 };
 
 
@@ -274,11 +296,17 @@ export type QueryUserArgs = {
 export type Subscription = {
   __typename?: 'Subscription';
   commentCreated: Comment;
+  historyEntryAdded: HistoryEntry;
 };
 
 
 export type SubscriptionCommentCreatedArgs = {
   parentId: Scalars['String'];
+};
+
+
+export type SubscriptionHistoryEntryAddedArgs = {
+  parentId?: InputMaybe<Scalars['String']>;
 };
 
 export type Task = {

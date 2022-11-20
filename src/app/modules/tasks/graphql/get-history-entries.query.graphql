@@ -1,0 +1,7 @@
+#import "./history-entry-fields.fragment.graphql"
+
+query GetHistoryEntries($parentId: ID!) {
+  historyEntries(parentId: $parentId) {
+    ...HistoryEntryFields
+  }
+}

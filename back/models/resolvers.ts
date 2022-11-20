@@ -6,6 +6,7 @@ import { GraphQLUpload } from 'graphql-upload';
 import authService from '../services/auth.service';
 import boardService from '../services/board.service';
 import commentService from '../services/comment.service';
+import historyService from '../services/history.service';
 import labelService from '../services/label.service';
 import passwordService from '../services/password.service';
 import projectService from '../services/project.service';
@@ -15,6 +16,7 @@ import userService from '../services/user.service';
 
 import { TaskStatusEnum } from './enums/task-status.enum';
 import { ContextPayload } from './interfaces/context-payload.interface';
+import { User } from './interfaces/user.interface';
 
 export const resolvers: IResolvers<unknown, ContextPayload> = {
   DateTime: DateTimeResolver,
@@ -55,6 +57,10 @@ export const resolvers: IResolvers<unknown, ContextPayload> = {
       authService.operationGuard(context, () =>
         commentService.getComments(args.parentId),
       ),
+    historyEntries: (_, args, context) =>
+      authService.operationGuard(context, () =>
+        historyService.getEntries(args.parentId),
+      ),
   },
   Mutation: {
     createLabel: (_, args, context) =>
@@ -79,11 +85,11 @@ export const resolvers: IResolvers<unknown, ContextPayload> = {
       ),
     updateTask: (_, args, context) =>
       authService.operationGuard(context, () =>
-        taskService.updateTask(args.task),
+        taskService.updateTask(args.task, context.user as User),
       ),
     changeTaskStatus: (_, { id, value }, context) =>
       authService.operationGuard(context, () =>
-        taskService.changeStatus(id, value),
+        taskService.changeStatus(id, value, context.user as User),
       ),
     login: (_, args, context) =>
       authService.login(args.username, args.password, context.res),
@@ -132,6 +138,13 @@ export const resolvers: IResolvers<unknown, ContextPayload> = {
         () => subscriptionsService.commentCreatedListener(),
         ({ commentCreated }, { parentId }) =>
           commentCreated.parentId.toString() === parentId,
+      ),
+    },
+    historyEntryAdded: {
+      subscribe: withFilter(
+        () => subscriptionsService.historyEntryAddedListener(),
+        ({ historyEntryAdded }, { parentId }) =>
+          historyEntryAdded.parentId.toString() === parentId,
       ),
     },
   },

@@ -11,7 +11,23 @@
           [tbReadOnly]="true"
           [ngModel]="task.description"
         ></tb-description>
-        <tb-comments [tbParentId]="parentId"></tb-comments>
+        <div class="tb-task-bottom-mode-control">
+          <nz-radio-group [(ngModel)]="taskBottomMode">
+            <label nz-radio-button nzValue="comments">
+              {{ t('task.comments') }}
+            </label>
+            <label nz-radio-button nzValue="history">
+              {{ t('task.history') }}
+            </label>
+          </nz-radio-group>
+        </div>
+        <tb-comments
+          *ngIf="taskBottomMode === 'comments'; else historyTemplate"
+          [tbParentId]="parentId"
+        ></tb-comments>
+        <ng-template #historyTemplate>
+          <tb-history [tbParentId]="parentId"></tb-history>
+        </ng-template>
       </nz-card>
       <ng-template #extraTemplate>
         <tb-dropdown-actions

@@ -61,7 +61,12 @@
       "strike": "Strike"
     },
     "comments": "Comments",
-    "add_comment": "Add comment"
+    "add_comment": "Add comment",
+    "history": "History",
+    "changed_assignees": "changed assignees",
+    "changed_labels": "changed labels",
+    "changed_status": "changed status",
+    "updated_description": "updated description"
   },
   "user": {
     "first_name": "First name",

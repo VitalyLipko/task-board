@@ -1,0 +1,10 @@
+#import "./creator-fields.fragment.graphql"
+
+fragment HistoryEntryFields on HistoryEntry {
+  id
+  created
+  event
+  user {
+    ...CreatorFields
+  }
+}

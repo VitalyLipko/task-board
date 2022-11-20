@@ -24,11 +24,13 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzListModule } from 'ng-zorro-antd/list';
 import { NzMessageModule } from 'ng-zorro-antd/message';
 import { NzPipesModule } from 'ng-zorro-antd/pipes';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NzTagModule } from 'ng-zorro-antd/tag';
+import { NzTimelineModule } from 'ng-zorro-antd/timeline';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { NgxTiptapModule } from 'ngx-tiptap';
@@ -44,6 +46,9 @@ import { CommentComponent } from './comment/comment.component';
 import { CommentsComponent } from './comments/comments.component';
 import { DescriptionEditorToolbarComponent } from './description-editor-toolbar/description-editor-toolbar.component';
 import { DescriptionComponent } from './description/description.component';
+import { HistoryEntryIconPipe } from './history-entry-icon.pipe';
+import { HistoryEntryComponent } from './history-entry/history-entry.component';
+import { HistoryComponent } from './history/history.component';
 import { LabelsSelectComponent } from './labels-select/labels-select.component';
 import { TaskBoardComponent } from './task-board/task-board.component';
 import { TaskCreationInfoComponent } from './task-creation-info/task-creation-info.component';
@@ -69,6 +74,9 @@ import { TasksService } from './tasks.service';
     TaskBoardComponent,
     CommentsComponent,
     CommentComponent,
+    HistoryComponent,
+    HistoryEntryIconPipe,
+    HistoryEntryComponent,
   ],
   imports: [
     CommonModule,
@@ -109,6 +117,8 @@ import { TasksService } from './tasks.service';
     NzCommentModule,
     NzCollapseModule,
     NzBadgeModule,
+    NzRadioModule,
+    NzTimelineModule,
   ],
   providers: [TasksService, DatePipe],
 })
