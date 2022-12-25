@@ -6,7 +6,7 @@ import {
   ChangeDetectorRef,
   OnDestroy,
 } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { NzDrawerRef } from 'ng-zorro-antd/drawer';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { iif, of, Subject } from 'rxjs';
@@ -80,9 +80,9 @@ export class TaskDrawerComponent
   }
 
   private createForm(): void {
-    this.form = new FormGroup({
-      title: new FormControl(null, Validators.required),
-      description: new FormControl(),
+    this.form = new UntypedFormGroup({
+      title: new UntypedFormControl(null, Validators.required),
+      description: new UntypedFormControl(),
     });
 
     if (this.task) {
@@ -92,8 +92,8 @@ export class TaskDrawerComponent
       });
       this.initialValues = { ...this.form.value };
     } else {
-      this.form.addControl('assignees', new FormControl());
-      this.form.addControl('labels', new FormControl());
+      this.form.addControl('assignees', new UntypedFormControl());
+      this.form.addControl('labels', new UntypedFormControl());
     }
   }
 }

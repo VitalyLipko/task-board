@@ -5,7 +5,7 @@ import {
   OnDestroy,
   ChangeDetectorRef,
 } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { TranslocoService } from '@ngneat/transloco';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Subject } from 'rxjs';
@@ -62,15 +62,15 @@ export class ProfileComponent
           const { profile } = user;
           this.user = user;
           this.profile = profile;
-          this.form = new FormGroup({
-            avatar: new FormControl(this.profile.avatar),
-            firstName: new FormControl(this.profile.firstName, [
+          this.form = new UntypedFormGroup({
+            avatar: new UntypedFormControl(this.profile.avatar),
+            firstName: new UntypedFormControl(this.profile.firstName, [
               Validators.required,
             ]),
-            lastName: new FormControl(this.profile.lastName, [
+            lastName: new UntypedFormControl(this.profile.lastName, [
               Validators.required,
             ]),
-            email: new FormControl(this.profile.email, [
+            email: new UntypedFormControl(this.profile.email, [
               Validators.email,
               Validators.required,
             ]),

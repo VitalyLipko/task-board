@@ -6,7 +6,7 @@ import {
   OnDestroy,
   ChangeDetectorRef,
 } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import isEmpty from 'lodash/isEmpty';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalRef } from 'ng-zorro-antd/modal';
@@ -104,9 +104,9 @@ export class ProjectModalComponent
   }
 
   private createForm(): void {
-    this.form = new FormGroup({
-      name: new FormControl(null, Validators.required),
-      icon: new FormControl(),
+    this.form = new UntypedFormGroup({
+      name: new UntypedFormControl(null, Validators.required),
+      icon: new UntypedFormControl(),
     });
 
     if (this.project) {

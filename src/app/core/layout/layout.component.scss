@@ -18,6 +18,12 @@
 
       nz-page-header {
         padding-left: 0;
+
+        .ant-page-header-heading-extra {
+          & > button + button {
+            margin-left: $indent-xs;
+          }
+        }
       }
     }
 

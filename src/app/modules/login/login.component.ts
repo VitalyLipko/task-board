@@ -4,7 +4,7 @@ import {
   Component,
   OnDestroy,
 } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Apollo } from 'apollo-angular';
 import { NzMessageService } from 'ng-zorro-antd/message';
@@ -33,9 +33,9 @@ export class LoginComponent extends FormAbstractClass implements OnDestroy {
     private authService: AuthService,
   ) {
     super();
-    this.form = new FormGroup({
-      username: new FormControl(null, Validators.required),
-      password: new FormControl(null, Validators.required),
+    this.form = new UntypedFormGroup({
+      username: new UntypedFormControl(null, Validators.required),
+      password: new UntypedFormControl(null, Validators.required),
     });
   }
 

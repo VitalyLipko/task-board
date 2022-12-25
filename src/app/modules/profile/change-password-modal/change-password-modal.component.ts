@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { Subject } from 'rxjs';
@@ -25,10 +25,10 @@ export class ChangePasswordModalComponent
     private messageService: NzMessageService,
   ) {
     super();
-    this.form = new FormGroup({
-      currentPassword: new FormControl(null, [Validators.required]),
-      password: new FormControl(null, [Validators.required]),
-      confirmPassword: new FormControl(null, [Validators.required]),
+    this.form = new UntypedFormGroup({
+      currentPassword: new UntypedFormControl(null, [Validators.required]),
+      password: new UntypedFormControl(null, [Validators.required]),
+      confirmPassword: new UntypedFormControl(null, [Validators.required]),
     });
     this.form.addValidators(confirmPasswordValidation);
   }

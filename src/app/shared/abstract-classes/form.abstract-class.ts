@@ -1,10 +1,10 @@
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
 
 export type FormType = 'create' | 'edit';
 export abstract class FormAbstractClass {
-  form!: FormGroup;
+  form!: UntypedFormGroup;
   initialValues: Record<string, unknown> = {};
   type: FormType = 'create';
 
