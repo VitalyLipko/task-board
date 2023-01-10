@@ -145,7 +145,7 @@ export class ProjectsService {
           label: this.translations.save,
           type: 'primary',
           disabled: (contentComponentInstance) =>
-            !!contentComponentInstance?.disabled,
+            !contentComponentInstance?.canSubmit,
           onClick(contentComponentInstance?: ProjectModalComponent) {
             contentComponentInstance?.onSubmit();
           },

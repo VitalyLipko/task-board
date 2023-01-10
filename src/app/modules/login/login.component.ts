@@ -4,13 +4,14 @@ import {
   Component,
   OnDestroy,
 } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Apollo } from 'apollo-angular';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { MutationLoginArgs } from '../../core/graphql/graphql';
 import { AuthService } from '../../core/services/auth.service';
 import { FormAbstractClass } from '../../shared/abstract-classes/form.abstract-class';
 
@@ -20,7 +21,10 @@ import { FormAbstractClass } from '../../shared/abstract-classes/form.abstract-c
   styleUrls: ['./login.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LoginComponent extends FormAbstractClass implements OnDestroy {
+export class LoginComponent
+  extends FormAbstractClass<MutationLoginArgs>
+  implements OnDestroy
+{
   loading = false;
 
   private unsubscribe = new Subject<void>();
@@ -33,9 +37,15 @@ export class LoginComponent extends FormAbstractClass implements OnDestroy {
     private authService: AuthService,
   ) {
     super();
-    this.form = new UntypedFormGroup({
-      username: new UntypedFormControl(null, Validators.required),
-      password: new UntypedFormControl(null, Validators.required),
+    this.form = new FormGroup({
+      username: new FormControl('', {
+        validators: Validators.required,
+        nonNullable: true,
+      }),
+      password: new FormControl('', {
+        validators: Validators.required,
+        nonNullable: true,
+      }),
     });
   }
 
@@ -47,7 +57,7 @@ export class LoginComponent extends FormAbstractClass implements OnDestroy {
   handleSubmit(): void {
     this.loading = true;
     this.authService
-      .login(this.form.value)
+      .login(this.form.getRawValue())
       .pipe(takeUntil(this.unsubscribe))
       .subscribe({
         error: (err) => {

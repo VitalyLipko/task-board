@@ -5,7 +5,7 @@ import {
   OnDestroy,
   ChangeDetectorRef,
 } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TranslocoService } from '@ngneat/transloco';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Subject } from 'rxjs';
@@ -13,8 +13,12 @@ import { takeUntil } from 'rxjs/operators';
 
 import { Profile, User } from '../../core/graphql/graphql';
 import { LayoutService } from '../../core/layout/layout.service';
-import { FormAbstractClass } from '../../shared/abstract-classes/form.abstract-class';
+import {
+  ControlsType,
+  FormAbstractClass,
+} from '../../shared/abstract-classes/form.abstract-class';
 
+import { ProfileForm } from './profile-form.type';
 import { ProfileService } from './profile.service';
 
 @Component({
@@ -30,7 +34,7 @@ import { ProfileService } from './profile.service';
   ],
 })
 export class ProfileComponent
-  extends FormAbstractClass
+  extends FormAbstractClass<ProfileForm>
   implements OnInit, OnDestroy
 {
   user: User | undefined;
@@ -62,18 +66,20 @@ export class ProfileComponent
           const { profile } = user;
           this.user = user;
           this.profile = profile;
-          this.form = new UntypedFormGroup({
-            avatar: new UntypedFormControl(this.profile.avatar),
-            firstName: new UntypedFormControl(this.profile.firstName, [
-              Validators.required,
-            ]),
-            lastName: new UntypedFormControl(this.profile.lastName, [
-              Validators.required,
-            ]),
-            email: new UntypedFormControl(this.profile.email, [
-              Validators.email,
-              Validators.required,
-            ]),
+          this.form = new FormGroup<ControlsType<ProfileForm>>({
+            avatar: new FormControl(this.profile.avatar),
+            firstName: new FormControl(this.profile.firstName, {
+              validators: [Validators.required],
+              nonNullable: true,
+            }),
+            lastName: new FormControl(this.profile.lastName, {
+              validators: [Validators.required],
+              nonNullable: true,
+            }),
+            email: new FormControl(this.profile.email, {
+              validators: [Validators.required, Validators.email],
+              nonNullable: true,
+            }),
           });
           this.initialValues = { ...this.form.value };
           this.cdr.markForCheck();

@@ -6,15 +6,20 @@ import {
   ChangeDetectorRef,
   OnDestroy,
 } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NzDrawerRef } from 'ng-zorro-antd/drawer';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { iif, of, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { Task } from '../../../core/graphql/graphql';
-import { FormAbstractClass } from '../../../shared/abstract-classes/form.abstract-class';
+import { Task, UpdateTaskInput } from '../../../core/graphql/graphql';
+import {
+  ControlsType,
+  FormAbstractClass,
+} from '../../../shared/abstract-classes/form.abstract-class';
 import { TasksService } from '../tasks.service';
+
+import { TaskDrawerFormType } from './task-drawer-form.type';
 
 @Component({
   selector: 'tb-task-drawer',
@@ -22,7 +27,7 @@ import { TasksService } from '../tasks.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TaskDrawerComponent
-  extends FormAbstractClass
+  extends FormAbstractClass<TaskDrawerFormType>
   implements OnInit, OnDestroy
 {
   task: Task | undefined;
@@ -80,9 +85,12 @@ export class TaskDrawerComponent
   }
 
   private createForm(): void {
-    this.form = new UntypedFormGroup({
-      title: new UntypedFormControl(null, Validators.required),
-      description: new UntypedFormControl(),
+    this.form = new FormGroup<ControlsType<TaskDrawerFormType>>({
+      title: new FormControl('', {
+        validators: Validators.required,
+        nonNullable: true,
+      }),
+      description: new FormControl<string | null>(null),
     });
 
     if (this.task) {
@@ -92,8 +100,14 @@ export class TaskDrawerComponent
       });
       this.initialValues = { ...this.form.value };
     } else {
-      this.form.addControl('assignees', new UntypedFormControl());
-      this.form.addControl('labels', new UntypedFormControl());
+      this.form.addControl(
+        'assignees',
+        new FormControl<UpdateTaskInput['assignees']>(null),
+      );
+      this.form.addControl(
+        'labels',
+        new FormControl<UpdateTaskInput['labels']>(null),
+      );
     }
   }
 }

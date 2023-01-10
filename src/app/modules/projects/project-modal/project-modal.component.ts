@@ -6,16 +6,20 @@ import {
   OnDestroy,
   ChangeDetectorRef,
 } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
-import isEmpty from 'lodash/isEmpty';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { iif, of, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { Project } from '../../../core/graphql/graphql';
-import { FormAbstractClass } from '../../../shared/abstract-classes/form.abstract-class';
+import {
+  ControlsType,
+  FormAbstractClass,
+} from '../../../shared/abstract-classes/form.abstract-class';
 import { ProjectsService } from '../projects.service';
+
+import { ProjectFormType } from './project-form.type';
 
 @Component({
   selector: 'tb-project-modal',
@@ -23,7 +27,7 @@ import { ProjectsService } from '../projects.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProjectModalComponent
-  extends FormAbstractClass
+  extends FormAbstractClass<ProjectFormType>
   implements OnInit, OnDestroy
 {
   project: Project | undefined;
@@ -31,29 +35,6 @@ export class ProjectModalComponent
   private unsubscribe = new Subject<void>();
 
   @Input() tbId: string | undefined;
-
-  get disabled(): boolean {
-    return this.tbId
-      ? this.form?.invalid || isEmpty(this.result)
-      : this.form.invalid;
-  }
-
-  get result(): Record<string, unknown> | null {
-    if (!this.form) {
-      return null;
-    }
-
-    const result: Record<string, unknown> = {};
-    Object.entries(this.form.value).forEach(([key, value]) => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      if (value !== this.project[key]) {
-        result[key] = value;
-      }
-    });
-
-    return result;
-  }
 
   constructor(
     public modalRef: NzModalRef,
@@ -93,20 +74,17 @@ export class ProjectModalComponent
     if (this.project) {
       this.modalRef.close({ ...this.changedValue, id: this.tbId });
     } else {
-      const values: Record<string, unknown> = {};
-      Object.entries(this.form.value).forEach(([key, value]) => {
-        if (value) {
-          values[key] = value;
-        }
-      });
-      this.modalRef.close(values);
+      this.modalRef.close(this.changedValue);
     }
   }
 
   private createForm(): void {
-    this.form = new UntypedFormGroup({
-      name: new UntypedFormControl(null, Validators.required),
-      icon: new UntypedFormControl(),
+    this.form = new FormGroup<ControlsType<ProjectFormType>>({
+      name: new FormControl('', {
+        validators: Validators.required,
+        nonNullable: true,
+      }),
+      icon: new FormControl<File | null>(null),
     });
 
     if (this.project) {

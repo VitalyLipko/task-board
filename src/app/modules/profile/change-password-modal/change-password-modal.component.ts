@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { Subject } from 'rxjs';
@@ -9,13 +9,15 @@ import { FormAbstractClass } from '../../../shared/abstract-classes/form.abstrac
 import { confirmPasswordValidation } from '../../../shared/utils/confirm-password-validation';
 import { ProfileService } from '../profile.service';
 
+import { ChangePasswordModalFormType } from './change-password-modal-form.type';
+
 @Component({
   selector: 'tb-change-password-modal',
   templateUrl: './change-password-modal.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChangePasswordModalComponent
-  extends FormAbstractClass
+  extends FormAbstractClass<ChangePasswordModalFormType>
   implements OnDestroy
 {
   private unsubscribe = new Subject<void>();
@@ -25,10 +27,19 @@ export class ChangePasswordModalComponent
     private messageService: NzMessageService,
   ) {
     super();
-    this.form = new UntypedFormGroup({
-      currentPassword: new UntypedFormControl(null, [Validators.required]),
-      password: new UntypedFormControl(null, [Validators.required]),
-      confirmPassword: new UntypedFormControl(null, [Validators.required]),
+    this.form = new FormGroup({
+      currentPassword: new FormControl('', {
+        validators: [Validators.required],
+        nonNullable: true,
+      }),
+      password: new FormControl('', {
+        validators: [Validators.required],
+        nonNullable: true,
+      }),
+      confirmPassword: new FormControl('', {
+        validators: [Validators.required],
+        nonNullable: true,
+      }),
     });
     this.form.addValidators(confirmPasswordValidation);
   }
@@ -38,9 +49,10 @@ export class ChangePasswordModalComponent
     this.unsubscribe.complete();
   }
 
-  onSubmit() {
+  onSubmit(): void {
+    const { currentPassword, password } = this.form.getRawValue();
     this.profileService
-      .changePassword(this.form.value.currentPassword, this.form.value.password)
+      .changePassword(currentPassword, password)
       .pipe(takeUntil(this.unsubscribe))
       .subscribe({
         next: () => this.modalRef.close(),
