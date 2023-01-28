@@ -1,15 +1,14 @@
 import { Location } from '@angular/common';
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   OnDestroy,
   OnInit,
   ViewEncapsulation,
 } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Observable, shareReplay, Subject } from 'rxjs';
+import { catchError, takeUntil } from 'rxjs/operators';
 
 import { User } from '../graphql/graphql';
 import { AuthService } from '../services/auth.service';
@@ -26,7 +25,7 @@ import { LayoutService } from './layout.service';
 })
 export class LayoutComponent implements OnInit, OnDestroy {
   siderCollapsed = false;
-  user: User | undefined;
+  user$: Observable<User> | undefined;
 
   private unsubscribe = new Subject<void>();
 
@@ -35,21 +34,17 @@ export class LayoutComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private location: Location,
     public breadcrumbService: BreadcrumbService,
-    private cdr: ChangeDetectorRef,
     private messageService: NzMessageService,
   ) {}
 
   ngOnInit(): void {
-    this.layoutService
-      .getCurrentUser()
-      .pipe(takeUntil(this.unsubscribe))
-      .subscribe({
-        next: (user) => {
-          this.user = user;
-          this.cdr.markForCheck();
-        },
-        error: (err) => this.messageService.error(err.message),
-      });
+    this.user$ = this.layoutService.getCurrentUser().pipe(
+      catchError((err, caught) => {
+        this.messageService.error(err.message);
+        return caught;
+      }),
+      shareReplay(),
+    );
   }
 
   ngOnDestroy(): void {

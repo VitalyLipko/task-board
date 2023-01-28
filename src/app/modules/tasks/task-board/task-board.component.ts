@@ -1,7 +1,6 @@
 import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   OnDestroy,
   OnInit,
@@ -9,7 +8,7 @@ import {
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import cloneDeep from 'lodash/cloneDeep';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
 
 import { Board, Column, Label, Task } from '../../../core/graphql/graphql';
@@ -24,28 +23,21 @@ import { TasksService } from '../tasks.service';
   encapsulation: ViewEncapsulation.None,
 })
 export class TaskBoardComponent implements OnInit, OnDestroy {
-  board: Board | undefined;
+  board$: Observable<Board> | undefined;
 
   private unsubscribe = new Subject<void>();
 
   constructor(
     private tasksService: TasksService,
     private route: ActivatedRoute,
-    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
-    this.route.paramMap
-      .pipe(
-        switchMap((paramMap) =>
-          this.tasksService.getBoard(paramMap.get('projectId') as string),
-        ),
-        takeUntil(this.unsubscribe),
-      )
-      .subscribe((board) => {
-        this.board = cloneDeep(board);
-        this.cdr.markForCheck();
-      });
+    this.board$ = this.route.paramMap.pipe(
+      switchMap((paramMap) =>
+        this.tasksService.getBoard(paramMap.get('projectId') as string),
+      ),
+    );
   }
 
   ngOnDestroy(): void {
@@ -57,26 +49,32 @@ export class TaskBoardComponent implements OnInit, OnDestroy {
     return 'id' in item ? item.id : index;
   }
 
-  handleDrop(event: CdkDragDrop<Column>, labelId: string): void {
-    if (event.previousContainer === event.container) {
+  handleDrop(
+    evt: CdkDragDrop<Column>,
+    labelId: string,
+    parentId: string,
+  ): void {
+    const { previousContainer, container, item, previousIndex, currentIndex } =
+      cloneDeep(evt);
+    if (previousContainer === container) {
       return;
     }
     transferArrayItem(
-      event.previousContainer.data.items,
-      event.container.data.items,
-      event.previousIndex,
-      event.currentIndex,
+      previousContainer.data.items,
+      container.data.items,
+      previousIndex,
+      currentIndex,
     );
 
-    const task: Task = event.item.data;
+    const task: Task = item.data;
     const newLabels: Array<string> = task.labels
-      .filter(({ id }) => id !== event.previousContainer.data.label.id)
+      .filter(({ id }) => id !== previousContainer.data.label.id)
       .map(({ id }) => id);
     newLabels.push(labelId);
 
     this.tasksService
       .updateLabels(task.id, newLabels, [
-        { query: GetBoard, variables: { parentId: this.board?.parentId } },
+        { query: GetBoard, variables: { parentId } },
       ])
       .pipe(takeUntil(this.unsubscribe))
       .subscribe();

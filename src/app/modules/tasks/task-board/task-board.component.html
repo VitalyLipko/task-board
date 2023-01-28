@@ -1,6 +1,6 @@
 <div
   class="tb-task-board"
-  *ngIf="board"
+  *ngIf="board$ | async as board"
   cdkDropListGroup
   nz-row
   [nzGutter]="16"
@@ -11,7 +11,7 @@
       cdkDropList
       cdkDropListSortingDisabled
       [cdkDropListData]="column"
-      (cdkDropListDropped)="handleDrop($event, column.label.id)"
+      (cdkDropListDropped)="handleDrop($event, column.label.id, board.parentId)"
       nz-col
     >
       <div class="tb-task-board-column-inner">

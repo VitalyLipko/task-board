@@ -6,8 +6,8 @@ import {
   ChangeDetectorRef,
 } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, startWith, Subject, of } from 'rxjs';
+import { takeUntil, switchMap } from 'rxjs/operators';
 
 import { Comment } from '../../../core/graphql/graphql';
 import { TasksService } from '../tasks.service';
@@ -20,11 +20,14 @@ import { TasksService } from '../tasks.service';
 })
 export class CommentsComponent implements OnInit {
   readonly commentsCounterStyle = { backgroundColor: '#52c41a' };
-  comments: Array<Comment> | undefined;
   inputComment: string | null = null;
   commentsOpened = true;
 
   private unsubscribe = new Subject<void>();
+  private commentsToDisplay = new BehaviorSubject<Array<Comment> | undefined>(
+    undefined,
+  );
+  readonly commentsToDisplay$ = this.commentsToDisplay.asObservable();
 
   @Input() tbParentId!: string;
 
@@ -36,25 +39,20 @@ export class CommentsComponent implements OnInit {
 
   ngOnInit(): void {
     this.tasksService
-      .getComments(this.tbParentId)
-      .pipe(takeUntil(this.unsubscribe))
-      .subscribe({
-        next: (comments) => {
-          this.comments = comments;
-          this.cdr.markForCheck();
-        },
-        error: (err) => this.messageService.error(err.message),
-      });
-    this.tasksService
       .commentCreated(this.tbParentId)
-      .pipe(takeUntil(this.unsubscribe))
-      .subscribe({
-        next: (comment) => {
-          if (this.comments) {
-            this.comments = [...this.comments, comment];
-            this.cdr.markForCheck();
+      .pipe(
+        startWith(null),
+        switchMap((comment) => {
+          const commentsToDisplay = this.commentsToDisplay.value;
+          if (comment && commentsToDisplay) {
+            return of([...commentsToDisplay, comment]);
           }
-        },
+          return this.tasksService.getComments(this.tbParentId);
+        }),
+        takeUntil(this.unsubscribe),
+      )
+      .subscribe({
+        next: (res) => this.commentsToDisplay.next(res),
         error: (err) => this.messageService.error(err.message),
       });
   }
@@ -65,6 +63,7 @@ export class CommentsComponent implements OnInit {
         parentId: this.tbParentId,
         message: this.inputComment as string,
       })
+      .pipe(takeUntil(this.unsubscribe))
       .subscribe({
         next: () => {
           this.inputComment = null;

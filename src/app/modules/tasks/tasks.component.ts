@@ -93,10 +93,6 @@ export class TasksComponent implements OnInit, OnDestroy {
       .subscribe({ error: (err) => this.messageService.error(err.message) });
   }
 
-  modeChange(event: boolean): void {
-    this.isBoard = event;
-  }
-
   handleEditProject(): void {
     this.projectsService
       .edit(this.parentId)

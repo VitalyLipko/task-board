@@ -6,7 +6,7 @@
       [nzExtra]="commentsCounterTemplate"
       class="tb-comments-collapse-panel"
     >
-      <ng-container *ngIf="comments">
+      <ng-container *ngIf="commentsToDisplay$ | async as comments">
         <nz-list *ngIf="comments.length">
           <nz-list-item
             *ngFor="let comment of comments; trackBy: trackByFn"
@@ -37,7 +37,7 @@
     </nz-collapse-panel>
     <ng-template #commentsCounterTemplate>
       <nz-badge
-        *ngIf="comments"
+        *ngIf="commentsToDisplay$ | async as comments"
         nzStandalone
         nzShowZero
         [nzCount]="comments.length"

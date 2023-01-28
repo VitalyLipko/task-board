@@ -1,13 +1,12 @@
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   Input,
   OnDestroy,
   OnInit,
 } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, of, startWith, Subject, switchMap } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { HistoryEntry } from '../../../core/graphql/graphql';
@@ -20,37 +19,36 @@ import { TasksService } from '../tasks.service';
 })
 export class HistoryComponent implements OnInit, OnDestroy {
   historyEntries: Array<HistoryEntry> | undefined;
+
   private unsubscribe = new Subject<void>();
+  private historyToDisplay = new BehaviorSubject<
+    Array<HistoryEntry> | undefined
+  >(undefined);
+  historyToDisplay$ = this.historyToDisplay.asObservable();
 
   @Input() tbParentId!: string;
 
   constructor(
     private tasksService: TasksService,
     private messageService: NzMessageService,
-    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
     this.tasksService
-      .getHistoryEntries(this.tbParentId)
-      .pipe(takeUntil(this.unsubscribe))
-      .subscribe({
-        next: (history) => {
-          this.historyEntries = history;
-          this.cdr.markForCheck();
-        },
-        error: (err) => this.messageService.error(err.message),
-      });
-    this.tasksService
       .historyEntryAdded(this.tbParentId)
-      .pipe(takeUntil(this.unsubscribe))
-      .subscribe({
-        next: (historyEntry) => {
-          if (this.historyEntries) {
-            this.historyEntries = [...this.historyEntries, historyEntry];
-            this.cdr.markForCheck();
+      .pipe(
+        startWith(null),
+        switchMap((entry) => {
+          const historyToDisplay = this.historyToDisplay.value;
+          if (entry && historyToDisplay) {
+            return of([...historyToDisplay, entry]);
           }
-        },
+          return this.tasksService.getHistoryEntries(this.tbParentId);
+        }),
+        takeUntil(this.unsubscribe),
+      )
+      .subscribe({
+        next: (historyEntry) => this.historyToDisplay.next(historyEntry),
         error: (err) => this.messageService.error(err.message),
       });
   }

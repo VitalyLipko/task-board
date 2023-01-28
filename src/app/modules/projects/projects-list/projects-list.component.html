@@ -1,10 +1,10 @@
 <ng-container *transloco="let t">
   <div
     nz-row
-    [nzJustify]="projects && projects.length > 0 ? 'start' : 'center'"
+    [nzJustify]="(projects$ | async)?.length ? 'start' : 'center'"
     class="tb-projects-list-container"
   >
-    <ng-container *ngIf="projects; else spinTemplate">
+    <ng-container *ngIf="projects$ | async as projects; else spinTemplate">
       <ng-container *ngIf="projects.length; else emptyTemplate">
         <tb-project-card
           *ngFor="let project of projects; trackBy: trackByFn"

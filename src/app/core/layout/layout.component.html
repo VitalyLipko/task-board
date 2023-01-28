@@ -15,7 +15,7 @@
         </nz-page-header-extra>
       </nz-page-header>
       <tb-avatar
-        *ngIf="user"
+        *ngIf="user$ | async as user"
         [tbShowTooltip]="false"
         [tbClickable]="true"
         [tbFullName]="user.profile.fullName"
@@ -73,8 +73,8 @@
   <nz-dropdown-menu #menu="nzDropdownMenu">
     <ul nz-menu>
       <li class="tb-layout-header-dropdown-menu-fullname">
-        <span nz-typography nzEllipsis>
-          {{ user?.profile?.fullName }}
+        <span *ngIf="user$ | async as user" nz-typography nzEllipsis>
+          {{ user.profile.fullName }}
         </span>
       </li>
       <li

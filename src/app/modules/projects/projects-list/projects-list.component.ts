@@ -11,8 +11,8 @@ import {
 import { TranslocoService } from '@ngneat/transloco';
 import { Apollo } from 'apollo-angular';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { catchError, shareReplay, takeUntil } from 'rxjs/operators';
 
 import { Project } from '../../../core/graphql/graphql';
 import { LayoutService } from '../../../core/layout/layout.service';
@@ -25,7 +25,7 @@ import { ProjectsService } from '../projects.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProjectsListComponent implements AfterViewInit, OnInit, OnDestroy {
-  projects: Array<Project> | undefined;
+  projects$: Observable<Array<Project>> | undefined;
 
   private unsubscribe = new Subject<void>();
 
@@ -42,16 +42,13 @@ export class ProjectsListComponent implements AfterViewInit, OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.projectsService
-      .getProjects()
-      .pipe(takeUntil(this.unsubscribe))
-      .subscribe({
-        next: (res) => {
-          this.projects = res;
-          this.cdr.markForCheck();
-        },
-        error: (err) => this.messageService.error(err.message),
-      });
+    this.projects$ = this.projectsService.getProjects().pipe(
+      catchError((err, caught) => {
+        this.messageService.error(err.message);
+        return caught;
+      }),
+      shareReplay(),
+    );
   }
 
   ngAfterViewInit(): void {

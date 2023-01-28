@@ -11,8 +11,7 @@
           [nzCheckedChildren]="t('task.board')"
           [nzUnCheckedChildren]="t('task.list')"
           [nzDisabled]="!tasks"
-          [ngModel]="isBoard"
-          (ngModelChange)="modeChange($event)"
+          [(ngModel)]="isBoard"
         ></nz-switch>
       </div>
       <nz-card
