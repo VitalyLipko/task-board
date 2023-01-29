@@ -1,7 +1,7 @@
-import { ApolloError, AuthenticationError } from 'apollo-server-express';
 import { DecodedToken } from 'back/models/interfaces/decoded-token.interface';
 import { Request, Response } from 'express';
 import { Context } from 'graphql-ws';
+import { GraphQLError } from 'graphql/error';
 import jsonwebtoken from 'jsonwebtoken';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -42,7 +42,7 @@ class AuthService {
       }
     }
 
-    throw new ApolloError('Invalid username or password');
+    throw new GraphQLError('Invalid username or password');
   }
 
   async logout(
@@ -70,7 +70,11 @@ class AuthService {
     if (req.body?.operationName !== 'IntrospectionQuery') {
       const payload = req.headers.authorization?.split(' ') || [];
       token =
-        payload[0] === 'Bearer' ? payload[1] : req.cookies[JWT_COOKIE_NAME];
+        payload[0] === 'Bearer'
+          ? payload[1]
+          : req.cookies
+          ? req.cookies[JWT_COOKIE_NAME]
+          : undefined;
 
       if (token) {
         try {
@@ -159,7 +163,7 @@ class AuthService {
     if (this.isLoggedIn({ user: context.user, token: context.token })) {
       return operation();
     }
-    throw new AuthenticationError('Not authenticated');
+    throw new GraphQLError('Not authenticated');
   }
 }
 

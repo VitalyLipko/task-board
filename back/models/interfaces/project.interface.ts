@@ -1,4 +1,4 @@
-import { FileUpload } from 'graphql-upload';
+import { FileUpload } from 'graphql-upload/Upload';
 import { PopulatedDoc } from 'mongoose';
 
 import { ProjectStatusEnum } from '../enums/project-status.enum';

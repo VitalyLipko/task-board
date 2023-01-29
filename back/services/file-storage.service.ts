@@ -1,7 +1,7 @@
-import { ApolloError } from 'apollo-server-express';
 import { createWriteStream, mkdir } from 'fs';
 import { access, unlink } from 'fs/promises';
-import { FileUpload } from 'graphql-upload';
+import { FileUpload } from 'graphql-upload/Upload';
+import { GraphQLError } from 'graphql/error';
 import { finished } from 'stream';
 import { promisify } from 'util';
 import { v4 as uuidv4 } from 'uuid';
@@ -20,7 +20,7 @@ class FileStorageService {
       mkdir(config.fileStoragePath, (err) => {
         if (err) {
           console.log(err.message);
-          throw new ApolloError(errorMessage);
+          throw new GraphQLError(errorMessage);
         }
       }),
     );
@@ -31,7 +31,7 @@ class FileStorageService {
     const finishedPromise = promisify(finished);
     await finishedPromise(out).catch((err) => {
       console.log(err);
-      throw new ApolloError(errorMessage);
+      throw new GraphQLError(errorMessage);
     });
 
     return {

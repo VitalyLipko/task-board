@@ -1,7 +1,7 @@
 import { IResolvers } from '@graphql-tools/utils';
 import { DateTimeResolver, HexColorCodeResolver } from 'graphql-scalars';
 import { withFilter } from 'graphql-subscriptions';
-import { GraphQLUpload } from 'graphql-upload';
+import GraphQLUpload from 'graphql-upload/GraphQLUpload.js';
 
 import authService from '../services/auth.service';
 import boardService from '../services/board.service';

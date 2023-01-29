@@ -1,5 +1,5 @@
-import { ApolloError } from 'apollo-server-express';
 import bcrypt from 'bcrypt';
+import { GraphQLError } from 'graphql/error';
 
 import userService from './user.service';
 
@@ -20,7 +20,7 @@ class PasswordService {
   ): Promise<boolean> {
     const user = await userService.findActiveUser(userId);
     if (!user) {
-      throw new ApolloError(`User ${userId} not found`);
+      throw new GraphQLError(`User ${userId} not found`);
     }
 
     const isCurrentPasswordCorrect = await this.compare(
@@ -33,7 +33,7 @@ class PasswordService {
       return true;
     }
 
-    throw new ApolloError('Current password is incorrect');
+    throw new GraphQLError('Current password is incorrect');
   }
 }
 

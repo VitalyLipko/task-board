@@ -1,4 +1,4 @@
-import { ApolloError } from 'apollo-server-express';
+import { GraphQLError } from 'graphql/error';
 import { PopulateOptions } from 'mongoose';
 
 import {
@@ -20,7 +20,7 @@ class CommentService {
     const parentTask = await taskService.getTask(comment.parentId);
 
     if (!parentTask) {
-      throw new ApolloError(`Parent task ${comment.parentId} not found`);
+      throw new GraphQLError(`Parent task ${comment.parentId} not found`);
     }
 
     const document = new commentModel({

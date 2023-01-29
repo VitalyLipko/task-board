@@ -1,4 +1,4 @@
-import { FileUpload } from 'graphql-upload';
+import { FileUpload } from 'graphql-upload/Upload';
 
 import { File } from './file.interface';
 

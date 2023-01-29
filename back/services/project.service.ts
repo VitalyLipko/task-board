@@ -1,4 +1,4 @@
-import { ApolloError } from 'apollo-server-express';
+import { GraphQLError } from 'graphql/error';
 import isUndefined from 'lodash/isUndefined';
 import { LeanDocument, PopulateOptions } from 'mongoose';
 
@@ -36,7 +36,7 @@ export class ProjectService {
     const document = await ProjectService.findActiveProject(project.id);
 
     if (!document) {
-      throw new ApolloError(`Project ${project.id} not found`);
+      throw new GraphQLError(`Project ${project.id} not found`);
     }
 
     if (project.name) {
@@ -77,7 +77,7 @@ export class ProjectService {
       );
     }
 
-    throw new ApolloError(`Project ${id} not found`);
+    throw new GraphQLError(`Project ${id} not found`);
   }
 
   async deleteProject(id: string): Promise<boolean> {

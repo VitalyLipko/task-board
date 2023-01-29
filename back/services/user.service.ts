@@ -1,4 +1,4 @@
-import { ApolloError } from 'apollo-server-express';
+import { GraphQLError } from 'graphql/error';
 import isUndefined from 'lodash/isUndefined';
 import { LeanDocument } from 'mongoose';
 
@@ -24,7 +24,7 @@ class UserService {
   async getUser(id: string): Promise<LeanDocument<UserModel> | null> {
     const user = await this.findActiveUser(id);
     if (!user) {
-      throw new ApolloError(`User ${id} not found`);
+      throw new GraphQLError(`User ${id} not found`);
     }
     return user.toJSON();
   }
@@ -61,7 +61,7 @@ class UserService {
     const document = await this.findActiveUser(user.id);
 
     if (!document) {
-      throw new ApolloError(`User ${user.id} not found`);
+      throw new GraphQLError(`User ${user.id} not found`);
     }
 
     const { profile } = document;
@@ -80,7 +80,7 @@ class UserService {
     const document = await this.findActiveUser(user.id);
 
     if (!document) {
-      throw new ApolloError(`User ${user.id} not found`);
+      throw new GraphQLError(`User ${user.id} not found`);
     }
 
     if (!isUndefined(user.avatar)) {
@@ -111,12 +111,12 @@ class UserService {
     currentUserId: string | undefined,
   ): Promise<boolean> {
     if (id === currentUserId) {
-      throw new ApolloError('Can not delete current user');
+      throw new GraphQLError('Can not delete current user');
     }
 
     const user = await this.findActiveUser(id);
     if (!user) {
-      throw new ApolloError(`User ${id} not found`);
+      throw new GraphQLError(`User ${id} not found`);
     }
 
     user.trashed = true;

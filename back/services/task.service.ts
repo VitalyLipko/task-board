@@ -1,4 +1,4 @@
-import { ApolloError } from 'apollo-server-express';
+import { GraphQLError } from 'graphql/error';
 import isUndefined from 'lodash/isUndefined';
 import mongoose, {
   LeanDocument,
@@ -56,7 +56,7 @@ class TaskService {
     if (task) {
       return task.populate(taskPopulateOptions);
     }
-    throw new ApolloError(`Task ${id} not found`);
+    throw new GraphQLError(`Task ${id} not found`);
   }
 
   async createTask(
@@ -66,7 +66,7 @@ class TaskService {
     const parentIdString = task.parentId.toString();
     const parent = await ProjectService.findActiveProject(parentIdString);
     if (!parent) {
-      throw new ApolloError(`Parent project ${parentIdString} not found`);
+      throw new GraphQLError(`Parent project ${parentIdString} not found`);
     }
 
     const document = new taskModel({
@@ -105,7 +105,7 @@ class TaskService {
     const prevTask = await taskModel.findById(task.id).populate('assignees');
 
     if (!prevTask) {
-      throw new ApolloError(`Task ${task.id} not found`);
+      throw new GraphQLError(`Task ${task.id} not found`);
     }
 
     if (task.assignees) {
@@ -153,11 +153,11 @@ class TaskService {
   ): Promise<boolean> {
     const task = await taskModel.findById(id);
     if (!task) {
-      throw new ApolloError(`Task ${id} not found`);
+      throw new GraphQLError(`Task ${id} not found`);
     }
 
     if (task.status === value || task.status === TaskStatusEnum.Deleted) {
-      throw new ApolloError('Action not allowed');
+      throw new GraphQLError('Action not allowed');
     }
 
     switch (value) {
@@ -193,7 +193,7 @@ class TaskService {
       await task.save();
       return true;
     }
-    throw new ApolloError(`Parent project ${parentIdString} not found`);
+    throw new GraphQLError(`Parent project ${parentIdString} not found`);
   }
 }
 

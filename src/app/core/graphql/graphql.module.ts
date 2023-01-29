@@ -1,5 +1,11 @@
+import { HttpHeaders } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { ApolloClientOptions, split, InMemoryCache } from '@apollo/client/core';
+import {
+  ApolloClientOptions,
+  split,
+  InMemoryCache,
+  ApolloLink,
+} from '@apollo/client/core';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { APOLLO_OPTIONS, ApolloModule } from 'apollo-angular';
@@ -11,6 +17,12 @@ import { environment } from '../../../environments/environment';
 
 import { typePolicies } from './typePolicies';
 
+const operationsWithUpload = [
+  'CreateProject',
+  'UpdateProject',
+  'UpdateProfile',
+];
+
 @NgModule({
   imports: [ApolloModule],
   providers: [
@@ -21,6 +33,17 @@ import { typePolicies } from './typePolicies';
           uri: environment.GRAPHQL_URI,
           withCredentials: true,
           extractFiles,
+        });
+        const middleware = new ApolloLink((operation, forward) => {
+          if (operationsWithUpload.includes(operation.operationName)) {
+            const headers = new HttpHeaders({
+              'Apollo-Require-Preflight': 'true',
+            });
+            operation.setContext({
+              headers,
+            });
+          }
+          return forward(operation);
         });
         const ws = new GraphQLWsLink(
           createClient({
@@ -39,7 +62,7 @@ import { typePolicies } from './typePolicies';
             );
           },
           ws,
-          http,
+          middleware.concat(http),
         );
 
         return {

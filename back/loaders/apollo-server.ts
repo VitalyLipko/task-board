@@ -1,10 +1,12 @@
+import { ApolloServer } from '@apollo/server';
+import { expressMiddleware } from '@apollo/server/express4';
+import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
 import { makeExecutableSchema } from '@graphql-tools/schema';
-import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core';
-import { ApolloServer } from 'apollo-server-express';
+import { json } from 'body-parser';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express from 'express';
-import { graphqlUploadExpress } from 'graphql-upload';
+import graphqlUploadExpress from 'graphql-upload/graphqlUploadExpress.js';
 import { useServer } from 'graphql-ws/lib/use/ws';
 import { createServer } from 'http';
 import { constants } from 'http2';
@@ -31,12 +33,8 @@ export default async (): Promise<void> => {
     wsServer,
   );
 
-  const server = new ApolloServer({
+  const server = new ApolloServer<ContextPayload>({
     schema,
-    context: async ({ req, res }): Promise<ContextPayload> => {
-      const result = await authService.createContext(req);
-      return { ...result, res };
-    },
     plugins: [
       ApolloServerPluginDrainHttpServer({ httpServer }),
       {
@@ -54,12 +52,22 @@ export default async (): Promise<void> => {
   await server.start();
 
   app.use(
-    cors({ origin: true, credentials: true }),
+    '/graphql',
+    json(),
+    cors<cors.CorsRequest>({ origin: true, credentials: true }),
     cookieParser(),
     graphqlUploadExpress({
       maxFileSize: 8000000, // 8MB
     }),
+    expressMiddleware(server, {
+      context: async ({ req, res }): Promise<ContextPayload> => {
+        const result = await authService.createContext(req);
+        return { ...result, res };
+      },
+    }),
   );
+
+  app.use(cookieParser()); // need for REST requests
 
   app.get('/api/v1/file-storage/:fileId', async (req, res) => {
     const path = `${config.fileStoragePath}/${req.params.fileId}`;
@@ -85,18 +93,10 @@ export default async (): Promise<void> => {
     }
   });
 
-  server.applyMiddleware({
-    app,
-    cors: false,
-  });
-
-  await new Promise<void>(() =>
+  await new Promise<void>((resolve) =>
     httpServer
-      .listen({ port: config.port }, () =>
-        console.log(
-          `🚀 Server ready at ${config.host}:${config.port}${server.graphqlPath}`,
-        ),
-      )
+      .listen({ port: config.port }, resolve)
       .on('error', (err) => console.log('Error:', err.message)),
   );
+  console.log(`🚀 Server ready at ${config.host}:${config.port}/graphql`);
 };
