@@ -1,6 +1,6 @@
 import { GraphQLError } from 'graphql/error';
 import isUndefined from 'lodash/isUndefined';
-import { LeanDocument } from 'mongoose';
+import { FlattenMaps, LeanDocument } from 'mongoose';
 
 import {
   CreateUserInput,
@@ -21,7 +21,9 @@ class UserService {
     return users.map((user) => user.toJSON());
   }
 
-  async getUser(id: string): Promise<LeanDocument<UserModel> | null> {
+  async getUser(
+    id: string,
+  ): Promise<FlattenMaps<LeanDocument<UserModel>> | null> {
     const user = await this.findActiveUser(id);
     if (!user) {
       throw new GraphQLError(`User ${id} not found`);
@@ -36,7 +38,7 @@ class UserService {
   async getUserByName(
     username: string,
     onlyActive = true,
-  ): Promise<LeanDocument<UserModel> | null> {
+  ): Promise<FlattenMaps<LeanDocument<UserModel>> | null> {
     const getUser = async () =>
       userModel
         .findOne({ username, ...(onlyActive && { trashed: false }) })
@@ -57,7 +59,7 @@ class UserService {
 
   async updateUser(
     user: UpdateUserInput,
-  ): Promise<LeanDocument<UserModel> | null> {
+  ): Promise<FlattenMaps<LeanDocument<UserModel>> | null> {
     const document = await this.findActiveUser(user.id);
 
     if (!document) {

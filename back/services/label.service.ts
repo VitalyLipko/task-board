@@ -1,4 +1,4 @@
-import { LeanDocument } from 'mongoose';
+import { FlattenMaps, LeanDocument } from 'mongoose';
 
 import { extractLabel } from '../../shared-utils/extract-label';
 import { CreateLabelInput, Label } from '../models/interfaces/label.interface';
@@ -7,7 +7,7 @@ import { LabelModel, labelModel } from '../models/schemas/db.schema';
 class LabelService {
   async createLabel(
     label: CreateLabelInput,
-  ): Promise<LeanDocument<LabelModel>> {
+  ): Promise<FlattenMaps<LeanDocument<LabelModel>>> {
     const res = await labelModel.create(label);
 
     return res.toJSON();
